@@ -67,6 +67,7 @@ public class InstanceUploaderList extends ListActivity implements
 	private static final int GOOGLE_USER_DIALOG = 1;
 
 	private Button mUploadButton;
+	private Button mSMSButton;
 	private Button mToggleButton;
 
 	private boolean mShowUnsent = true;
@@ -140,6 +141,50 @@ public class InstanceUploaderList extends ListActivity implements
 						mSelected.clear();
 						InstanceUploaderList.this.getListView().clearChoices();
 						mUploadButton.setEnabled(false);
+						mSMSButton.setEnabled(false);
+					} else {
+						// no items selected
+						Toast.makeText(getApplicationContext(),
+								getString(R.string.noselect_error),
+								Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
+		});
+		
+		mSMSButton = (Button) findViewById(R.id.upload_sms_button);
+		mSMSButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+				NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
+
+				if (NetworkReceiver.running == true) {
+					Toast.makeText(
+							InstanceUploaderList.this,
+							"Background send running, please try again shortly",
+							Toast.LENGTH_SHORT).show();
+				} else if (ni == null || !ni.isConnected()) {
+					Collect.getInstance().getActivityLogger()
+							.logAction(this, "uploadButton", "noConnection");
+
+					Toast.makeText(InstanceUploaderList.this,
+							R.string.no_connection, Toast.LENGTH_SHORT).show();
+				} else {
+					Collect.getInstance()
+							.getActivityLogger()
+							.logAction(this, "uploadButton",
+									Integer.toString(mSelected.size()));
+
+					if (mSelected.size() > 0) {
+						// items selected
+						uploadSelectedFiles();
+						mToggled = false;
+						mSelected.clear();
+						InstanceUploaderList.this.getListView().clearChoices();
+						mUploadButton.setEnabled(false);
+						mSMSButton.setEnabled(false);
 					} else {
 						// no items selected
 						Toast.makeText(getApplicationContext(),
@@ -172,11 +217,12 @@ public class InstanceUploaderList extends ListActivity implements
 						mSelected.add(ls.getItemIdAtPosition(pos));
 				}
 				mUploadButton.setEnabled(!(mSelected.size() == 0));
+				mSMSButton.setEnabled(!(mSelected.size() == 0));
 
 			}
 		});
 		mToggleButton.setOnLongClickListener(this);
-
+		
 		Cursor c = mShowUnsent ? getUnsentCursor() : getAllCursor();
 
 		String[] data = new String[] { InstanceColumns.DISPLAY_NAME,
@@ -191,6 +237,7 @@ public class InstanceUploaderList extends ListActivity implements
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setItemsCanFocus(false);
 		mUploadButton.setEnabled(!(mSelected.size() == 0));
+		mSMSButton.setEnabled(!(mSelected.size() == 0));
 
 		// set title
 		setTitle(getString(R.string.app_name) + " > "
@@ -313,6 +360,7 @@ public class InstanceUploaderList extends ListActivity implements
 			mSelected.add(k);
 
 		mUploadButton.setEnabled(!(mSelected.size() == 0));
+		mSMSButton.setEnabled(!(mSelected.size() == 0));
 
 	}
 
@@ -326,6 +374,7 @@ public class InstanceUploaderList extends ListActivity implements
 		mToggled = savedInstanceState.getBoolean(BUNDLE_TOGGLED_KEY);
 		mRestored = true;
 		mUploadButton.setEnabled(selectedArray.length > 0);
+		mSMSButton.setEnabled(selectedArray.length > 0);
 	}
 
 	@Override
