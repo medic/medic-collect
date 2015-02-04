@@ -159,40 +159,24 @@ public class InstanceUploaderList extends ListActivity implements
 
 			@Override
 			public void onClick(View arg0) {
-				ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
+				Collect.getInstance()
+						.getActivityLogger()
+						.logAction(this, "uploadButton",
+								Integer.toString(mSelected.size()));
 
-				if (NetworkReceiver.running == true) {
-					Toast.makeText(
-							InstanceUploaderList.this,
-							"Background send running, please try again shortly",
-							Toast.LENGTH_SHORT).show();
-				} else if (ni == null || !ni.isConnected()) {
-					Collect.getInstance().getActivityLogger()
-							.logAction(this, "uploadButton", "noConnection");
-
-					Toast.makeText(InstanceUploaderList.this,
-							R.string.no_connection, Toast.LENGTH_SHORT).show();
+				if (mSelected.size() > 0) {
+					// items selected
+					smsSelectedFiles();						
+				  mToggled = false;
+					mSelected.clear();
+					InstanceUploaderList.this.getListView().clearChoices();
+					mUploadButton.setEnabled(false);
+					mSMSButton.setEnabled(false);
 				} else {
-					Collect.getInstance()
-							.getActivityLogger()
-							.logAction(this, "uploadButton",
-									Integer.toString(mSelected.size()));
-
-					if (mSelected.size() > 0) {
-						// items selected
-						smsSelectedFiles();						
-					    mToggled = false;
-						mSelected.clear();
-						InstanceUploaderList.this.getListView().clearChoices();
-						mUploadButton.setEnabled(false);
-						mSMSButton.setEnabled(false);
-					} else {
-						// no items selected
-						Toast.makeText(getApplicationContext(),
-								getString(R.string.noselect_error),
-								Toast.LENGTH_SHORT).show();
-					}
+					// no items selected
+					Toast.makeText(getApplicationContext(),
+							getString(R.string.noselect_error),
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
