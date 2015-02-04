@@ -29,6 +29,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -62,8 +63,13 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -73,6 +79,7 @@ import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
+import android.widget.Toast;
 
 /**
  * Background task for uploading completed forms.
@@ -87,6 +94,11 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
     private static final String fail = "Error: ";
 
     private InstanceUploaderListener mStateListener;
+    
+    private static final String SMS_SEND_ACTION = "CTS_SMS_SEND_ACTION";
+    private static final String SMS_DELIVERY_ACTION = "CTS_SMS_DELIVERY_ACTION";
+
+    private static final int TIME_OUT = 1000 * 10;
 
     public static class Outcome {
         public Uri mAuthRequestingServer = null;
@@ -122,9 +134,12 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
      * @param id
      * @param instanceFilePath
      * @param toUpdate - Instance URL for recording status update.
+     * @throws InterruptedException 
      */
-    private boolean smsOneSubmission(String gateway, String id, String instanceFilePath, Uri toUpdate, Outcome outcome) {
+    private boolean smsOneSubmission(String gateway, String id, String instanceFilePath, Uri toUpdate, Outcome outcome) throws InterruptedException {
 
+    	String smsFileContent = "";
+    	
     	Collect.getInstance().getActivityLogger().logAction(this, gateway, instanceFilePath);
 
         File instanceFile = new File(instanceFilePath);
@@ -174,18 +189,125 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
             }
             if (extension.equals("sms") || fileName.equals(instanceFile.getName() + ".txt")) {
             	// get contents of file
-            	String message = "";
 				try {
-					message = getFileContents(f); 	// "CONTENTS FROM FILE"; // TODO: Get contents from file
+					smsFileContent = getFileContents(f);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e.printStackTrace();	// Auto-generated catch block
 				}
-            	// send contents
+				
+            	// prepare contents
         	    SmsManager smsManager = SmsManager.getDefault();
-        	    ArrayList<String> parts = smsManager.divideMessage(message);
-        	    if (message.length() > 0) {
-        	    	smsManager.sendMultipartTextMessage(gateway, null, parts, null, null);
+        	    ArrayList<String> parts = smsManager.divideMessage(smsFileContent);
+        	    int numParts = parts.size();
+        	    
+        	    // prepare responses
+        	    SmsBroadcastReceiver mSendReceiver;
+        	    SmsBroadcastReceiver mDeliveryReceiver;
+        	    
+        	    mSendReceiver = new SmsBroadcastReceiver(SMS_SEND_ACTION);
+        	    mDeliveryReceiver = new SmsBroadcastReceiver(SMS_DELIVERY_ACTION);
+
+        	    Intent mSendIntent;
+        	    Intent mDeliveryIntent;
+
+        	    mSendIntent = new Intent(SMS_SEND_ACTION);
+        	    mDeliveryIntent = new Intent(SMS_DELIVERY_ACTION);
+
+        	    IntentFilter sendIntentFilter = new IntentFilter(SMS_SEND_ACTION);
+        	    IntentFilter deliveryIntentFilter = new IntentFilter(SMS_DELIVERY_ACTION);
+
+        	    Collect.getInstance().getApplicationContext().registerReceiver(mSendReceiver, sendIntentFilter);
+        	    Collect.getInstance().getApplicationContext().registerReceiver(mDeliveryReceiver, deliveryIntentFilter);
+        	    
+        	    ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
+        	    ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
+
+        	    for (int i = 0; i < numParts; i++) {
+        	    	sentIntents.add(PendingIntent.getBroadcast(Collect.getInstance().getApplicationContext(), 0, mSendIntent, 0));
+        	    	deliveryIntents.add(PendingIntent.getBroadcast(Collect.getInstance().getApplicationContext(), 0, mDeliveryIntent, 0));
+        	    }
+        	    
+        	    // Send Message (parts)
+        	    if (smsFileContent.length() > 0) {
+        	    	// smsManager.sendMultipartTextMessage(gateway, null, parts, null, null);
+        	    	smsManager.sendMultipartTextMessage(gateway, null, parts, sentIntents, deliveryIntents);
+        	    	mSendReceiver.waitForCalls(numParts, TIME_OUT);
+        	    	mDeliveryReceiver.waitForCalls(numParts, TIME_OUT);
+        	    	
+        	    	String errorMsg = "";
+        	    	Set <String> errors = new HashSet <String>();
+        	    	// cycle through the results for each message part
+        	    	for (int i = 0; i < mSendReceiver.mResultCodes.size(); i++ ) {
+    	    			switch ( mSendReceiver.mResultCodes.get(i) ) {
+    	    			case Activity.RESULT_OK:
+    	    			    continue;
+						case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+							errorMsg = "Unknown error";
+					        break;
+						case SmsManager.RESULT_ERROR_NO_SERVICE:
+							errorMsg = "No service";
+						    break;
+						case SmsManager.RESULT_ERROR_NULL_PDU:
+							errorMsg = "Null PDU";
+						    break;
+						case SmsManager.RESULT_ERROR_RADIO_OFF:
+							errorMsg = "Airplane mode";
+						    break;
+						}
+    	    			System.err.println("Error sending message part " + i + ": " + errorMsg);
+    	    			errors.add(errorMsg);
+        	    	}
+        	    	// cycle through the results for each message part
+        	    	for (int i = 0; i < mDeliveryReceiver.mResultCodes.size(); i++ ) {
+    	    			switch ( mDeliveryReceiver.mResultCodes.get(i) ) {
+    	    			case Activity.RESULT_OK:
+    	    			    continue;
+						case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+							errorMsg = "Unknown error";
+					        break;
+						case SmsManager.RESULT_ERROR_NO_SERVICE:
+							errorMsg = "No service";
+						    break;
+						case SmsManager.RESULT_ERROR_NULL_PDU:
+							errorMsg = "Null PDU";
+						    break;
+						case SmsManager.RESULT_ERROR_RADIO_OFF:
+							errorMsg = "Airplane mode";
+						    break;
+						}
+    	    			System.err.println("Error sending message part " + i + ": " + errorMsg);
+    	    			errors.add(errorMsg);
+        	    	}
+        	    	if (!errors.isEmpty()) {
+        	    		String strErrors = "";
+        	    		for (String s : errors) {
+        	    		    strErrors += " " + s + ";";
+        	    		}
+        	        	// invalid phone number
+        				System.err.println("SMS not sent:" + strErrors );
+        				outcome.mResults.put(
+        					id,
+        					fail
+        					+ "SMS not sent: "
+        					+ strErrors );
+        				cv.put(InstanceColumns.STATUS,
+        						InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+        					Collect.getInstance().getContentResolver()
+        				    .update(toUpdate, cv, null, null);
+        				return true;
+        	    	}
+        	    }
+        	    else {	// trying to send an empty message
+        			System.err.println("No content found");
+        			outcome.mResults.put(
+        				id,
+        				fail
+        				+ "No content found");
+        			cv.put(InstanceColumns.STATUS,
+        					InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+        				Collect.getInstance().getContentResolver()
+        			    .update(toUpdate, cv, null, null);
+        			return true;
         	    }
         	            	    
             } else {
@@ -193,11 +315,24 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
             }
         }
 
-        // if it got here, it must have worked
-        outcome.mResults.put(id, Collect.getInstance().getString(R.string.success));
-        cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMITTED);
-        Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
-        return true;
+        if (smsFileContent.isEmpty()) {	// File was not found
+			System.err.println("Form does not have SMS data");
+			outcome.mResults.put(
+				id,
+				fail
+				+ "Form does not have SMS data");
+			cv.put(InstanceColumns.STATUS,
+					InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+				Collect.getInstance().getContentResolver()
+			    .update(toUpdate, cv, null, null);
+			return true;
+        }
+        else {	// SUCCESS! if it got here, it must have worked
+	        outcome.mResults.put(id, Collect.getInstance().getString(R.string.success));
+	        cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMITTED);
+	        Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
+	        return true;
+        }
     }
     
     /**
@@ -646,9 +781,14 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 		                String gateway = settings.getString(PreferencesActivity.KEY_SMS_GATEWAY,
 		                    				Collect.getInstance().getString(R.string.default_sms_gateway));
 		                		                
-		                if ( !smsOneSubmission(gateway, id, instance, toUpdate, outcome) ) {
-				           	return outcome; // get credentials...
-		                }
+		                try {
+							if ( !smsOneSubmission(gateway, id, instance, toUpdate, outcome) ) {
+							   	return outcome; // get credentials...
+							}
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 	                }
 	                else {	// Upload via HTTP
 		                int subIdx = c.getColumnIndex(InstanceColumns.SUBMISSION_URI);
@@ -815,5 +955,41 @@ public static String getUserCountry(Context context) {
         }
         output.flush();
     }
+    private static class SmsBroadcastReceiver extends BroadcastReceiver {
+    	private int mCalls;
+    	private int mExpectedCalls;
+    	private String mAction;
+    	private Object mLock;
+    	private ArrayList<Integer> mResultCodes = new ArrayList<Integer>();
     
+    	SmsBroadcastReceiver(String action) {
+	    	mAction = action;
+	    	reset();
+	    	mLock = new Object();
+    	}
+    	void reset() {
+	    	mExpectedCalls = Integer.MAX_VALUE;
+	    	mCalls = 0;
+    	}
+    	@Override
+    	public void onReceive(Context context, Intent intent) {
+	    	if (intent.getAction().equals(mAction)) {
+		    	synchronized (mLock) {
+			    	mCalls += 1;
+			    	mResultCodes.add(getResultCode());
+			    	if (mCalls >= mExpectedCalls) {
+			    		mLock.notify();
+			    	}
+		    	}
+	    	}
+    	}
+    	public void waitForCalls(int expectedCalls, long timeout) throws InterruptedException {
+	    	synchronized(mLock) {
+		    	mExpectedCalls = expectedCalls;
+		    	if (mCalls < mExpectedCalls) {
+		    		mLock.wait(timeout);
+		    	}
+	    	}
+    	}
+	}
 }

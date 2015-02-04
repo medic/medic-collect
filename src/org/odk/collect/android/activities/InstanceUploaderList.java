@@ -296,10 +296,6 @@ public class InstanceUploaderList extends ListActivity implements
             instanceIDs[i] = mSelected.get(i);
         }
 
-        //TODO: Get gateway number from preferences
-        // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        // String server = prefs.getString(PreferencesActivity.KEY_PROTOCOL, null);
-
          // Upload via Aggregate
         Intent i = new Intent(this, InstanceUploaderActivity.class);
         i.putExtra(FormEntryActivity.KEY_INSTANCES, instanceIDs);
