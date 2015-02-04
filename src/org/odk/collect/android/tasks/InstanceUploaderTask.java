@@ -229,55 +229,14 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         	    
         	    // Send Message (parts)
         	    if (smsFileContent.length() > 0) {
-        	    	// smsManager.sendMultipartTextMessage(gateway, null, parts, null, null);
         	    	smsManager.sendMultipartTextMessage(gateway, null, parts, sentIntents, deliveryIntents);
         	    	mSendReceiver.waitForCalls(numParts, TIME_OUT);
         	    	mDeliveryReceiver.waitForCalls(numParts, TIME_OUT);
         	    	
-        	    	String errorMsg = "";
         	    	Set <String> errors = new HashSet <String>();
-        	    	// cycle through the results for each message part
-        	    	for (int i = 0; i < mSendReceiver.mResultCodes.size(); i++ ) {
-    	    			switch ( mSendReceiver.mResultCodes.get(i) ) {
-    	    			case Activity.RESULT_OK:
-    	    			    continue;
-						case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-							errorMsg = "Unknown error";
-					        break;
-						case SmsManager.RESULT_ERROR_NO_SERVICE:
-							errorMsg = "No service";
-						    break;
-						case SmsManager.RESULT_ERROR_NULL_PDU:
-							errorMsg = "Null PDU";
-						    break;
-						case SmsManager.RESULT_ERROR_RADIO_OFF:
-							errorMsg = "Airplane mode";
-						    break;
-						}
-    	    			System.err.println("Error sending message part " + i + ": " + errorMsg);
-    	    			errors.add(errorMsg);
-        	    	}
-        	    	// cycle through the results for each message part
-        	    	for (int i = 0; i < mDeliveryReceiver.mResultCodes.size(); i++ ) {
-    	    			switch ( mDeliveryReceiver.mResultCodes.get(i) ) {
-    	    			case Activity.RESULT_OK:
-    	    			    continue;
-						case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-							errorMsg = "Unknown error";
-					        break;
-						case SmsManager.RESULT_ERROR_NO_SERVICE:
-							errorMsg = "No service";
-						    break;
-						case SmsManager.RESULT_ERROR_NULL_PDU:
-							errorMsg = "Null PDU";
-						    break;
-						case SmsManager.RESULT_ERROR_RADIO_OFF:
-							errorMsg = "Airplane mode";
-						    break;
-						}
-    	    			System.err.println("Error sending message part " + i + ": " + errorMsg);
-    	    			errors.add(errorMsg);
-        	    	}
+        	    	getResults(mSendReceiver, errors, "Send");
+        	    	getResults(mDeliveryReceiver, errors, "Delivery");
+
         	    	if (!errors.isEmpty()) {
         	    		String strErrors = "";
         	    		for (String s : errors) {
@@ -335,7 +294,35 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         }
     }
     
-    /**
+    private void getResults(SmsBroadcastReceiver receiver,
+			Set<String> errors, String action) {
+
+    	String errorMsg = "";
+
+    	// cycle through the results for each message part
+    	for (int i = 0; i < receiver.mResultCodes.size(); i++ ) {
+			switch ( receiver.mResultCodes.get(i) ) {
+			case Activity.RESULT_OK:
+			    continue;
+			case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+				errorMsg = "Unknown error";
+		        break;
+			case SmsManager.RESULT_ERROR_NO_SERVICE:
+				errorMsg = "No service";
+			    break;
+			case SmsManager.RESULT_ERROR_NULL_PDU:
+				errorMsg = "Null PDU";
+			    break;
+			case SmsManager.RESULT_ERROR_RADIO_OFF:
+				errorMsg = "Airplane mode";
+			    break;
+			}
+			System.err.println(action + " error for message part " + i + ": " + errorMsg);
+			errors.add(errorMsg);
+    	}
+	}
+
+	/**
      * Uploads to urlString the submission identified by id with filepath of instance
      * @param urlString destination URL
      * @param id
