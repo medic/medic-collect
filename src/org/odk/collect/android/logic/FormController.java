@@ -39,6 +39,7 @@ import org.javarosa.core.services.transport.payload.ByteArrayPayload;
 import org.javarosa.form.api.FormEntryCaption;
 import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryPrompt;
+import org.javarosa.model.xform.SMSSerializingVisitor;
 import org.javarosa.model.xform.XFormSerializingVisitor;
 import org.javarosa.model.xform.XFormsModule;
 import org.javarosa.model.xform.XPathReference;
@@ -1117,6 +1118,23 @@ public class FormController {
     public boolean isSubmissionEntireForm() {
         IDataReference sub = getSubmissionDataReference();
         return ( getInstance().resolveReference(sub) == null );
+    }
+
+    /**
+     * Constructs the SMS payload for a filled-in form instance. This payload
+     * does not enable a filled-in form to be re-opened and edited.
+     *
+     * @return
+     * @throws IOException
+     */
+    public ByteArrayPayload getFilledInFormSMS() throws IOException {
+        // assume no binary data inside the model.
+        FormInstance datamodel = getInstance();
+        SMSSerializingVisitor serializer = new SMSSerializingVisitor();
+        ByteArrayPayload payload =
+        		(ByteArrayPayload) serializer.createSerializedPayload(datamodel);
+
+        return payload;
     }
 
     /**

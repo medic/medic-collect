@@ -63,6 +63,7 @@ public class AdminPreferencesActivity extends PreferenceActivity {
     public static String KEY_CHANGE_PASSWORD = "change_password";
     public static String KEY_CHANGE_GOOGLE_ACCOUNT = "change_google_account";
     public static String KEY_CHANGE_PROTOCOL_SETTINGS = "change_protocol_settings";
+    public static String KEY_CHANGE_GATEWAY_NUMBER = "change_gateway_number";
     // client
     public static String KEY_CHANGE_FONT_SIZE = "change_font_size";
     public static String KEY_DEFAULT_TO_FINALIZED = "default_to_finalized";

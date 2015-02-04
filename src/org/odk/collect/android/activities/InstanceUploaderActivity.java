@@ -101,12 +101,14 @@ public class InstanceUploaderActivity extends Activity implements InstanceUpload
         // and if we are resuming, use the TO_SEND list of not-yet-sent submissions
         // Otherwise, construct the list from the incoming intent value
         long[] selectedInstanceIDs = null;
+        String uploadMethod = FormEntryActivity.KEY_UPLOAD_METHOD_HTTP;
         if (savedInstanceState != null && savedInstanceState.containsKey(TO_SEND)) {
             selectedInstanceIDs = savedInstanceState.getLongArray(TO_SEND);
         } else {
             // get instances to upload...
             Intent intent = getIntent();
             selectedInstanceIDs = intent.getLongArrayExtra(FormEntryActivity.KEY_INSTANCES);
+            uploadMethod = intent.getStringExtra(FormEntryActivity.KEY_UPLOAD_METHOD);
         }
 
         mInstancesToSend = new Long[(selectedInstanceIDs == null) ? 0 : selectedInstanceIDs.length];
@@ -134,7 +136,7 @@ public class InstanceUploaderActivity extends Activity implements InstanceUpload
             // register this activity with the new uploader task
             mInstanceUploaderTask.setUploaderListener(InstanceUploaderActivity.this);
 
-            mInstanceUploaderTask.execute(mInstancesToSend);
+            mInstanceUploaderTask.execute(uploadMethod, mInstancesToSend);
         }
     }
 

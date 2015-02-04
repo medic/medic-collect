@@ -14,9 +14,12 @@
 
 package org.odk.collect.android.tasks;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
@@ -28,10 +31,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import org.odk.collect.android.R;
+import org.odk.collect.android.activities.FormEntryActivity;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.listeners.InstanceUploaderListener;
 import org.odk.collect.android.logic.PropertyManager;
@@ -53,12 +58,19 @@ import org.opendatakit.httpclientandroidlib.entity.mime.content.FileBody;
 import org.opendatakit.httpclientandroidlib.entity.mime.content.StringBody;
 import org.opendatakit.httpclientandroidlib.protocol.HttpContext;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -67,7 +79,7 @@ import android.webkit.MimeTypeMap;
  *
  * @author Carl Hartung (carlhartung@gmail.com)
  */
-public class InstanceUploaderTask extends AsyncTask<Long, Integer, InstanceUploaderTask.Outcome> {
+public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUploaderTask.Outcome> {
 
     private static final String t = "InstanceUploaderTask";
     // it can take up to 27 seconds to spin up Aggregate
@@ -81,6 +93,113 @@ public class InstanceUploaderTask extends AsyncTask<Long, Integer, InstanceUploa
         public HashMap<String, String> mResults = new HashMap<String,String>();
     }
 
+    private static String getFileContents(final File file) throws IOException {
+        final InputStream inputStream = new FileInputStream(file);
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        
+        final StringBuilder stringBuilder = new StringBuilder();
+        
+        boolean done = false;
+        
+        while (!done) {
+            final String line = reader.readLine();
+            done = (line == null);
+            
+            if (line != null) {
+                stringBuilder.append(line);
+            }
+        }
+        
+        reader.close();
+        inputStream.close();
+        
+        return stringBuilder.toString();
+    }
+    
+    /**
+     * Uploads to urlString the submission identified by id with filepath of instance
+     * @param gateway - Phone number to receive the SMS
+     * @param id
+     * @param instanceFilePath
+     * @param toUpdate - Instance URL for recording status update.
+     */
+    private boolean smsOneSubmission(String gateway, String id, String instanceFilePath, Uri toUpdate, Outcome outcome) {
+
+    	Collect.getInstance().getActivityLogger().logAction(this, gateway, instanceFilePath);
+
+        File instanceFile = new File(instanceFilePath);
+        ContentValues cv = new ContentValues();
+
+        // Check gateway phone number
+    	PhoneNumber validated_gateway = null;
+        
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        try {
+        		validated_gateway = phoneUtil.parse(gateway, getUserCountry(Collect.getInstance().getApplicationContext()));
+        } catch (NumberParseException e) {
+        	System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+        
+        if (validated_gateway==null || !phoneUtil.isValidNumber(validated_gateway)) {
+        	// invalid phone number
+			System.err.println("Invalid phone number for SMS gateway: " + gateway );
+			outcome.mResults.put(
+				id,
+				fail
+				+ "Invalid SMS gateway phone number: "
+				+ gateway.toString());
+			cv.put(InstanceColumns.STATUS,
+					InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+				Collect.getInstance().getContentResolver()
+			    .update(toUpdate, cv, null, null);
+			return true;
+        }
+        
+        // find all files in parent directory
+        File[] allFiles = instanceFile.getParentFile().listFiles();
+        
+        // add media files
+        for (File f : allFiles) {
+            String fileName = f.getName();
+
+            int dotIndex = fileName.lastIndexOf(".");
+            String extension = "";
+            if (dotIndex != -1) {
+                extension = fileName.substring(dotIndex + 1);
+            }
+
+            if (fileName.startsWith(".")) {
+                // ignore invisible files
+                continue;
+            }
+            if (extension.equals("sms") || fileName.equals(instanceFile.getName() + ".txt")) {
+            	// get contents of file
+            	String message = "";
+				try {
+					message = getFileContents(f); 	// "CONTENTS FROM FILE"; // TODO: Get contents from file
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            	// send contents
+        	    SmsManager smsManager = SmsManager.getDefault();
+        	    ArrayList<String> parts = smsManager.divideMessage(message);
+        	    if (message.length() > 0) {
+        	    	smsManager.sendMultipartTextMessage(gateway, null, parts, null, null);
+        	    }
+        	            	    
+            } else {
+                continue; // ignore other files
+            }
+        }
+
+        // if it got here, it must have worked
+        outcome.mResults.put(id, Collect.getInstance().getString(R.string.success));
+        cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMITTED);
+        Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
+        return true;
+    }
+    
     /**
      * Uploads to urlString the submission identified by id with filepath of instance
      * @param urlString destination URL
@@ -481,7 +600,10 @@ public class InstanceUploaderTask extends AsyncTask<Long, Integer, InstanceUploa
 
     // TODO: This method is like 350 lines long, down from 400.
     // still. ridiculous. make it smaller.
-    protected Outcome doInBackground(Long... values) {
+    protected Outcome doInBackground(Object... params) {
+    	String uploadMethod = (String) params[0];
+        Long[] values = (Long[]) params[1];
+    	
     	Outcome outcome = new Outcome();
 
         String selection = InstanceColumns._ID + "=?";
@@ -519,36 +641,47 @@ public class InstanceUploaderTask extends AsyncTask<Long, Integer, InstanceUploa
 	                String id = c.getString(c.getColumnIndex(InstanceColumns._ID));
 	                Uri toUpdate = Uri.withAppendedPath(InstanceColumns.CONTENT_URI, id);
 
-	                int subIdx = c.getColumnIndex(InstanceColumns.SUBMISSION_URI);
-	                String urlString = c.isNull(subIdx) ? null : c.getString(subIdx);
-	                if (urlString == null) {
-	                    SharedPreferences settings =
-	                        PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
-	                    urlString = settings.getString(PreferencesActivity.KEY_SERVER_URL,
-	                    				Collect.getInstance().getString(R.string.default_server_url));
-	                    if ( urlString.charAt(urlString.length()-1) == '/') {
-	                    	urlString = urlString.substring(0, urlString.length()-1);
-	                    }
-	                    // NOTE: /submission must not be translated! It is the well-known path on the server.
-	                    String submissionUrl =
-	                        settings.getString(PreferencesActivity.KEY_SUBMISSION_URL,
-	                        		Collect.getInstance().getString(R.string.default_odk_submission));
-	                    if ( submissionUrl.charAt(0) != '/') {
-	                    	submissionUrl = "/" + submissionUrl;
-	                    }
-
-	                    urlString = urlString + submissionUrl;
+	                if(uploadMethod.equals(FormEntryActivity.KEY_UPLOAD_METHOD_SMS)) {
+		                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+		                String gateway = settings.getString(PreferencesActivity.KEY_SMS_GATEWAY,
+		                    				Collect.getInstance().getString(R.string.default_sms_gateway));
+		                		                
+		                if ( !smsOneSubmission(gateway, id, instance, toUpdate, outcome) ) {
+				           	return outcome; // get credentials...
+		                }
 	                }
-
-	                // add the deviceID to the request...
-	                try {
-						urlString += "?deviceID=" + URLEncoder.encode(deviceId, "UTF-8");
-					} catch (UnsupportedEncodingException e) {
-						// unreachable...
-					}
-
-	                if ( !uploadOneSubmission(urlString, id, instance, toUpdate, localContext, uriRemap, outcome) ) {
-	                	return outcome; // get credentials...
+	                else {	// Upload via HTTP
+		                int subIdx = c.getColumnIndex(InstanceColumns.SUBMISSION_URI);
+		                String urlString = c.isNull(subIdx) ? null : c.getString(subIdx);
+		                if (urlString == null) {
+		                    SharedPreferences settings =
+		                        PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+		                    urlString = settings.getString(PreferencesActivity.KEY_SERVER_URL,
+		                    				Collect.getInstance().getString(R.string.default_server_url));
+		                    if ( urlString.charAt(urlString.length()-1) == '/') {
+		                    	urlString = urlString.substring(0, urlString.length()-1);
+		                    }
+		                    // NOTE: /submission must not be translated! It is the well-known path on the server.
+		                    String submissionUrl =
+		                        settings.getString(PreferencesActivity.KEY_SUBMISSION_URL,
+		                        		Collect.getInstance().getString(R.string.default_odk_submission));
+		                    if ( submissionUrl.charAt(0) != '/') {
+		                    	submissionUrl = "/" + submissionUrl;
+		                    }
+	
+		                    urlString = urlString + submissionUrl;
+		                }
+	
+		                // add the deviceID to the request...
+		                try {
+							urlString += "?deviceID=" + URLEncoder.encode(deviceId, "UTF-8");
+						} catch (UnsupportedEncodingException e) {
+							// unreachable...
+						}
+	
+		                if ( !uploadOneSubmission(urlString, id, instance, toUpdate, localContext, uriRemap, outcome) ) {
+		                	return outcome; // get credentials...
+		                }
 	                }
 	            }
 	        }
@@ -560,6 +693,32 @@ public class InstanceUploaderTask extends AsyncTask<Long, Integer, InstanceUploa
 
         return outcome;
     }
+
+
+
+/**
+ * Get ISO 3166-1 alpha-2 country code for this device (or null if not available)
+ * @param context Context reference to get the TelephonyManager instance from
+ * @return country code or null
+ */
+public static String getUserCountry(Context context) {
+    try {
+        final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        final String simCountry = tm.getSimCountryIso();
+        if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
+            return simCountry.toLowerCase(Locale.US);
+        }
+        else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
+            String networkCountry = tm.getNetworkCountryIso();
+            if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
+                return networkCountry.toLowerCase(Locale.US);
+            }
+        }
+    }
+    catch (Exception e) { }
+    return null;
+}
+
 
 
     @Override

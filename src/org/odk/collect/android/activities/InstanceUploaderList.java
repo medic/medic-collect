@@ -36,6 +36,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +64,7 @@ public class InstanceUploaderList extends ListActivity implements
 	private static final int MENU_PREFERENCES = Menu.FIRST;
 	private static final int MENU_SHOW_UNSENT = Menu.FIRST + 1;
 	private static final int INSTANCE_UPLOADER = 0;
+	private static final int INSTANCE_SMSER = 0;
 	
 	private static final int GOOGLE_USER_DIALOG = 1;
 
@@ -179,8 +181,8 @@ public class InstanceUploaderList extends ListActivity implements
 
 					if (mSelected.size() > 0) {
 						// items selected
-						uploadSelectedFiles();
-						mToggled = false;
+						smsSelectedFiles();						
+					    mToggled = false;
 						mSelected.clear();
 						InstanceUploaderList.this.getListView().clearChoices();
 						mUploadButton.setEnabled(false);
@@ -301,6 +303,24 @@ public class InstanceUploaderList extends ListActivity implements
             i.putExtra(FormEntryActivity.KEY_INSTANCES, instanceIDs);
             startActivityForResult(i, INSTANCE_UPLOADER);
         }
+    }
+
+	private void smsSelectedFiles() {
+        // send list of _IDs.
+        long[] instanceIDs = new long[mSelected.size()];
+        for (int i = 0; i < mSelected.size(); i++) {
+            instanceIDs[i] = mSelected.get(i);
+        }
+
+        //TODO: Get gateway number from preferences
+        // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        // String server = prefs.getString(PreferencesActivity.KEY_PROTOCOL, null);
+
+         // Upload via Aggregate
+        Intent i = new Intent(this, InstanceUploaderActivity.class);
+        i.putExtra(FormEntryActivity.KEY_INSTANCES, instanceIDs);
+        i.putExtra(FormEntryActivity.KEY_UPLOAD_METHOD, FormEntryActivity.KEY_UPLOAD_METHOD_SMS);
+        startActivityForResult(i, INSTANCE_UPLOADER);
     }
 
 	@Override
