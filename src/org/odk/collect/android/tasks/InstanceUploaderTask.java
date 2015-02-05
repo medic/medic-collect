@@ -227,22 +227,19 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         	    	deliveryIntents.add(PendingIntent.getBroadcast(Collect.getInstance().getApplicationContext(), 0, mDeliveryIntent, 0));
         	    }
         	    
-        	    // Send Message (parts)
+        	    // Send Message, in parts if necessary
         	    if (smsFileContent.length() > 0) {
         	    	smsManager.sendMultipartTextMessage(gateway, null, parts, sentIntents, deliveryIntents);
         	    	mSendReceiver.waitForCalls(numParts, TIME_OUT);
         	    	mDeliveryReceiver.waitForCalls(numParts, TIME_OUT);
         	    	
         	    	Set <String> errors = new HashSet <String>();
-        	    	getResults(mSendReceiver, errors, "Send");
-        	    	getResults(mDeliveryReceiver, errors, "Delivery");
 
-        	    	if (!errors.isEmpty()) {
+        	    	if (hasErrors(mSendReceiver, errors, "Send") || hasErrors(mDeliveryReceiver, errors, "Delivery")) {
         	    		String strErrors = "";
         	    		for (String s : errors) {
         	    		    strErrors += " " + s + ";";
         	    		}
-        	        	// invalid phone number
         				System.err.println("SMS not sent:" + strErrors );
         				outcome.mResults.put(
         					id,
@@ -294,7 +291,15 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         }
     }
     
-    private void getResults(SmsBroadcastReceiver receiver,
+    /**
+     * Gets the Results from sending SMS
+     * @param receiver - Broadcast receiver to check results
+     * @param errors - Errors messages will be added to this set
+     * @param action - Name of receiver, used only in console output
+     * @return true if errors were found, false if no errors were found
+     * @throws InterruptedException 
+     */
+    private boolean hasErrors(SmsBroadcastReceiver receiver,
 			Set<String> errors, String action) {
 
     	String errorMsg = "";
@@ -319,6 +324,12 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 			}
 			System.err.println(action + " error for message part " + i + ": " + errorMsg);
 			errors.add(errorMsg);
+    	}
+    	if (errorMsg.isEmpty()) {
+    		return false;	// no errors
+    	}
+    	else {
+    		return true;	// yes, errors 
     	}
 	}
 
