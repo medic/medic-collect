@@ -152,6 +152,10 @@ public class FormEntryActivity extends Activity implements AnimationListener,
 	public static final String KEY_INSTANCES = "instances";
 	public static final String KEY_SUCCESS = "success";
 	public static final String KEY_ERROR = "error";
+	
+	public static final String KEY_UPLOAD_METHOD = "upload";
+	public static final String KEY_UPLOAD_METHOD_HTTP = "http";
+	public static final String KEY_UPLOAD_METHOD_SMS = "sms";
 
 	// Identifies the gp of the form used to launch form entry
 	public static final String KEY_FORMPATH = "formpath";

@@ -36,6 +36,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.telephony.SmsManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,10 +64,12 @@ public class InstanceUploaderList extends ListActivity implements
 	private static final int MENU_PREFERENCES = Menu.FIRST;
 	private static final int MENU_SHOW_UNSENT = Menu.FIRST + 1;
 	private static final int INSTANCE_UPLOADER = 0;
+	private static final int INSTANCE_SMSER = 0;
 	
 	private static final int GOOGLE_USER_DIALOG = 1;
 
 	private Button mUploadButton;
+	private Button mSMSButton;
 	private Button mToggleButton;
 
 	private boolean mShowUnsent = true;
@@ -140,12 +143,40 @@ public class InstanceUploaderList extends ListActivity implements
 						mSelected.clear();
 						InstanceUploaderList.this.getListView().clearChoices();
 						mUploadButton.setEnabled(false);
+						mSMSButton.setEnabled(false);
 					} else {
 						// no items selected
 						Toast.makeText(getApplicationContext(),
 								getString(R.string.noselect_error),
 								Toast.LENGTH_SHORT).show();
 					}
+				}
+			}
+		});
+		
+		mSMSButton = (Button) findViewById(R.id.upload_sms_button);
+		mSMSButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Collect.getInstance()
+						.getActivityLogger()
+						.logAction(this, "uploadButton",
+								Integer.toString(mSelected.size()));
+
+				if (mSelected.size() > 0) {
+					// items selected
+					smsSelectedFiles();						
+				  mToggled = false;
+					mSelected.clear();
+					InstanceUploaderList.this.getListView().clearChoices();
+					mUploadButton.setEnabled(false);
+					mSMSButton.setEnabled(false);
+				} else {
+					// no items selected
+					Toast.makeText(getApplicationContext(),
+							getString(R.string.noselect_error),
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -172,11 +203,12 @@ public class InstanceUploaderList extends ListActivity implements
 						mSelected.add(ls.getItemIdAtPosition(pos));
 				}
 				mUploadButton.setEnabled(!(mSelected.size() == 0));
+				mSMSButton.setEnabled(!(mSelected.size() == 0));
 
 			}
 		});
 		mToggleButton.setOnLongClickListener(this);
-
+		
 		Cursor c = mShowUnsent ? getUnsentCursor() : getAllCursor();
 
 		String[] data = new String[] { InstanceColumns.DISPLAY_NAME,
@@ -191,6 +223,7 @@ public class InstanceUploaderList extends ListActivity implements
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setItemsCanFocus(false);
 		mUploadButton.setEnabled(!(mSelected.size() == 0));
+		mSMSButton.setEnabled(!(mSelected.size() == 0));
 
 		// set title
 		setTitle(getString(R.string.app_name) + " > "
@@ -256,6 +289,20 @@ public class InstanceUploaderList extends ListActivity implements
         }
     }
 
+	private void smsSelectedFiles() {
+        // send list of _IDs.
+        long[] instanceIDs = new long[mSelected.size()];
+        for (int i = 0; i < mSelected.size(); i++) {
+            instanceIDs[i] = mSelected.get(i);
+        }
+
+         // Upload via Aggregate
+        Intent i = new Intent(this, InstanceUploaderActivity.class);
+        i.putExtra(FormEntryActivity.KEY_INSTANCES, instanceIDs);
+        i.putExtra(FormEntryActivity.KEY_UPLOAD_METHOD, FormEntryActivity.KEY_UPLOAD_METHOD_SMS);
+        startActivityForResult(i, INSTANCE_UPLOADER);
+    }
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		Collect.getInstance().getActivityLogger()
@@ -313,6 +360,7 @@ public class InstanceUploaderList extends ListActivity implements
 			mSelected.add(k);
 
 		mUploadButton.setEnabled(!(mSelected.size() == 0));
+		mSMSButton.setEnabled(!(mSelected.size() == 0));
 
 	}
 
@@ -326,6 +374,7 @@ public class InstanceUploaderList extends ListActivity implements
 		mToggled = savedInstanceState.getBoolean(BUNDLE_TOGGLED_KEY);
 		mRestored = true;
 		mUploadButton.setEnabled(selectedArray.length > 0);
+		mSMSButton.setEnabled(selectedArray.length > 0);
 	}
 
 	@Override

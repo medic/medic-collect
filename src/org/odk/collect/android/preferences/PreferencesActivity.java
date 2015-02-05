@@ -76,6 +76,9 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
   // AGGREGATE SPECIFIC
   public static final String KEY_SERVER_URL = "server_url";
+  
+  // SMS SPECIFIC
+  public static final String KEY_SMS_GATEWAY= "sms_gateway";
 
   // GME SPECIFIC
   public static final String KEY_GME_PROJECT_ID = "gme_project_id";

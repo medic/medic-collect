@@ -248,6 +248,9 @@ public class SaveToDiskTask extends AsyncTask<Void, String, SaveResult> {
 
         publishProgress(Collect.getInstance().getString(R.string.survey_saving_collecting_message));
 
+        // save a SMS version
+        ByteArrayPayload payloadSMS = formController.getFilledInFormSMS();
+        
         ByteArrayPayload payload = formController.getFilledInFormXml();
         // write out xml
         String instancePath = formController.getInstancePath().getAbsolutePath();
@@ -255,6 +258,9 @@ public class SaveToDiskTask extends AsyncTask<Void, String, SaveResult> {
         publishProgress(Collect.getInstance().getString(R.string.survey_saving_saving_message));
 
         exportXmlFile(payload, instancePath);
+
+        // Write SMS to card
+        exportXmlFile(payloadSMS, instancePath+".txt");
 
         // update the mUri. We have exported the reloadable instance, so update status...
         // Since we saved a reloadable instance, it is flagged as re-openable so that if any error
