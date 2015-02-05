@@ -98,7 +98,7 @@
 <string name="location_accuracy">Accuracy is %1$s m</string>
 <string name="longitude">Longitude</string>
 <string name="main_menu">Main Menu</string>
-<string name="main_menu_details">Data collection made easier&#8230;</string>
+<string name="main_menu_details">We are all health workers</string>
 <string name="manage_files">Delete Saved Form</string>
 <string name="mark_finished">Mark form as finalized</string>
 <string name="noselect_error">Sorry, you have not selected any forms!</string>

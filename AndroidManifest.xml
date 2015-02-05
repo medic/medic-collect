@@ -59,7 +59,7 @@
         android:name="org.odk.collect.android.application.Collect"
         android:largeHeap="true"
         android:installLocation="auto"
-        android:icon="@drawable/notes"
+        android:icon="@drawable/medicmobile"
         android:label="@string/app_name"
         android:theme="@style/Collect" >
 
