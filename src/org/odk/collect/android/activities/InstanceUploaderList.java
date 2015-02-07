@@ -72,6 +72,8 @@ public class InstanceUploaderList extends ListActivity implements
 	private Button mSMSButton;
 	private Button mToggleButton;
 
+	private SharedPreferences mPrefs;
+	
 	private boolean mShowUnsent = true;
 	private SimpleCursorAdapter mInstances;
 	private ArrayList<Long> mSelected = new ArrayList<Long>();
@@ -155,6 +157,18 @@ public class InstanceUploaderList extends ListActivity implements
 		});
 		
 		mSMSButton = (Button) findViewById(R.id.upload_sms_button);
+		
+        // Only show the "Send as SMS" button if a SMS Gateway number is set in preferences
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        
+        if (mPrefs.getString(PreferencesActivity.KEY_SMS_GATEWAY,
+				Collect.getInstance().getString(R.string.default_sms_gateway)).isEmpty()) {
+        	mSMSButton.setVisibility(View.GONE);
+        }
+        else {
+        	mSMSButton.setVisibility(View.VISIBLE);
+        }
+
 		mSMSButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -266,13 +280,13 @@ public class InstanceUploaderList extends ListActivity implements
             instanceIDs[i] = mSelected.get(i);
         }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String server = prefs.getString(PreferencesActivity.KEY_PROTOCOL, null);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String server = mPrefs.getString(PreferencesActivity.KEY_PROTOCOL, null);
         if (server.equalsIgnoreCase(getString(R.string.protocol_google_maps_engine))) {
             // if it's maps engine, start the maps-engine uploader
             // first make sure we have a google account selected
 
-            String googleUsername = prefs.getString(
+            String googleUsername = mPrefs.getString(
                     PreferencesActivity.KEY_SELECTED_GOOGLE_ACCOUNT, null);
             if (googleUsername == null || googleUsername.equals("")) {
                 showDialog(GOOGLE_USER_DIALOG);
