@@ -240,8 +240,7 @@ public class InstanceUploaderList extends ListActivity implements
 		mSMSButton.setEnabled(!(mSelected.size() == 0));
 
 		// set title
-		setTitle(getString(R.string.app_name) + " > "
-				+ getString(R.string.send_data));
+		setTitle(getString(R.string.send_data));
 
 		// if current activity is being reinitialized due to changing
 		// orientation restore all check
