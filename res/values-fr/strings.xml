@@ -25,6 +25,7 @@
   <string name="change_language">Changer la Langue</string>
   <string name="change_password">Mot de passe</string>
   <string name="change_protocol_settings_default">Paramètres de la plate-forme</string>
+  <string name="change_sms_gateway">Numéro de la passerelle</string>
   <string name="change_username">Nom d\'utilisateur ODK</string>
   <string name="clearanswer_confirm">Enlever la réponse à \"%s\" ?</string>
   <string name="clear_answer">Enlever la réponse</string>
@@ -119,12 +120,14 @@
   <string name="sending_items">Envoi de %1$s sur %2$s formulaire(s)</string>
   <string name="send_data">Envoyer un Formulaire Finalisé</string>
   <string name="send_data_button">Envoyer un Formulaire Finalisé</string>
-  <string name="send_selected_data">Envoyer Eléments Sélectionnés</string>
+  <string name="send_selected_data">Envoyer (Web)</string>
+  <string name="send_selected_data_sms">Envoyer (SMS)</string>
   <string name="server_auth_credentials">Saisir le nom d\'utilisateur et mot de passe pour le serveur:\n%s</string>
   <string name="server_requires_auth">Le Serveur requiert une authentification</string>
   <string name="server_url">URL</string>
   <string name="server_preferences">Serveur</string>
-  <string name="toggle_selected">(dé)sélectionner tout</string>
+  <string name="sms_gateway">Passerelle SMS</string>
+  <string name="toggle_selected">Basculer tous</string>
   <string name="trigger">OK. Continuer.</string>
   <string name="uploading_data">Envoi du formulaire…</string>
   <string name="url_error">URL non valable !</string>
