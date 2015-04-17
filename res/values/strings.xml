@@ -37,6 +37,7 @@
 <string name="change_password">ODK Password</string>
 <string name="change_protocol_settings_default">Platform Settings</string>
 <string name="change_sms_gateway">Gateway Phone Number</string>
+<string name="change_own_phone_number">Own Phone Number</string>
 <string name="change_username">ODK Username</string>
 <string name="clearanswer_confirm">Remove the response to \"%s\"?</string>
 <string name="clear_answer">Remove response</string>
@@ -137,7 +138,12 @@
 <string name="server_requires_auth">Server Requires Authentication</string>
 <string name="server_url">URL</string>
 <string name="server_preferences">Server Settings</string>
-<string name="sms_gateway">SMS Gateway</string>
+<string name="sms_gateway">Gateway phone number</string>
+<string name="sms_gateway_summary">Phone number that receives the forms when sending via SMS</string>
+<string name="own_phone_number">Own phone number</string>
+<string name="own_phone_number_summary">Phone number of the person submitting the forms</string>
+<string name="sms_upload">Upload SMS payload</string>
+<string name="sms_upload_summary">Check this option to use the SMS content instead of the XML when uploading forms</string>
 <string name="toggle_selected">Toggle All</string>
 <string name="trigger">OK. Please continue.</string>
 <string name="uploading_data">Sending Form</string>

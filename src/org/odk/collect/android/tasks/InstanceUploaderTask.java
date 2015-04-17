@@ -36,6 +36,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.odk.collect.android.R;
 import org.odk.collect.android.activities.FormEntryActivity;
 import org.odk.collect.android.application.Collect;
@@ -48,8 +49,10 @@ import org.odk.collect.android.utilities.WebUtils;
 import org.opendatakit.httpclientandroidlib.Header;
 import org.opendatakit.httpclientandroidlib.HttpResponse;
 import org.opendatakit.httpclientandroidlib.HttpStatus;
+import org.opendatakit.httpclientandroidlib.NameValuePair;
 import org.opendatakit.httpclientandroidlib.client.ClientProtocolException;
 import org.opendatakit.httpclientandroidlib.client.HttpClient;
+import org.opendatakit.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import org.opendatakit.httpclientandroidlib.client.methods.HttpHead;
 import org.opendatakit.httpclientandroidlib.client.methods.HttpPost;
 import org.opendatakit.httpclientandroidlib.conn.ConnectTimeoutException;
@@ -57,6 +60,7 @@ import org.opendatakit.httpclientandroidlib.conn.HttpHostConnectException;
 import org.opendatakit.httpclientandroidlib.entity.mime.MultipartEntity;
 import org.opendatakit.httpclientandroidlib.entity.mime.content.FileBody;
 import org.opendatakit.httpclientandroidlib.entity.mime.content.StringBody;
+import org.opendatakit.httpclientandroidlib.message.BasicNameValuePair;
 import org.opendatakit.httpclientandroidlib.protocol.HttpContext;
 
 import com.google.i18n.phonenumbers.NumberParseException;
@@ -354,6 +358,18 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         Uri u = Uri.parse(urlString);
         HttpClient httpclient = WebUtils.createHttpClient(CONNECTION_TIMEOUT);
 
+        // check if we should upload SMS or the default XML
+        Boolean uploadSMS = false;
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        String protocol = settings.getString(PreferencesActivity.KEY_PROTOCOL, 
+				Collect.getInstance().getString(R.string.protocol_odk_default));
+        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_other)) 
+        		&& settings.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, false))
+        {
+        	uploadSMS = true;
+        }
+    	Collect.getInstance().getActivityLogger().logAction(this, urlString, "Uploading SMS: " + uploadSMS);
+
         boolean openRosaServer = false;
         if (uriRemap.containsKey(u)) {
             // we already issued a head request and got a response,
@@ -373,6 +389,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 
             // if https then enable preemptive basic auth...
             if ( u.getScheme() != null && u.getScheme().equals("https") ) {
+        	// if ( true ) { // Possible security risk: Do preemptive basic auth even if not https. Otherwise thread crashes 
             	WebUtils.enablePreemptiveBasicAuth(localContext, u.getHost());
             }
 
@@ -436,7 +453,8 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
                 	WebUtils.discardEntityBytes(response);
 
                     Log.w(t, "Status code on Head request: " + statusCode);
-                    if (statusCode >= HttpStatus.SC_OK && statusCode < HttpStatus.SC_MULTIPLE_CHOICES) {
+                    
+                    if (!uploadSMS && statusCode >= HttpStatus.SC_OK && statusCode < HttpStatus.SC_MULTIPLE_CHOICES) {
                     	outcome.mResults.put(
                             id,
                             fail
@@ -512,6 +530,95 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         // cookiestore (referenced by localContext) that will enable
         // authenticated publication to the server.
         //
+        
+        HttpPost httppost = null;
+        
+        if (uploadSMS) {
+        	// File instanceSmsFile = new File(instanceFile.getName().substring(0, instanceFile.getName().lastIndexOf(".")) + ".txt");
+        	File instanceSmsFile = new File(instanceFile + ".txt");
+        	
+            httppost = WebUtils.createOpenRosaHttpPost(u);
+
+            Long timestamp = System.currentTimeMillis();
+            String message = "";
+            String from = PreferenceManager.getDefaultSharedPreferences(
+            					Collect.getInstance()).getString(PreferencesActivity.KEY_OWN_PHONE_NUMBER, 
+            					"" );
+            try {
+    			message = getFileContents(instanceSmsFile);
+    		} catch (IOException e) {
+    			e.printStackTrace();
+                Log.e(t, e.toString());
+                WebUtils.clearHttpConnectionManager();
+                outcome.mResults.put(id, fail + "Form File Not Found: " + instanceSmsFile.toString());
+                cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+                Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
+                return true;
+    		}
+            
+            try {
+                //Post Data
+                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
+            	nameValuePair.add(new BasicNameValuePair("message_id", "999999"));
+            	nameValuePair.add(new BasicNameValuePair("sent_timestamp", timestamp.toString()));
+            	nameValuePair.add(new BasicNameValuePair("message", message));
+            	nameValuePair.add(new BasicNameValuePair("from", from));
+	
+	            //Encoding POST data
+            	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+
+            } catch (UnsupportedEncodingException e) {
+                // log exception
+                e.printStackTrace();
+                Log.e(t, e.toString());
+                WebUtils.clearHttpConnectionManager();
+                outcome.mResults.put(id, fail + "Failed To Create Post Data");
+                cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+                Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
+                return true;
+            }
+     
+            //making POST request. // TODO: Error reporting in line with ODK Collect
+            try {
+            	HttpResponse response = httpclient.execute(httppost, localContext);
+                // write response to log
+                Log.d("Http Post Response:", response.getStatusLine().toString());
+
+                int responseCode = response.getStatusLine().getStatusCode();
+                WebUtils.discardEntityBytes(response);
+
+            
+	            if (responseCode != HttpStatus.SC_OK && responseCode != HttpStatus.SC_CREATED && responseCode != HttpStatus.SC_ACCEPTED) {
+	            	if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
+	            		// clear the cookies -- should not be necessary?
+	                	Collect.getInstance().getCookieStore().clear();
+	                	outcome.mResults.put(id, fail + response.getStatusLine().getReasonPhrase()
+	                            + " (" + responseCode + ") at " + urlString);
+	                } else {
+	                	outcome.mResults.put(id, fail + response.getStatusLine().getReasonPhrase()
+	                            + " (" + responseCode + ") at " + urlString);
+	                }
+	                cv.put(InstanceColumns.STATUS,
+	                    InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+	                Collect.getInstance().getContentResolver()
+	                        .update(toUpdate, cv, null, null);
+	                return true;
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            Log.e(t, e.toString());
+	            WebUtils.clearHttpConnectionManager();
+	            String msg = e.getMessage();
+	            if (msg == null) {
+	                msg = e.toString();
+	            }
+	            outcome.mResults.put(id, fail + "Generic Exception: " + msg);
+	            cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+	            Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
+	            return true;
+	        }        	
+        }
+        else {
         // get instance file
 
         // Under normal operations, we upload the instanceFile to
@@ -581,7 +688,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         	lastJ = j;
             first = false;
 
-            HttpPost httppost = WebUtils.createOpenRosaHttpPost(u);
+            httppost = WebUtils.createOpenRosaHttpPost(u);
 
             MimeTypeMap m = MimeTypeMap.getSingleton();
 
@@ -679,7 +786,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
             }
 
             httppost.setEntity(entity);
-
+        
             // prepare response and return uploaded
             HttpResponse response = null;
             try {
@@ -723,6 +830,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
                 return true;
             }
         }
+        }
 
         // if it got here, it must have worked
         outcome.mResults.put(id, Collect.getInstance().getString(R.string.success));
@@ -733,9 +841,76 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 
     // TODO: This method is like 350 lines long, down from 400.
     // still. ridiculous. make it smaller.
+    
+	/**
+     * Uploads to urlString the submission identified by id with filepath of instance
+     * @param urlString destination URL
+     * @param id
+     * @param instanceFilePath
+     * @param toUpdate - Instance URL for recording status update.
+     * @param httpclient - client connection
+     * @param localContext - context (e.g., credentials, cookies) for client connection
+     * @param uriRemap - mapping of Uris to avoid redirects on subsequent invocations
+     * @return false if credentials are required and we should terminate immediately.
+     */
+    private boolean uploadOneSMS(String urlString, String id, String instanceFilePath,
+    			Uri toUpdate, HttpContext localContext, Map<Uri, Uri> uriRemap, Outcome outcome) {
+
+    	Collect.getInstance().getActivityLogger().logAction(this, urlString, instanceFilePath);
+
+        File instanceFile = new File(instanceFilePath);
+        // Uri u = Uri.parse(urlString);
+
+        org.apache.http.client.HttpClient httpClient = new DefaultHttpClient();
+        org.apache.http.client.methods.HttpPost httpPost = new org.apache.http.client.methods.HttpPost(urlString);
+
+        Long timestamp = System.currentTimeMillis();
+        String message = "";
+        String from = "+14165558888";
+        try {
+			message = getFileContents(instanceFile);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+      //Post Data
+        List<org.apache.http.NameValuePair> nameValuePair = new ArrayList<org.apache.http.NameValuePair>(2);
+        nameValuePair.add(new org.apache.http.message.BasicNameValuePair("message_id", "999999"));
+        nameValuePair.add(new org.apache.http.message.BasicNameValuePair("sent_timestamp", timestamp.toString()));
+        nameValuePair.add(new org.apache.http.message.BasicNameValuePair("message", message));
+        nameValuePair.add(new org.apache.http.message.BasicNameValuePair("from", from));
+ 
+      //Encoding POST data
+        try {
+        	httpPost.setEntity(new org.apache.http.client.entity.UrlEncodedFormEntity(nameValuePair));
+        } catch (UnsupportedEncodingException e) {
+            // log exception
+            e.printStackTrace();
+        }
+ 
+        //making POST request.
+        try {
+        	org.apache.http.HttpResponse response = httpClient.execute(httpPost);
+            // write response to log
+            Log.d("Http Post Response:", response.toString());
+        } catch (ClientProtocolException e) {
+            // Log exception
+            e.printStackTrace();
+        } catch (IOException e) {
+            // Log exception
+            e.printStackTrace();
+        }
+        
+        return true;
+    }
+
     protected Outcome doInBackground(Object... params) {
-    	String uploadMethod = (String) params[0];
-        Long[] values = (Long[]) params[1];
+    	String uploadMethod = null;
+    	if (params[0] != null) {	// protect against converting null
+    		uploadMethod = (String) params[0];
+    	}
+    	Long[] values = (Long[]) params[1];
     	
     	Outcome outcome = new Outcome();
 
@@ -756,6 +931,8 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         // get shared HttpContext so that authentication and cookies are retained.
         HttpContext localContext = Collect.getInstance().getHttpContext();
 
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+
         Map<Uri, Uri> uriRemap = new HashMap<Uri, Uri>();
 
         Cursor c = null;
@@ -774,8 +951,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	                String id = c.getString(c.getColumnIndex(InstanceColumns._ID));
 	                Uri toUpdate = Uri.withAppendedPath(InstanceColumns.CONTENT_URI, id);
 
-	                if(uploadMethod.equals(FormEntryActivity.KEY_UPLOAD_METHOD_SMS)) {
-		                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+	                if(uploadMethod != null && uploadMethod.equals(FormEntryActivity.KEY_UPLOAD_METHOD_SMS)) {
 		                String gateway = settings.getString(PreferencesActivity.KEY_SMS_GATEWAY,
 		                    				Collect.getInstance().getString(R.string.default_sms_gateway));
 		                		                
@@ -792,8 +968,6 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 		                int subIdx = c.getColumnIndex(InstanceColumns.SUBMISSION_URI);
 		                String urlString = c.isNull(subIdx) ? null : c.getString(subIdx);
 		                if (urlString == null) {
-		                    SharedPreferences settings =
-		                        PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
 		                    urlString = settings.getString(PreferencesActivity.KEY_SERVER_URL,
 		                    				Collect.getInstance().getString(R.string.default_server_url));
 		                    if ( urlString.charAt(urlString.length()-1) == '/') {
@@ -816,7 +990,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 						} catch (UnsupportedEncodingException e) {
 							// unreachable...
 						}
-	
+		                	
 		                if ( !uploadOneSubmission(urlString, id, instance, toUpdate, localContext, uriRemap, outcome) ) {
 		                	return outcome; // get credentials...
 		                }

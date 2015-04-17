@@ -98,6 +98,9 @@ public final class WebUtils {
 		// allow digest auth on any port...
 		a = new AuthScope(host, -1, null, AuthPolicy.DIGEST);
 		asList.add(a);
+		// allow basic auth on any port, despite security concerns. digest not working in CouchDB
+		a = new AuthScope(host, -1, null, AuthPolicy.BASIC);
+		asList.add(a);
 		// and allow basic auth on the standard TLS/SSL ports...
 		a = new AuthScope(host, 443, null, AuthPolicy.BASIC);
 		asList.add(a);

@@ -76,10 +76,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
   // AGGREGATE SPECIFIC
   public static final String KEY_SERVER_URL = "server_url";
-  
-  // SMS SPECIFIC
-  public static final String KEY_SMS_GATEWAY= "sms_gateway";
-
+    
   // GME SPECIFIC
   public static final String KEY_GME_PROJECT_ID = "gme_project_id";
   public static final String KEY_GME_ID_HASHMAP = "gme_id_hashmap";
@@ -87,6 +84,11 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
   // OTHER SPECIFIC
   public static final String KEY_FORMLIST_URL = "formlist_url";
   public static final String KEY_SUBMISSION_URL = "submission_url";
+
+  // MEDIC MOBILE SPECIFIC
+  public static final String KEY_SMS_GATEWAY = "sms_gateway";
+  public static final String KEY_SMS_UPLOAD = "sms_upload";
+  public static final String KEY_OWN_PHONE_NUMBER = "own_phone_number";
 
   public static final String NAVIGATION_SWIPE = "swipe";
   public static final String NAVIGATION_BUTTONS = "buttons";
@@ -146,7 +148,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
     mAutosendWifiPreference = (CheckBoxPreference) findPreference(KEY_AUTOSEND_WIFI);
     mAutosendNetworkPreference = (CheckBoxPreference) findPreference(KEY_AUTOSEND_NETWORK);
     PreferenceCategory serverCategory = (PreferenceCategory) findPreference(getString(R.string.server_preferences));
-
+    
     mProtocolPreference = (ListPreference) findPreference(KEY_PROTOCOL);
 
     mSelectedGoogleAccountPreference = (ListPreference) findPreference(KEY_SELECTED_GOOGLE_ACCOUNT);

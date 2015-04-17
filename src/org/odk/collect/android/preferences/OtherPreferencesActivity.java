@@ -18,6 +18,7 @@ import org.odk.collect.android.R;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -34,6 +35,9 @@ public class OtherPreferencesActivity extends AggregatePreferencesActivity
 
 	protected EditTextPreference mSubmissionUrlPreference;
 	protected EditTextPreference mFormListUrlPreference;
+	protected EditTextPreference mSmsGatewayPreference;
+	protected EditTextPreference mOwnPhoneNumberPreference;
+	protected CheckBoxPreference mSmsUploadPreference;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,9 @@ public class OtherPreferencesActivity extends AggregatePreferencesActivity
 
 		mFormListUrlPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_FORMLIST_URL);
 		mSubmissionUrlPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_SUBMISSION_URL);
+		mSmsGatewayPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_SMS_GATEWAY);
+		mOwnPhoneNumberPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_OWN_PHONE_NUMBER);
+		mSmsUploadPreference = (CheckBoxPreference) findPreference(PreferencesActivity.KEY_SMS_UPLOAD);
 
 		PreferenceCategory otherPreferences = (PreferenceCategory) findPreference(getString(R.string.other_preferences));
 
@@ -58,6 +65,13 @@ public class OtherPreferencesActivity extends AggregatePreferencesActivity
 		mSubmissionUrlPreference.setSummary(mSubmissionUrlPreference.getText());
 		mServerUrlPreference.getEditText().setFilters(
 				new InputFilter[] { getReturnFilter(), getWhitespaceFilter() });
+
+		mSmsGatewayPreference.setOnPreferenceChangeListener(this);
+		mSmsGatewayPreference.setSummary(mSmsGatewayPreference.getText());
+		
+		mOwnPhoneNumberPreference.setOnPreferenceChangeListener(this);
+		mOwnPhoneNumberPreference.setSummary(mOwnPhoneNumberPreference.getText());
+		
 	}
 
 	/**

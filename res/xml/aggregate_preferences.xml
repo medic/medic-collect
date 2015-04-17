@@ -22,12 +22,6 @@
             android:inputType="textNoSuggestions"
             android:key="password"
             android:title="@string/password" />
-        <EditTextPreference
-            android:id="@+id/sms_gateway"
-            android:dialogTitle="@string/change_sms_gateway"
-            android:inputType="phone"
-            android:key="sms_gateway"
-            android:title="@string/sms_gateway" />
     </PreferenceCategory>
    
 </PreferenceScreen>

@@ -15,7 +15,7 @@
     <string translatable="false" name="protocol_other">other_protocol</string>
 	<string translatable="false" name="default_server_url">https://opendatakit.appspot.com</string>
 	<string translatable="false" name="default_sms_gateway"></string>
-	<string translatable="false" name="default_odk_formlist">/formList</string>
-	<string translatable="false" name="default_odk_submission">/submission</string>
-    <item name="mapview" type="id"/>
+	<string translatable="false" name="default_odk_formlist">/medic/_design/medic/_rewrite/formList</string>
+	<string translatable="false" name="default_odk_submission">/medic/_design/medic/_rewrite/add</string>
+	<item name="mapview" type="id"/>
 </resources>
