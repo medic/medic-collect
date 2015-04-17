@@ -338,6 +338,75 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	}
 
 	/**
+     * Determine whether the SMS should be used as the payload
+     * @return true if the payload should be the SMS file contents.
+     * @author Marc Abbyad (marc@medicmobile.org)
+     */
+    private boolean isUploadPayloadSms(){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        String protocol = settings.getString(PreferencesActivity.KEY_PROTOCOL, 
+				Collect.getInstance().getString(R.string.protocol_odk_default));
+        
+        // Use SMS file as payload only if Plaform is "Other" and "Upload SMS payload" is selected
+        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_other)) 
+        		&& settings.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, false))
+        {
+            return true;
+        }
+        return false;
+    }
+    
+	/**
+     * Prepares the SMS payload to be uploaded
+     * @param httppost
+     * @param instanceSmsFile - file whose contents are to be uploaded
+     * @param errorMessage - response message
+     * @return false if the payload was not successfully created.
+     * @author Marc Abbyad (marc@medicmobile.org)
+     */
+    private boolean prepareSmsPayload(HttpPost httppost, File instanceSmsFile, StringBuilder errorMessage) {
+    	
+
+        Long timestamp = System.currentTimeMillis();
+        String message = "";
+        String from = PreferenceManager.getDefaultSharedPreferences(
+        					Collect.getInstance()).getString(PreferencesActivity.KEY_OWN_PHONE_NUMBER, 
+        					"" );
+
+        if (from.trim() == "") {
+        	errorMessage.append("Missing 'Own phone number' in 'Configure platform settings'");
+        	return false;
+        }
+        try {
+			message = getFileContents(instanceSmsFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+            Log.e(t, e.toString());
+            errorMessage.append("Form File Not Found: " + instanceSmsFile.toString());
+            return false;
+		}
+        
+        try {
+            //Post Data
+            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
+        	nameValuePair.add(new BasicNameValuePair("message_id", "999999"));
+        	nameValuePair.add(new BasicNameValuePair("sent_timestamp", timestamp.toString()));
+        	nameValuePair.add(new BasicNameValuePair("message", message));
+        	nameValuePair.add(new BasicNameValuePair("from", from));
+
+            //Encoding POST data
+        	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+
+        } catch (UnsupportedEncodingException e) {
+            // log exception
+            e.printStackTrace();
+            Log.e(t, e.toString());
+            errorMessage.append("Failed to create post data");
+            return false;
+        }
+        return true;
+    }
+	/**
      * Uploads to urlString the submission identified by id with filepath of instance
      * @param urlString destination URL
      * @param id
@@ -357,19 +426,27 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         ContentValues cv = new ContentValues();
         Uri u = Uri.parse(urlString);
         HttpClient httpclient = WebUtils.createHttpClient(CONNECTION_TIMEOUT);
+        HttpPost httppost = WebUtils.createOpenRosaHttpPost(u);
 
         // check if we should upload SMS or the default XML
         Boolean uploadSMS = false;
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
-        String protocol = settings.getString(PreferencesActivity.KEY_PROTOCOL, 
-				Collect.getInstance().getString(R.string.protocol_odk_default));
-        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_other)) 
-        		&& settings.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, false))
-        {
+        if (isUploadPayloadSms()) {
         	uploadSMS = true;
-        }
-    	Collect.getInstance().getActivityLogger().logAction(this, urlString, "Uploading SMS: " + uploadSMS);
 
+        	// check and prepare the data for upload
+        	StringBuilder errorMsg = new StringBuilder();
+        	if (!prepareSmsPayload(httppost, new File(instanceFile + ".txt"), errorMsg))
+        	{
+    			Log.d(t, errorMsg.toString());
+                WebUtils.clearHttpConnectionManager();
+                outcome.mResults.put(id, fail + errorMsg);
+                cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+                Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
+                return true;
+        	}
+        	Collect.getInstance().getActivityLogger().logAction(this, urlString, "Payload prepared for SMS upload");
+        }
+        
         boolean openRosaServer = false;
         if (uriRemap.containsKey(u)) {
             // we already issued a head request and got a response,
@@ -389,7 +466,6 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 
             // if https then enable preemptive basic auth...
             if ( u.getScheme() != null && u.getScheme().equals("https") ) {
-        	// if ( true ) { // Possible security risk: Do preemptive basic auth even if not https. Otherwise thread crashes 
             	WebUtils.enablePreemptiveBasicAuth(localContext, u.getHost());
             }
 
@@ -530,55 +606,10 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         // cookiestore (referenced by localContext) that will enable
         // authenticated publication to the server.
         //
-        
-        HttpPost httppost = null;
-        
+          
         if (uploadSMS) {
-        	// File instanceSmsFile = new File(instanceFile.getName().substring(0, instanceFile.getName().lastIndexOf(".")) + ".txt");
-        	File instanceSmsFile = new File(instanceFile + ".txt");
-        	
-            httppost = WebUtils.createOpenRosaHttpPost(u);
-
-            Long timestamp = System.currentTimeMillis();
-            String message = "";
-            String from = PreferenceManager.getDefaultSharedPreferences(
-            					Collect.getInstance()).getString(PreferencesActivity.KEY_OWN_PHONE_NUMBER, 
-            					"" );
-            try {
-    			message = getFileContents(instanceSmsFile);
-    		} catch (IOException e) {
-    			e.printStackTrace();
-                Log.e(t, e.toString());
-                WebUtils.clearHttpConnectionManager();
-                outcome.mResults.put(id, fail + "Form File Not Found: " + instanceSmsFile.toString());
-                cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
-                Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
-                return true;
-    		}
-            
-            try {
-                //Post Data
-                List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-            	nameValuePair.add(new BasicNameValuePair("message_id", "999999"));
-            	nameValuePair.add(new BasicNameValuePair("sent_timestamp", timestamp.toString()));
-            	nameValuePair.add(new BasicNameValuePair("message", message));
-            	nameValuePair.add(new BasicNameValuePair("from", from));
-	
-	            //Encoding POST data
-            	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair));
-
-            } catch (UnsupportedEncodingException e) {
-                // log exception
-                e.printStackTrace();
-                Log.e(t, e.toString());
-                WebUtils.clearHttpConnectionManager();
-                outcome.mResults.put(id, fail + "Failed To Create Post Data");
-                cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
-                Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
-                return true;
-            }
-     
-            //making POST request. // TODO: Error reporting in line with ODK Collect
+        	     
+            //making POST request
             try {
             	HttpResponse response = httpclient.execute(httppost, localContext);
                 // write response to log
@@ -619,217 +650,217 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	        }        	
         }
         else {
-        // get instance file
-
-        // Under normal operations, we upload the instanceFile to
-        // the server.  However, during the save, there is a failure
-        // window that may mark the submission as complete but leave
-        // the file-to-be-uploaded with the name "submission.xml" and
-        // the plaintext submission files on disk.  In this case,
-        // upload the submission.xml and all the files in the directory.
-        // This means the plaintext files and the encrypted files
-        // will be sent to the server and the server will have to
-        // figure out what to do with them.
-        File submissionFile = new File(instanceFile.getParentFile(), "submission.xml");
-        if ( submissionFile.exists() ) {
-            Log.w(t, "submission.xml will be uploaded instead of " + instanceFile.getAbsolutePath());
-        } else {
-            submissionFile = instanceFile;
-        }
-
-        if (!instanceFile.exists() && !submissionFile.exists()) {
-        	outcome.mResults.put(id, fail + "instance XML file does not exist!");
-            cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
-            Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
-            return true;
-        }
-
-        // find all files in parent directory
-        File[] allFiles = instanceFile.getParentFile().listFiles();
-
-        // add media files
-        List<File> files = new ArrayList<File>();
-        for (File f : allFiles) {
-            String fileName = f.getName();
-
-            int dotIndex = fileName.lastIndexOf(".");
-            String extension = "";
-            if (dotIndex != -1) {
-                extension = fileName.substring(dotIndex + 1);
-            }
-
-            if (fileName.startsWith(".")) {
-                // ignore invisible files
-                continue;
-            }
-            if (fileName.equals(instanceFile.getName())) {
-                continue; // the xml file has already been added
-            } else if (fileName.equals(submissionFile.getName())) {
-                continue; // the xml file has already been added
-            } else if (openRosaServer) {
-                files.add(f);
-            } else if (extension.equals("jpg")) { // legacy 0.9x
-                files.add(f);
-            } else if (extension.equals("3gpp")) { // legacy 0.9x
-                files.add(f);
-            } else if (extension.equals("3gp")) { // legacy 0.9x
-                files.add(f);
-            } else if (extension.equals("mp4")) { // legacy 0.9x
-                files.add(f);
-            } else {
-                Log.w(t, "unrecognized file type " + f.getName());
-            }
-        }
-
-        boolean first = true;
-        int j = 0;
-        int lastJ;
-        while (j < files.size() || first) {
-        	lastJ = j;
-            first = false;
-
-            httppost = WebUtils.createOpenRosaHttpPost(u);
-
-            MimeTypeMap m = MimeTypeMap.getSingleton();
-
-            long byteCount = 0L;
-
-            // mime post
-            MultipartEntity entity = new MultipartEntity();
-
-            // add the submission file first...
-            FileBody fb = new FileBody(submissionFile, "text/xml");
-            entity.addPart("xml_submission_file", fb);
-            Log.i(t, "added xml_submission_file: " + submissionFile.getName());
-            byteCount += submissionFile.length();
-
-            for (; j < files.size(); j++) {
-                File f = files.get(j);
-                String fileName = f.getName();
-                int idx = fileName.lastIndexOf(".");
-                String extension = "";
-                if (idx != -1) {
-                    extension = fileName.substring(idx + 1);
-                }
-                String contentType = m.getMimeTypeFromExtension(extension);
-
-                // we will be processing every one of these, so
-                // we only need to deal with the content type determination...
-                if (extension.equals("xml")) {
-                    fb = new FileBody(f, "text/xml");
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.i(t, "added xml file " + f.getName());
-                } else if (extension.equals("jpg")) {
-                    fb = new FileBody(f, "image/jpeg");
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.i(t, "added image file " + f.getName());
-                } else if (extension.equals("3gpp")) {
-                    fb = new FileBody(f, "audio/3gpp");
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.i(t, "added audio file " + f.getName());
-                } else if (extension.equals("3gp")) {
-                    fb = new FileBody(f, "video/3gpp");
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.i(t, "added video file " + f.getName());
-                } else if (extension.equals("mp4")) {
-                    fb = new FileBody(f, "video/mp4");
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.i(t, "added video file " + f.getName());
-                } else if (extension.equals("csv")) {
-                    fb = new FileBody(f, "text/csv");
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.i(t, "added csv file " + f.getName());
-                } else if (f.getName().endsWith(".amr")) {
-                    fb = new FileBody(f, "audio/amr");
-                    entity.addPart(f.getName(), fb);
-                    Log.i(t, "added audio file " + f.getName());
-                } else if (extension.equals("xls")) {
-                    fb = new FileBody(f, "application/vnd.ms-excel");
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.i(t, "added xls file " + f.getName());
-                } else if (contentType != null) {
-                    fb = new FileBody(f, contentType);
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.i(t,
-                        "added recognized filetype (" + contentType + ") " + f.getName());
-                } else {
-                    contentType = "application/octet-stream";
-                    fb = new FileBody(f, contentType);
-                    entity.addPart(f.getName(), fb);
-                    byteCount += f.length();
-                    Log.w(t, "added unrecognized file (" + contentType + ") " + f.getName());
-                }
-
-                // we've added at least one attachment to the request...
-                if (j + 1 < files.size()) {
-                    if ((j-lastJ+1 > 100) || (byteCount + files.get(j + 1).length() > 10000000L)) {
-                        // the next file would exceed the 10MB threshold...
-                        Log.i(t, "Extremely long post is being split into multiple posts");
-                        try {
-                            StringBody sb = new StringBody("yes", Charset.forName("UTF-8"));
-                            entity.addPart("*isIncomplete*", sb);
-                        } catch (Exception e) {
-                            e.printStackTrace(); // never happens...
-                        }
-                        ++j; // advance over the last attachment added...
-                        break;
-                    }
-                }
-            }
-
-            httppost.setEntity(entity);
-        
-            // prepare response and return uploaded
-            HttpResponse response = null;
-            try {
-                Log.i(t, "Issuing POST request for " + id + " to: " + u.toString());
-                response = httpclient.execute(httppost, localContext);
-                int responseCode = response.getStatusLine().getStatusCode();
-                WebUtils.discardEntityBytes(response);
-
-                Log.i(t, "Response code:" + responseCode);
-                // verify that the response was a 201 or 202.
-                // If it wasn't, the submission has failed.
-                if (responseCode != HttpStatus.SC_CREATED && responseCode != HttpStatus.SC_ACCEPTED) {
-                    if (responseCode == HttpStatus.SC_OK) {
-                    	outcome.mResults.put(id, fail + "Network login failure? Again?");
-                    } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
-                		// clear the cookies -- should not be necessary?
-                    	Collect.getInstance().getCookieStore().clear();
-                    	outcome.mResults.put(id, fail + response.getStatusLine().getReasonPhrase()
-                                + " (" + responseCode + ") at " + urlString);
-                    } else {
-                    	outcome.mResults.put(id, fail + response.getStatusLine().getReasonPhrase()
-                                + " (" + responseCode + ") at " + urlString);
-                    }
-                    cv.put(InstanceColumns.STATUS,
-                        InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
-                    Collect.getInstance().getContentResolver()
-                            .update(toUpdate, cv, null, null);
-                    return true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(t, e.toString());
-                WebUtils.clearHttpConnectionManager();
-                String msg = e.getMessage();
-                if (msg == null) {
-                    msg = e.toString();
-                }
-                outcome.mResults.put(id, fail + "Generic Exception: " + msg);
-                cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
-                Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
-                return true;
-            }
-        }
+	        // get instance file
+	
+	        // Under normal operations, we upload the instanceFile to
+	        // the server.  However, during the save, there is a failure
+	        // window that may mark the submission as complete but leave
+	        // the file-to-be-uploaded with the name "submission.xml" and
+	        // the plaintext submission files on disk.  In this case,
+	        // upload the submission.xml and all the files in the directory.
+	        // This means the plaintext files and the encrypted files
+	        // will be sent to the server and the server will have to
+	        // figure out what to do with them.
+	        File submissionFile = new File(instanceFile.getParentFile(), "submission.xml");
+	        if ( submissionFile.exists() ) {
+	            Log.w(t, "submission.xml will be uploaded instead of " + instanceFile.getAbsolutePath());
+	        } else {
+	            submissionFile = instanceFile;
+	        }
+	
+	        if (!instanceFile.exists() && !submissionFile.exists()) {
+	        	outcome.mResults.put(id, fail + "instance XML file does not exist!");
+	            cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+	            Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
+	            return true;
+	        }
+	
+	        // find all files in parent directory
+	        File[] allFiles = instanceFile.getParentFile().listFiles();
+	
+	        // add media files
+	        List<File> files = new ArrayList<File>();
+	        for (File f : allFiles) {
+	            String fileName = f.getName();
+	
+	            int dotIndex = fileName.lastIndexOf(".");
+	            String extension = "";
+	            if (dotIndex != -1) {
+	                extension = fileName.substring(dotIndex + 1);
+	            }
+	
+	            if (fileName.startsWith(".")) {
+	                // ignore invisible files
+	                continue;
+	            }
+	            if (fileName.equals(instanceFile.getName())) {
+	                continue; // the xml file has already been added
+	            } else if (fileName.equals(submissionFile.getName())) {
+	                continue; // the xml file has already been added
+	            } else if (openRosaServer) {
+	                files.add(f);
+	            } else if (extension.equals("jpg")) { // legacy 0.9x
+	                files.add(f);
+	            } else if (extension.equals("3gpp")) { // legacy 0.9x
+	                files.add(f);
+	            } else if (extension.equals("3gp")) { // legacy 0.9x
+	                files.add(f);
+	            } else if (extension.equals("mp4")) { // legacy 0.9x
+	                files.add(f);
+	            } else {
+	                Log.w(t, "unrecognized file type " + f.getName());
+	            }
+	        }
+	
+	        boolean first = true;
+	        int j = 0;
+	        int lastJ;
+	        while (j < files.size() || first) {
+	        	lastJ = j;
+	            first = false;
+	
+	            httppost = WebUtils.createOpenRosaHttpPost(u);
+	
+	            MimeTypeMap m = MimeTypeMap.getSingleton();
+	
+	            long byteCount = 0L;
+	
+	            // mime post
+	            MultipartEntity entity = new MultipartEntity();
+	
+	            // add the submission file first...
+	            FileBody fb = new FileBody(submissionFile, "text/xml");
+	            entity.addPart("xml_submission_file", fb);
+	            Log.i(t, "added xml_submission_file: " + submissionFile.getName());
+	            byteCount += submissionFile.length();
+	
+	            for (; j < files.size(); j++) {
+	                File f = files.get(j);
+	                String fileName = f.getName();
+	                int idx = fileName.lastIndexOf(".");
+	                String extension = "";
+	                if (idx != -1) {
+	                    extension = fileName.substring(idx + 1);
+	                }
+	                String contentType = m.getMimeTypeFromExtension(extension);
+	
+	                // we will be processing every one of these, so
+	                // we only need to deal with the content type determination...
+	                if (extension.equals("xml")) {
+	                    fb = new FileBody(f, "text/xml");
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.i(t, "added xml file " + f.getName());
+	                } else if (extension.equals("jpg")) {
+	                    fb = new FileBody(f, "image/jpeg");
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.i(t, "added image file " + f.getName());
+	                } else if (extension.equals("3gpp")) {
+	                    fb = new FileBody(f, "audio/3gpp");
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.i(t, "added audio file " + f.getName());
+	                } else if (extension.equals("3gp")) {
+	                    fb = new FileBody(f, "video/3gpp");
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.i(t, "added video file " + f.getName());
+	                } else if (extension.equals("mp4")) {
+	                    fb = new FileBody(f, "video/mp4");
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.i(t, "added video file " + f.getName());
+	                } else if (extension.equals("csv")) {
+	                    fb = new FileBody(f, "text/csv");
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.i(t, "added csv file " + f.getName());
+	                } else if (f.getName().endsWith(".amr")) {
+	                    fb = new FileBody(f, "audio/amr");
+	                    entity.addPart(f.getName(), fb);
+	                    Log.i(t, "added audio file " + f.getName());
+	                } else if (extension.equals("xls")) {
+	                    fb = new FileBody(f, "application/vnd.ms-excel");
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.i(t, "added xls file " + f.getName());
+	                } else if (contentType != null) {
+	                    fb = new FileBody(f, contentType);
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.i(t,
+	                        "added recognized filetype (" + contentType + ") " + f.getName());
+	                } else {
+	                    contentType = "application/octet-stream";
+	                    fb = new FileBody(f, contentType);
+	                    entity.addPart(f.getName(), fb);
+	                    byteCount += f.length();
+	                    Log.w(t, "added unrecognized file (" + contentType + ") " + f.getName());
+	                }
+	
+	                // we've added at least one attachment to the request...
+	                if (j + 1 < files.size()) {
+	                    if ((j-lastJ+1 > 100) || (byteCount + files.get(j + 1).length() > 10000000L)) {
+	                        // the next file would exceed the 10MB threshold...
+	                        Log.i(t, "Extremely long post is being split into multiple posts");
+	                        try {
+	                            StringBody sb = new StringBody("yes", Charset.forName("UTF-8"));
+	                            entity.addPart("*isIncomplete*", sb);
+	                        } catch (Exception e) {
+	                            e.printStackTrace(); // never happens...
+	                        }
+	                        ++j; // advance over the last attachment added...
+	                        break;
+	                    }
+	                }
+	            }
+	
+	            httppost.setEntity(entity);
+	        
+	            // prepare response and return uploaded
+	            HttpResponse response = null;
+	            try {
+	                Log.i(t, "Issuing POST request for " + id + " to: " + u.toString());
+	                response = httpclient.execute(httppost, localContext);
+	                int responseCode = response.getStatusLine().getStatusCode();
+	                WebUtils.discardEntityBytes(response);
+	
+	                Log.i(t, "Response code:" + responseCode);
+	                // verify that the response was a 201 or 202.
+	                // If it wasn't, the submission has failed.
+	                if (responseCode != HttpStatus.SC_CREATED && responseCode != HttpStatus.SC_ACCEPTED) {
+	                    if (responseCode == HttpStatus.SC_OK) {
+	                    	outcome.mResults.put(id, fail + "Network login failure? Again?");
+	                    } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
+	                		// clear the cookies -- should not be necessary?
+	                    	Collect.getInstance().getCookieStore().clear();
+	                    	outcome.mResults.put(id, fail + response.getStatusLine().getReasonPhrase()
+	                                + " (" + responseCode + ") at " + urlString);
+	                    } else {
+	                    	outcome.mResults.put(id, fail + response.getStatusLine().getReasonPhrase()
+	                                + " (" + responseCode + ") at " + urlString);
+	                    }
+	                    cv.put(InstanceColumns.STATUS,
+	                        InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+	                    Collect.getInstance().getContentResolver()
+	                            .update(toUpdate, cv, null, null);
+	                    return true;
+	                }
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                Log.e(t, e.toString());
+	                WebUtils.clearHttpConnectionManager();
+	                String msg = e.getMessage();
+	                if (msg == null) {
+	                    msg = e.toString();
+	                }
+	                outcome.mResults.put(id, fail + "Generic Exception: " + msg);
+	                cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
+	                Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
+	                return true;
+	            }
+	        }
         }
 
         // if it got here, it must have worked
