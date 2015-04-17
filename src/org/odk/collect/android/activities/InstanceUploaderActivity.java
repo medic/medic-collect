@@ -343,7 +343,7 @@ public class InstanceUploaderActivity extends Activity implements InstanceUpload
                         // register this activity with the new uploader task
                         mInstanceUploaderTask.setUploaderListener(InstanceUploaderActivity.this);
 
-                        mInstanceUploaderTask.execute(mInstancesToSend);
+                        mInstanceUploaderTask.execute(FormEntryActivity.KEY_UPLOAD_METHOD_HTTP, mInstancesToSend);
                     }
                 });
                 b.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
