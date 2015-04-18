@@ -1,0 +1,51 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <h:title>Registration with LMP</h:title>
+    <model>
+      <instance>
+        <data id="PregnancyRegistration" prefix="J1!P!" delimiter="#">
+          <meta>
+            <instanceID/>
+          </meta>
+          <LMP tag="LMP"/>
+          <Name tag="N"/>
+        </data>
+      </instance>
+      <itext>
+        <translation lang="eng">
+          <text id="/data/LMP:label">
+            <value>Last Menstral Period</value>
+          </text>
+          <text id="/data/LMP:hint">
+            <value>Number of weeks since LMP</value>
+          </text>
+          <text id="/data/LMP:constraintMsg">
+            <value>Last Menstral Period</value>
+          </text>
+          <text id="/data/Name:label">
+            <value>Pregnant woman's name</value>
+          </text>
+          <text id="/data/Name:hint">
+            <value>Use the full name</value>
+          </text>
+          <text id="/data/Name:constraintMsg">
+            <value>Pregnant woman's name</value>
+          </text>
+        </translation>
+      </itext>
+      <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" calculate="concat('uuid:', uuid())"/>
+      <bind nodeset="/data/LMP" type="int" required="true()" constraint="(. &gt;= '0' and . &lt;= '40')" jr:constraintMsg="jr:itext('/data/LMP:constraintMsg')"/>
+      <bind nodeset="/data/Name" type="string" required="true()" constraint="(regex(., &quot;^.{1,64}$&quot;))" jr:constraintMsg="jr:itext('/data/Name:constraintMsg')"/>
+    </model>
+  </h:head>
+  <h:body>
+    <input ref="/data/LMP">
+      <label ref="jr:itext('/data/LMP:label')"/>
+      <hint ref="jr:itext('/data/LMP:hint')"/>
+    </input>
+    <input ref="/data/Name">
+      <label ref="jr:itext('/data/Name:label')"/>
+      <hint ref="jr:itext('/data/Name:hint')"/>
+    </input>
+  </h:body>
+</h:html>
