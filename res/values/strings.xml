@@ -196,6 +196,7 @@
 <string name="selected_google_account_text">Google account</string>
 <string name="server_platform_odk_aggregate">ODK Aggregate</string>
 <string name="server_platform_google_forms">Google Forms</string>
+<string name="server_platform_medic_mobile">Medic Mobile</string>
 <string name="server_platform_other">Other</string>
 <string name="font_size_extra_large">Extra Large</string>
 <string name="font_size_large">Large</string>
@@ -318,7 +319,8 @@
 <string name="go_shared">Shared with Me</string>
 <string name="modified_on_date_at_time">\'Modified on\' EEE, MMM dd, yyyy \'at\' HH:mm</string>
 <string name="protocol_settings">Configure platform settings</string>
-<string name="aggregate_preferences">ODK Aggregate settings</string>
+<string name="aggregate_preferences">Server settings</string>
+<string name="medic_mobile_preferences">Medic Mobile settings</string>
 <string name="other_preferences">Other platform settings</string>
 <string name="gme_preferences">Google Maps Engine settings</string>
 <string name="no_coordinates">Instance has no coordinates. Unable to upload.</string>

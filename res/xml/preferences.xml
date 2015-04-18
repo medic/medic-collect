@@ -15,7 +15,7 @@
         android:title="@string/server_preferences" >
         <ListPreference
             android:id="@+id/protocol"
-            android:defaultValue="odk_default"
+            android:defaultValue="medic_mobile_protocol"
             android:dialogTitle="@string/change_protocol"
             android:entries="@array/protocol_entries"
             android:entryValues="@array/protocol_entry_values"
@@ -31,12 +31,14 @@
             android:title="@string/selected_google_account_text" />
         <EditTextPreference
             android:id="@+id/username"
+            android:defaultValue="@string/default_username"
             android:dialogTitle="@string/change_username"
             android:inputType="textNoSuggestions"
             android:key="username"
             android:title="@string/username" />
         <EditTextPreference
             android:id="@+id/password"
+            android:defaultValue="@string/default_password"
             android:dialogTitle="@string/change_password"
             android:inputType="textNoSuggestions"
             android:key="password"

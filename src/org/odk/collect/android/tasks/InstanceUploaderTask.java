@@ -348,7 +348,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 				Collect.getInstance().getString(R.string.protocol_odk_default));
         
         // Use SMS file as payload only if Plaform is "Other" and "Upload SMS payload" is selected
-        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_other)) 
+        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_medic_mobile)) 
         		&& settings.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, false))
         {
             return true;
