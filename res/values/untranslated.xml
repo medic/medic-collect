@@ -17,6 +17,7 @@
 	<string translatable="false" name="default_server_url">https://alpha.dev.medicmobile.org</string>
 	<string translatable="false" name="default_sms_gateway"></string>
 	<string translatable="false" name="default_own_phone_number"></string>
+	<bool translatable="false" name="default_upload_sms">true</bool>
 	<string translatable="false" name="default_odk_formlist">/medic/_design/medic/_rewrite/formList</string>
 	<string translatable="false" name="default_odk_submission">/medic/_design/medic/_rewrite/add</string>
 	<string translatable="false" name="default_username">demo</string>

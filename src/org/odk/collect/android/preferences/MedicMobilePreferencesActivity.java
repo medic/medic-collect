@@ -15,6 +15,7 @@
 package org.odk.collect.android.preferences;
 
 import org.odk.collect.android.R;
+import org.odk.collect.android.application.Collect;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class MedicMobilePreferencesActivity extends AggregatePreferencesActivity
 	protected EditTextPreference mFormListUrlPreference;
 	protected EditTextPreference mSmsGatewayPreference;
 	protected EditTextPreference mOwnPhoneNumberPreference;
-	protected CheckBoxPreference mSmsUploadPreference;
+	protected Boolean mSmsUploadPreference;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +53,8 @@ public class MedicMobilePreferencesActivity extends AggregatePreferencesActivity
 		mSubmissionUrlPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_SUBMISSION_URL);
 		mSmsGatewayPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_SMS_GATEWAY);
 		mOwnPhoneNumberPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_OWN_PHONE_NUMBER);
-		mSmsUploadPreference = (CheckBoxPreference) findPreference(PreferencesActivity.KEY_SMS_UPLOAD);
-
+		mSmsUploadPreference = adminPreferences.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, getResources().getBoolean(R.bool.default_upload_sms));
+		
 		PreferenceCategory medicMobilePreferences = (PreferenceCategory) findPreference(getString(R.string.medic_mobile_preferences));
 
 		mFormListUrlPreference.setOnPreferenceChangeListener(this);

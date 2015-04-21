@@ -22,7 +22,7 @@
             android:title="@string/own_phone_number" />        
         <CheckBoxPreference
             android:id="@+id/sms_upload"
-            android:defaultValue="true"
+            android:defaultValue="@bool/default_upload_sms"
             android:key="sms_upload"
             android:layout="?android:attr/preferenceLayoutChild"
             android:summary="@string/sms_upload_summary"
