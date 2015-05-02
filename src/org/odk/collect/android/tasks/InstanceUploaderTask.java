@@ -372,9 +372,9 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         String message = "";
         String from = PreferenceManager.getDefaultSharedPreferences(
         					Collect.getInstance()).getString(PreferencesActivity.KEY_OWN_PHONE_NUMBER, 
-        					"" );
+        							Collect.getInstance().getString(R.string.default_own_phone_number) );
 
-        if (from.trim() == "") {
+        if (from.trim().equals("")) {
         	errorMessage.append("Missing 'Own phone number' in 'Configure platform settings'");
         	return false;
         }
@@ -396,7 +396,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         	nameValuePair.add(new BasicNameValuePair("from", from));
 
             //Encoding POST data
-        	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+        	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
 
         } catch (UnsupportedEncodingException e) {
             // log exception
