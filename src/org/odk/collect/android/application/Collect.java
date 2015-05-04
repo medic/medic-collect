@@ -228,7 +228,9 @@ public class Collect extends Application {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         super.onCreate();
 
-        setAlarm();
+        if (getResources().getBoolean(R.bool.show_alarm_notifications)) {
+        	setAlarm();
+        }
 
         PropertyManager mgr = new PropertyManager(this);
 
@@ -242,22 +244,17 @@ public class Collect extends Application {
     	mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     	Intent alarmIntent = new Intent(Collect.this, AlarmReceiver.class);
     	PendingIntent pendingIntent = PendingIntent.getBroadcast( Collect.getInstance().getApplicationContext(), 0, alarmIntent, 0);
-    		
+
     	Calendar alarmStartTime = Calendar.getInstance();
 
-    	Calendar now = Calendar.getInstance();
-		alarmStartTime.set(Calendar.HOUR_OF_DAY, 10);
+		alarmStartTime.set(Calendar.HOUR_OF_DAY, getResources().getInteger(R.integer.notifications_hour));
     	alarmStartTime.set(Calendar.MINUTE, 00);
     	alarmStartTime.set(Calendar.SECOND, 0);
-    	
-    	// avoid having alarm shown on first start
-    	if(now.after(alarmStartTime)){
-    		alarmStartTime.add(Calendar.DATE, 1);
-    	}
+
     	// calculate interval manually since TimeUnit DAYS is API level 9, whereas Collect targets 7
     	mAlarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), 1*24*60*60*1000, pendingIntent);
-    	
-    	// for debugging, set it often
+
+    	/* for debugging, set it often */
     	// alarmStartTime.add(Calendar.SECOND, 10);
     	// mAlarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), 5*1000, pendingIntent);
     }
