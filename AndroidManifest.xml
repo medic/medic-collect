@@ -232,7 +232,11 @@
                 <action android:name="org.odk.collect.android.FormSaved" />
             </intent-filter>
         </receiver>
-
+		
+		<receiver android:name=".receivers.AlarmReceiver"  android:enabled="true"/>
+		
+        <service android:name=".services.AlarmService" />
+        
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBS-JQ-dnaZ_8qsbvSyr_I3rTPFd5fJsYI"/>
