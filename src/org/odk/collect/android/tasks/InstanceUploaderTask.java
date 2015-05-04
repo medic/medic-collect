@@ -348,8 +348,9 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 				Collect.getInstance().getString(R.string.protocol_odk_default));
         
         // Use SMS file as payload only if Plaform is "Other" and "Upload SMS payload" is selected
-        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_other)) 
-        		&& settings.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, false))
+        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_medic_mobile)) 
+        		&& settings.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, 
+        				Collect.getInstance().getResources().getBoolean(R.bool.default_upload_sms)))
         {
             return true;
         }
@@ -371,9 +372,9 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         String message = "";
         String from = PreferenceManager.getDefaultSharedPreferences(
         					Collect.getInstance()).getString(PreferencesActivity.KEY_OWN_PHONE_NUMBER, 
-        					"" );
+        							Collect.getInstance().getString(R.string.default_own_phone_number) );
 
-        if (from.trim() == "") {
+        if (from.trim().equals("")) {
         	errorMessage.append("Missing 'Own phone number' in 'Configure platform settings'");
         	return false;
         }
@@ -395,7 +396,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         	nameValuePair.add(new BasicNameValuePair("from", from));
 
             //Encoding POST data
-        	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+        	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
 
         } catch (UnsupportedEncodingException e) {
             // log exception

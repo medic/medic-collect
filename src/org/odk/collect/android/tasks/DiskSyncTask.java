@@ -15,6 +15,12 @@
 package org.odk.collect.android.tasks;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +34,7 @@ import org.odk.collect.android.provider.FormsProviderAPI.FormsColumns;
 import org.odk.collect.android.utilities.FileUtils;
 
 import android.content.ContentValues;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
@@ -67,6 +74,8 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
     	instance = ++counter; // roughly track the scan # we're on... logging use only
     	Log.i(t, "["+instance+"] doInBackground begins!");
     	
+        copyFormAssets();
+
     	try {
 	    	// Process everything then report what didn't work.
 	    	StringBuffer errors = new StringBuffer();
@@ -305,6 +314,66 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
         super.onPostExecute(result);
         if (mListener != null) {
             mListener.SyncComplete(result);
+        }
+    }
+    
+    // Copy forms from Assets if they are not already in storage
+    private void copyFormAssets() {
+    	
+        // Get all files from assets
+        AssetManager assetManager = Collect.getInstance().getAssets();
+        String assetsFormsPath = "forms";
+        String[] files = null;
+
+        try {
+            files = assetManager.list(assetsFormsPath);
+        } catch (IOException e) {
+            Log.e("DiskSyncTask", "Failed to get asset file list.", e);
+        }
+        for(String filename : files) {
+
+        	File outFile = new File(Collect.FORMS_PATH, filename);
+        	
+        	if (outFile.exists()) {
+            	// Do not overwrite existing file
+        		// Allows built-in forms to be updated without being overwritten
+        		continue;
+        	}
+        	
+            InputStream in = null;
+            OutputStream out = null;
+
+            try {
+              in = assetManager.open(assetsFormsPath + File.separator + filename);
+              out = new FileOutputStream(outFile);
+              copyFile(in, out);
+              Log.d("DiskSyncTask", "Copied default form to storage: " + outFile.toString());
+            } catch(IOException e) {
+                Log.e("DiskSyncTask", "Failed to copy asset file: " + filename, e);
+            }     
+            finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        // NOOP
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        // NOOP
+                    }
+                }
+            }  
+        }
+    }
+    private void copyFile(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+          out.write(buffer, 0, read);
         }
     }
 

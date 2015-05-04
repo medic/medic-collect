@@ -191,6 +191,9 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
     } else if (mProtocolPreference.getValue().equals(
         getString(R.string.protocol_google_maps_engine))) {
       prefIntent = new Intent(this, GMEPreferencesActivity.class);
+    } else if (mProtocolPreference.getValue().equals(
+        getString(R.string.protocol_medic_mobile))) {
+      prefIntent = new Intent(this, MedicMobilePreferencesActivity.class);
     } else {
       // other
       prefIntent = new Intent(this, OtherPreferencesActivity.class);
@@ -210,10 +213,12 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
         Intent prefIntent = null;
         if (value.equals(getString(R.string.protocol_odk_default))) {
-          setDefaultAggregatePaths();
+          // setDefaultAggregatePaths();
           prefIntent = new Intent(PreferencesActivity.this, AggregatePreferencesActivity.class);
         } else if (value.equals(getString(R.string.protocol_google_maps_engine))) {
           prefIntent = new Intent(PreferencesActivity.this, GMEPreferencesActivity.class);
+        } else if (value.equals(getString(R.string.protocol_medic_mobile))) {
+            prefIntent = new Intent(PreferencesActivity.this, MedicMobilePreferencesActivity.class);
         } else {
           // other
           prefIntent = new Intent(PreferencesActivity.this, OtherPreferencesActivity.class);

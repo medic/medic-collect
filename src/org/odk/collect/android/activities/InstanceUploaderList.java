@@ -158,11 +158,17 @@ public class InstanceUploaderList extends ListActivity implements
 		
 		mSMSButton = (Button) findViewById(R.id.upload_sms_button);
 		
-        // Only show the "Send as SMS" button if a SMS Gateway number is set in preferences
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        // Show "Send as SMS" button if using Medic Mobile platform AND 
+		// a SMS Gateway number is set in preferences
+		Collect instance = Collect.getInstance();
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(instance);
+
+		String protocol = mPrefs.getString(PreferencesActivity.KEY_PROTOCOL, 
+        		instance.getString(R.string.protocol_odk_default));
         
-        if (mPrefs.getString(PreferencesActivity.KEY_SMS_GATEWAY,
-				Collect.getInstance().getString(R.string.default_sms_gateway)).isEmpty()) {
+        if (!protocol.equals(instance.getString(R.string.protocol_medic_mobile)) 
+        		|| mPrefs.getString(PreferencesActivity.KEY_SMS_GATEWAY,
+    				instance.getString(R.string.default_sms_gateway)).isEmpty()) {
         	mSMSButton.setVisibility(View.GONE);
         }
         else {

@@ -15,6 +15,7 @@
 package org.odk.collect.android.preferences;
 
 import org.odk.collect.android.R;
+import org.odk.collect.android.application.Collect;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,29 +27,35 @@ import android.preference.PreferenceCategory;
 import android.text.InputFilter;
 
 /**
- * Handles 'other' specific preferences.
+ * Handles 'Medic Mobile' specific preferences.
  * 
- * @author Carl Hartung (chartung@nafundi.com)
+ * @author Marc Abbyad (marc@medicmobile.org), Carl Hartung (chartung@nafundi.com)
  */
-public class OtherPreferencesActivity extends AggregatePreferencesActivity
+public class MedicMobilePreferencesActivity extends AggregatePreferencesActivity
 		implements OnPreferenceChangeListener {
 
 	protected EditTextPreference mSubmissionUrlPreference;
 	protected EditTextPreference mFormListUrlPreference;
+	protected EditTextPreference mSmsGatewayPreference;
+	protected EditTextPreference mOwnPhoneNumberPreference;
+	protected Boolean mSmsUploadPreference;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		addPreferencesFromResource(R.xml.other_preferences);
+		addPreferencesFromResource(R.xml.medic_mobile_preferences);
 
 		SharedPreferences adminPreferences = getSharedPreferences(
 				AdminPreferencesActivity.ADMIN_PREFERENCES, 0);
 
 		mFormListUrlPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_FORMLIST_URL);
 		mSubmissionUrlPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_SUBMISSION_URL);
-
-		PreferenceCategory otherPreferences = (PreferenceCategory) findPreference(getString(R.string.other_preferences));
+		mSmsGatewayPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_SMS_GATEWAY);
+		mOwnPhoneNumberPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_OWN_PHONE_NUMBER);
+		mSmsUploadPreference = adminPreferences.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, getResources().getBoolean(R.bool.default_upload_sms));
+		
+		PreferenceCategory medicMobilePreferences = (PreferenceCategory) findPreference(getString(R.string.medic_mobile_preferences));
 
 		mFormListUrlPreference.setOnPreferenceChangeListener(this);
 		mFormListUrlPreference.setSummary(mFormListUrlPreference.getText());
@@ -60,6 +67,12 @@ public class OtherPreferencesActivity extends AggregatePreferencesActivity
 		mServerUrlPreference.getEditText().setFilters(
 				new InputFilter[] { getReturnFilter(), getWhitespaceFilter() });
 
+		mSmsGatewayPreference.setOnPreferenceChangeListener(this);
+		mSmsGatewayPreference.setSummary(mSmsGatewayPreference.getText());
+		
+		mOwnPhoneNumberPreference.setOnPreferenceChangeListener(this);
+		mOwnPhoneNumberPreference.setSummary(mOwnPhoneNumberPreference.getText());
+		
 	}
 
 	/**

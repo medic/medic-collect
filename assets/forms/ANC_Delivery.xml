@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>Delivery Report</h:title>
+    <model>
+      <instance>
+        <data id="ANC_Delivery" prefix="J1!D!" delimiter="#">
+          <delivery_code tag="Delivery Code"/>
+          <patient_id tag="ID"/>
+          <Notes tag="Notes"/>
+          <start/>
+          <end/>
+          <meta>
+            <instanceID/>
+          </meta>
+        </data>
+      </instance>
+      <bind nodeset="/data/delivery_code" required="true()" type="select1"/>
+      <bind nodeset="/data/patient_id" required="true()" type="string"/>
+      <bind nodeset="/data/Notes" required="false()" type="string"/>
+      <bind jr:preload="timestamp" jr:preloadParams="start" nodeset="/data/start" type="dateTime"/>
+      <bind jr:preload="timestamp" jr:preloadParams="end" nodeset="/data/end" type="dateTime"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/data/meta/instanceID" readonly="true()" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <select1 ref="/data/delivery_code">
+      <label>Where was the baby delivered?</label>
+      <item>
+        <label>At a Facility</label>
+        <value>F</value>
+      </item>
+      <item>
+        <label>At home with skilled birth attendant</label>
+        <value>S</value>
+      </item>
+      <item>
+        <label>At home without skilled birth attendant</label>
+        <value>NS</value>
+      </item>
+    </select1>
+    <input appearance="numbers" ref="/data/patient_id">
+      <label>Patient ID number</label>
+      <hint>This is the 5 digit number received when registering the patient</hint>
+    </input>
+    <input appearance="multiline" ref="/data/Notes">
+      <label>Notes</label>
+      <hint>Write any additional info you would like to add to this report</hint>
+    </input>
+  </h:body>
+</h:html>

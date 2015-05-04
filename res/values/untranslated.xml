@@ -12,10 +12,16 @@
 	<string translatable="false" name="protocol_odk_default">odk_default</string>
 	<string translatable="false" name="protocol_google_maps_engine">google_maps_engine</string>
     <string translatable="false" name="default_form_processing_logic">-1</string>
+    <string translatable="false" name="protocol_medic_mobile">medic_mobile_protocol</string>
     <string translatable="false" name="protocol_other">other_protocol</string>
-	<string translatable="false" name="default_server_url">https://opendatakit.appspot.com</string>
+	<string translatable="false" name="default_server_url">https://alpha.dev.medicmobile.org</string>
 	<string translatable="false" name="default_sms_gateway"></string>
+	<string translatable="false" name="default_own_phone_number"></string>
+	<bool translatable="false" name="default_upload_sms">true</bool>
 	<string translatable="false" name="default_odk_formlist">/medic/_design/medic/_rewrite/formList</string>
 	<string translatable="false" name="default_odk_submission">/medic/_design/medic/_rewrite/add</string>
+	<string translatable="false" name="default_username">demo</string>
+	<string translatable="false" name="default_password">medic</string>
+		
 	<item name="mapview" type="id"/>
 </resources>

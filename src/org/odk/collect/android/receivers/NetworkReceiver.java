@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.odk.collect.android.R;
+import org.odk.collect.android.activities.FormEntryActivity;
 import org.odk.collect.android.activities.NotificationActivity;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.listeners.InstanceUploaderListener;
@@ -164,7 +165,7 @@ public class NetworkReceiver extends BroadcastReceiver implements InstanceUpload
                 mInstanceUploaderTask = new InstanceUploaderTask();
                 mInstanceUploaderTask.setUploaderListener(this);
 
-                mInstanceUploaderTask.execute(toSendArray);
+                mInstanceUploaderTask.execute(FormEntryActivity.KEY_UPLOAD_METHOD_HTTP, toSendArray);
             }
         }
     }

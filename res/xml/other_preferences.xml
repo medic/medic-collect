@@ -19,28 +19,6 @@
             android:key="submission_url"
             android:layout="?android:attr/preferenceLayoutChild"
             android:title="@string/submission_url" />
-        <EditTextPreference
-            android:id="@+id/sms_gateway"
-            android:dialogTitle="@string/change_sms_gateway"
-            android:inputType="phone"
-            android:key="sms_gateway"
-            android:layout="?android:attr/preferenceLayoutChild"
-            android:summary="@string/sms_gateway_summary"
-            android:title="@string/sms_gateway" />
-        <EditTextPreference
-            android:id="@+id/own_phone_number"
-            android:dialogTitle="@string/change_own_phone_number"
-            android:inputType="phone"
-            android:key="own_phone_number"
-            android:layout="?android:attr/preferenceLayoutChild"
-            android:title="@string/own_phone_number" />        
-        <CheckBoxPreference
-            android:id="@+id/sms_upload"
-            android:defaultValue="true"
-            android:key="sms_upload"
-            android:layout="?android:attr/preferenceLayoutChild"
-            android:summary="@string/sms_upload_summary"
-            android:title="@string/sms_upload" />
     </PreferenceCategory>
    
 </PreferenceScreen>

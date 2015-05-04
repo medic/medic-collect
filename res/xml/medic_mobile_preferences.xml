@@ -1,0 +1,48 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="@string/medic_mobile_preferences"
+        android:title="@string/medic_mobile_preferences" >
+        <EditTextPreference
+            android:id="@+id/sms_gateway"
+            android:defaultValue="@string/default_sms_gateway"
+            android:dialogTitle="@string/change_sms_gateway"
+            android:inputType="phone"
+            android:key="sms_gateway"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="@string/sms_gateway_summary"
+            android:title="@string/sms_gateway" />
+        <EditTextPreference
+            android:id="@+id/own_phone_number"
+			android:defaultValue="@string/default_own_phone_number"
+            android:dialogTitle="@string/change_own_phone_number"
+            android:inputType="phone"
+            android:key="own_phone_number"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:title="@string/own_phone_number" />        
+        <CheckBoxPreference
+            android:id="@+id/sms_upload"
+            android:defaultValue="@bool/default_upload_sms"
+            android:key="sms_upload"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="@string/sms_upload_summary"
+            android:title="@string/sms_upload" />
+        <EditTextPreference
+            android:id="@+id/formlist_url"
+            android:defaultValue="@string/default_odk_formlist"
+            android:dialogTitle="@string/change_formlist_url"
+            android:inputType="textNoSuggestions"
+            android:key="formlist_url"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:title="@string/formlist_url" />
+        <EditTextPreference
+            android:id="@+id/submission_url"
+            android:defaultValue="@string/default_odk_submission"
+            android:dialogTitle="@string/change_submission_url"
+            android:inputType="textNoSuggestions"
+            android:key="submission_url"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:title="@string/submission_url" />
+    </PreferenceCategory>
+   
+</PreferenceScreen>
