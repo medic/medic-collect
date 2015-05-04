@@ -107,6 +107,9 @@
 <string name="no_items_display">Nothing available to display.</string>
 <string name="no_items_display_forms">Nothing available to display.\n\nTry getting and filling out a blank form.</string>
 <string name="no_items_display_instances">Nothing available to display.\n\nTry finalizing saved forms before sending.</string>
+<string name="notification_subject">Please complete the daily surveillance form.</string>
+<string name="notification_ticker">Health Emergency Operation Center: Complete the surveillance form today.</string>
+<string name="notification_title">Health Emergency Operation Center</string>
 <string name="ok">OK</string>
 <string name="parse_error">Sorry, unable to parse form.</string>
 <string name="parse_legacy_formlist_failed">The server has not provided an available-forms document compatible with Aggregate 0.9.x. : %s</string>

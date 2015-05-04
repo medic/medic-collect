@@ -22,6 +22,8 @@
 	<string translatable="false" name="default_odk_submission">/medic/_design/medic/_rewrite/add</string>
 	<string translatable="false" name="default_username">demo</string>
 	<string translatable="false" name="default_password">medic</string>
-		
+	<bool translatable="false" name="show_alarm_notifications">false</bool>
+	<integer translatable="false" name="notifications_hour">16</integer>
+				
 	<item name="mapview" type="id"/>
 </resources>

@@ -15,6 +15,8 @@
 package org.odk.collect.android.application;
 
 import java.io.File;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import org.odk.collect.android.R;
 import org.odk.collect.android.database.ActivityLogger;
@@ -22,6 +24,7 @@ import org.odk.collect.android.external.ExternalDataManager;
 import org.odk.collect.android.logic.FormController;
 import org.odk.collect.android.logic.PropertyManager;
 import org.odk.collect.android.preferences.PreferencesActivity;
+import org.odk.collect.android.receivers.AlarmReceiver;
 import org.odk.collect.android.utilities.AgingCredentialsProvider;
 import org.opendatakit.httpclientandroidlib.client.CookieStore;
 import org.opendatakit.httpclientandroidlib.client.CredentialsProvider;
@@ -30,7 +33,10 @@ import org.opendatakit.httpclientandroidlib.impl.client.BasicCookieStore;
 import org.opendatakit.httpclientandroidlib.protocol.BasicHttpContext;
 import org.opendatakit.httpclientandroidlib.protocol.HttpContext;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -65,6 +71,7 @@ public class Collect extends Application {
     private ActivityLogger mActivityLogger;
     private FormController mFormController = null;
     private ExternalDataManager externalDataManager;
+    private AlarmManager mAlarmManager;
 
     private static Collect singleton = null;
 
@@ -221,6 +228,10 @@ public class Collect extends Application {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         super.onCreate();
 
+        if (getResources().getBoolean(R.bool.show_alarm_notifications)) {
+        	setAlarm();
+        }
+
         PropertyManager mgr = new PropertyManager(this);
 
         FormController.initializeJavaRosa(mgr);
@@ -229,4 +240,22 @@ public class Collect extends Application {
                 mgr.getSingularProperty(PropertyManager.DEVICE_ID_PROPERTY));
     }
 
+    public void setAlarm(){
+    	mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+    	Intent alarmIntent = new Intent(Collect.this, AlarmReceiver.class);
+    	PendingIntent pendingIntent = PendingIntent.getBroadcast( Collect.getInstance().getApplicationContext(), 0, alarmIntent, 0);
+
+    	Calendar alarmStartTime = Calendar.getInstance();
+
+		alarmStartTime.set(Calendar.HOUR_OF_DAY, getResources().getInteger(R.integer.notifications_hour));
+    	alarmStartTime.set(Calendar.MINUTE, 00);
+    	alarmStartTime.set(Calendar.SECOND, 0);
+
+    	// calculate interval manually since TimeUnit DAYS is API level 9, whereas Collect targets 7
+    	mAlarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), 1*24*60*60*1000, pendingIntent);
+
+    	/* for debugging, set it often */
+    	// alarmStartTime.add(Calendar.SECOND, 10);
+    	// mAlarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), 5*1000, pendingIntent);
+    }
 }
