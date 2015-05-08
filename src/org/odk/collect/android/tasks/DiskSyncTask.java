@@ -55,6 +55,8 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
     int instance;
     
     DiskSyncListener mListener;
+    
+    AssetManager mAssetManager;
 
     String statusMessage;
 
@@ -317,57 +319,69 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
         }
     }
     
+    private void copyFormAssets () {
+        mAssetManager = Collect.getInstance().getAssets();
+        copyAsset("forms");
+    }
+    
+    private void copyAsset(String path) {
+        String assets[] = null;
+        try {
+            assets = mAssetManager.list(path);
+            if (assets.length == 0) {	// FILE
+                copyAssetFile(path);
+            } 
+            else {	// DIRECTORY
+                String fullPath = Collect.ODK_ROOT + File.separator + path;
+                File dir = new File(fullPath);
+                if (!dir.exists())
+                    dir.mkdir();
+                for (int i = 0; i < assets.length; ++i) {
+                    copyAsset(path + File.separator + assets[i]);
+                }
+            }
+        } catch (IOException ex) {
+            Log.e("asset-copy", "I/O Exception", ex);
+        }
+    }
+    
     // Copy forms from Assets if they are not already in storage
-    private void copyFormAssets() {
+    private void copyAssetFile(String filename) {
+    	File outFile = new File(Collect.ODK_ROOT, filename);
+    	        	
+    	if (outFile.exists()) {
+        	// Do not overwrite existing file
+    		// Allows built-in forms to be updated without being overwritten
+    		return;
+    	}
     	
-        // Get all files from assets
-        AssetManager assetManager = Collect.getInstance().getAssets();
-        String assetsFormsPath = "forms";
-        String[] files = null;
+        InputStream in = null;
+        OutputStream out = null;
 
         try {
-            files = assetManager.list(assetsFormsPath);
-        } catch (IOException e) {
-            Log.e("DiskSyncTask", "Failed to get asset file list.", e);
-        }
-        for(String filename : files) {
-
-        	File outFile = new File(Collect.FORMS_PATH, filename);
-        	
-        	if (outFile.exists()) {
-            	// Do not overwrite existing file
-        		// Allows built-in forms to be updated without being overwritten
-        		continue;
-        	}
-        	
-            InputStream in = null;
-            OutputStream out = null;
-
-            try {
-              in = assetManager.open(assetsFormsPath + File.separator + filename);
-              out = new FileOutputStream(outFile);
-              copyFile(in, out);
-              Log.d("DiskSyncTask", "Copied default form to storage: " + outFile.toString());
-            } catch(IOException e) {
-                Log.e("DiskSyncTask", "Failed to copy asset file: " + filename, e);
-            }     
-            finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        // NOOP
-                    }
+          in = mAssetManager.open(filename);
+          out = new FileOutputStream(outFile);
+          copyFile(in, out);
+          Log.d("DiskSyncTask", "Copied default form to storage: " + outFile.toString());
+        } catch(IOException e) {
+            Log.e("DiskSyncTask", "Failed to copy asset file: " + filename, e);
+        }     
+        finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    // NOOP
                 }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        // NOOP
-                    }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    // NOOP
                 }
-            }  
-        }
+            }
+        }  
     }
     private void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
