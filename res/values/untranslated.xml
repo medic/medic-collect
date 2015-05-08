@@ -14,15 +14,15 @@
     <string translatable="false" name="default_form_processing_logic">-1</string>
     <string translatable="false" name="protocol_medic_mobile">medic_mobile_protocol</string>
     <string translatable="false" name="protocol_other">other_protocol</string>
-	<string translatable="false" name="default_server_url">https://alpha.dev.medicmobile.org</string>
+	<string translatable="false" name="default_server_url">https://nepal-demo.app.medicmobile.org</string>
 	<string translatable="false" name="default_sms_gateway"></string>
-	<string translatable="false" name="default_own_phone_number"></string>
+	<string translatable="false" name="default_own_phone_number">+97755500000</string>
 	<bool translatable="false" name="default_upload_sms">true</bool>
 	<string translatable="false" name="default_odk_formlist">/medic/_design/medic/_rewrite/formList</string>
 	<string translatable="false" name="default_odk_submission">/medic/_design/medic/_rewrite/add</string>
-	<string translatable="false" name="default_username">demo</string>
-	<string translatable="false" name="default_password">medic</string>
-	<bool translatable="false" name="show_alarm_notifications">false</bool>
+	<string translatable="false" name="default_username">collect</string>
+	<string translatable="false" name="default_password">medic-mobile!</string>
+	<bool translatable="false" name="show_alarm_notifications">true</bool>
 	<integer translatable="false" name="notifications_hour">16</integer>
 				
 	<item name="mapview" type="id"/>
