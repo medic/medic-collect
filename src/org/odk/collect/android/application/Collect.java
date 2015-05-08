@@ -246,11 +246,17 @@ public class Collect extends Application {
     	PendingIntent pendingIntent = PendingIntent.getBroadcast( Collect.getInstance().getApplicationContext(), 0, alarmIntent, 0);
 
     	Calendar alarmStartTime = Calendar.getInstance();
+    	Calendar now = Calendar.getInstance();
 
 		alarmStartTime.set(Calendar.HOUR_OF_DAY, getResources().getInteger(R.integer.notifications_hour));
     	alarmStartTime.set(Calendar.MINUTE, 00);
     	alarmStartTime.set(Calendar.SECOND, 0);
 
+    	// avoid showing again the same day, otherwise after alarm time will show in loop
+    	if(now.after(alarmStartTime)){
+    		alarmStartTime.add(Calendar.DATE, 1);
+    	}
+    		
     	// calculate interval manually since TimeUnit DAYS is API level 9, whereas Collect targets 7
     	mAlarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), 1*24*60*60*1000, pendingIntent);
 
