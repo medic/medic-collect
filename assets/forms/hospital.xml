@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>Daily Hospital Surveillance (150508)</h:title>
+    <model>
+      <itext>
+        <translation default="true()" lang="default"/>
+      </itext>
+      <instance>
+        <hospital id="hospital" prefix="J1!NH002!" delimiter="#">
+          <report_date tag="date"/>
+          <hospital_district tag="hdis"/>
+          <other_hospital_district tag="hdiso"/>
+          <hospital_location tag="hloc"/>
+          <other_hospital_location tag="hloco"/>
+          <hospital_name tag="hname"/>
+          <other_hospital_name tag="hnameo"/>
+          <hospital_type tag="htype"/>
+          <group_focal>
+            <focal_name tag="hfname" />
+            <focal_post tag="hfpost" />
+            <focal_phone tag="hfphone" />
+            <focal_email tag="hfemail" />
+          </group_focal>
+          <opd_patients tag="opd" />
+          <ipd_patients tag="ipd" />
+          <group_hospital_deaths>
+            <deaths_under_five tag="du5" />
+            <deaths_five_over tag="d5o" />
+          </group_hospital_deaths>
+          <referred_patients tag="ref" />
+          <group_surgical_cases>
+            <surgical_cases_major tag="smaj" />
+            <surgical_cases_minor tag="smin" />
+          </group_surgical_cases>
+          <group_opd_cases>
+            <group_trauma>
+              <trauma_under_five tag="tu5" />
+              <trauma_five_over tag="t5o" />
+            </group_trauma>
+            <group_resp_infection>
+              <resp_infection_under_five tag="ru5" />
+              <resp_infection_five_over tag="r5o" />
+            </group_resp_infection>
+            <group_watery_diarrhoea>
+              <watery_diarrhoea_under_five tag="wu5" />
+              <watery_diarrhoea_five_over tag="w5o" />
+            </group_watery_diarrhoea>
+            <group_bloody_diarrhoea>
+              <bloody_diarrhoea_under_five tag="bu5" />
+              <bloody_diarrhoea_five_over tag="b5o" />
+            </group_bloody_diarrhoea>
+            <group_fever>
+              <fever_under_five tag="fu5" />
+              <fever_five_over tag="f5o" />
+            </group_fever>
+          </group_opd_cases>
+          <weekly tag="w"/>
+          <group_national_support>
+            <national_team_members tag="ntm" />
+            <national_stay_length tag="nsl" />
+            <national_contact_name tag="ncn" />
+            <national_contact_phone tag="ncp" />
+            <national_contact_email tag="nce" />
+          </group_national_support>
+          <group_intl_support>
+            <intl_team_members tag="itm" />
+            <intl_stay_length tag="isl" />
+            <intl_contact_name tag="icn" />
+            <intl_contact_phone tag="icp" />
+            <intl_contact_email tag="ine" />
+          </group_intl_support>
+          <problems tag="pr" />
+          <meta>
+            <start tag="m_st" />
+            <end tag="m_et" />
+            <today tag="m_t" />
+            <phonenumber tag="m_p" />
+            <deviceID tag="m_d" />
+            <subscriberID tag="m_s" />
+            <instanceID tag="m_i" />
+          </meta>
+        </hospital>
+      </instance>
+      <bind constraint=". &lt;= today()" jr:constraintMsg="Dates in the future are not allowed." nodeset="/hospital/report_date" required="true()" type="date"/>
+      <bind nodeset="/hospital/hospital_district" required="true()" type="select1"/>
+      <bind nodeset="/hospital/other_hospital_district" relevant=" /hospital/hospital_district  = &quot;other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital/hospital_location" relevant=" /hospital/hospital_district  != &quot;other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital/other_hospital_location" relevant=" /hospital/hospital_district  = &quot;other&quot; or  /hospital/hospital_location  = &quot;other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital/hospital_name" relevant=" /hospital/hospital_district  != &quot;other&quot; and  /hospital/hospital_location  != &quot;other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital/other_hospital_name" relevant=" /hospital/hospital_district  = &quot;other&quot; or  /hospital/hospital_location  = &quot;other&quot; or  /hospital/hospital_name  = &quot;other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital/hospital_type" required="true()" type="select1"/>
+      <bind nodeset="/hospital/group_focal/focal_name" required="true()" type="string"/>
+      <bind nodeset="/hospital/group_focal/focal_post" required="false()" type="string"/>
+      <bind constraint="string-length(.) &gt;= 8 and string-length(.) &lt;= 10" jr:constraintMsg="Phone number must be between 8 and 10 digits long." nodeset="/hospital/group_focal/focal_phone" required="true()" type="string"/>
+      <bind nodeset="/hospital/group_focal/focal_email" required="false()" type="string"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/opd_patients" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/ipd_patients" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_hospital_deaths/deaths_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_hospital_deaths/deaths_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/referred_patients" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_surgical_cases"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_surgical_cases/surgical_cases_major" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_surgical_cases/surgical_cases_minor" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_trauma"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_trauma/trauma_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_trauma/trauma_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_resp_infection/resp_infection_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_resp_infection/resp_infection_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_watery_diarrhoea/watery_diarrhoea_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_watery_diarrhoea/watery_diarrhoea_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_bloody_diarrhoea/bloody_diarrhoea_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_bloody_diarrhoea/bloody_diarrhoea_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_fever/fever_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_opd_cases/group_fever/fever_five_over" required="true()" type="int"/>
+      <bind nodeset="/hospital/weekly" required="true()" type="select1"/>
+      <bind nodeset="/hospital/group_national_support" relevant=" /hospital/weekly  = &quot;yes&quot;"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_national_support/national_team_members" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 1000)" jr:constraintMsg="Number must be between 0 and 999." nodeset="/hospital/group_national_support/national_stay_length" required="true()" type="int"/>
+      <bind nodeset="/hospital/group_national_support/national_contact_name" required="true()" type="string"/>
+      <bind constraint="string-length(.) &gt;= 8 and string-length(.) &lt;= 10" jr:constraintMsg="Phone number must be between 8 and 10 digits long." nodeset="/hospital/group_national_support/national_contact_phone" required="true()" type="string"/>
+      <bind nodeset="/hospital/group_national_support/national_contact_email" required="false()" type="string"/>
+      <bind nodeset="/hospital/group_intl_support" relevant=" /hospital/weekly  = &quot;yes&quot;"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital/group_intl_support/intl_team_members" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 1000)" jr:constraintMsg="Number must be between 0 and 999." nodeset="/hospital/group_intl_support/intl_stay_length" required="true()" type="int"/>
+      <bind nodeset="/hospital/group_intl_support/intl_contact_name" required="true()" type="string"/>
+      <bind constraint="string-length(.) &gt;= 8 and string-length(.) &lt;= 10" jr:constraintMsg="Phone number must be between 8 and 10 digits long." nodeset="/hospital/group_intl_support/intl_contact_phone" required="true()" type="string"/>
+      <bind nodeset="/hospital/group_intl_support/intl_contact_email" required="false()" type="string"/>
+      <bind nodeset="/hospital/problems" required="false()" type="string"/>
+      <bind jr:preload="timestamp" jr:preloadParams="start" nodeset="/hospital/meta/start" type="dateTime"/>
+      <bind jr:preload="timestamp" jr:preloadParams="end" nodeset="/hospital/meta/end" type="dateTime"/>
+      <bind jr:preload="date" jr:preloadParams="today" nodeset="/hospital/meta/today" type="date"/>
+      <bind jr:preload="property" jr:preloadParams="uri:subscriberid" nodeset="/hospital/meta/subscriberID" type="string"/>
+      <bind jr:preload="property" jr:preloadParams="uri:deviceid" nodeset="/hospital/meta/deviceID" type="string"/>
+      <bind jr:preload="property" jr:preloadParams="phonenumber" nodeset="/hospital/meta/phonenumber" type="string"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/hospital/meta/instanceID" readonly="true()" type="string"/>
+    </model>
+  </h:head>
+  <h:body class="pages">
+    <input appearance="no-calendar" ref="/hospital/report_date">
+      <label>Date of report</label>
+    </input>
+    <select1 appearance="quick" ref="/hospital/hospital_district">
+      <label>Hospital District</label>
+      <item>
+        <label>Bhaktapur</label>
+        <value>bhaktapur</value>
+      </item>
+      <item>
+        <label>Kathmandu</label>
+        <value>kathmandu</value>
+      </item>
+      <item>
+        <label>Lalitpur</label>
+        <value>lalitpur</value>
+      </item>
+      <item>
+        <label>Other</label>
+        <value>other</value>
+      </item>
+    </select1>
+    <input ref="/hospital/other_hospital_district">
+      <label>Hospital District (please type it out)</label>
+    </input>
+    <input appearance="quick" ref="/hospital/hospital_location" query="instance('hospital_locations')/root/item[hospital_district= /hospital/hospital_district ]">
+      <label>Hospital Location</label>
+    </input>
+    <input ref="/hospital/other_hospital_location">
+      <label>Hospital Location (please type it out)</label>
+    </input>
+    <input appearance="quick" ref="/hospital/hospital_name" query="instance('hospital_names')/root/item[hospital_district= /hospital/hospital_district  and hospital_location= /hospital/hospital_location ]">
+      <label>Name of Hospital/Temp. Hospital</label>
+    </input>
+    <input ref="/hospital/other_hospital_name">
+      <label>Name of Hospital/Temp. Hospital (please type it out)</label>
+    </input>
+    <select1 appearance="quick" ref="/hospital/hospital_type">
+      <label>Hospital Type</label>
+      <item>
+        <label>Public</label>
+        <value>public</value>
+      </item>
+      <item>
+        <label>Private</label>
+        <value>private</value>
+      </item>
+      <item>
+        <label>Community</label>
+        <value>community</value>
+      </item>
+      <item>
+        <label>Medical Team</label>
+        <value>medical_team</value>
+      </item>
+    </select1>
+    <group appearance="field-list" ref="/hospital/group_focal">
+      <label>Focal Point</label>
+      <input ref="/hospital/group_focal/focal_name">
+        <label>Name</label>
+      </input>
+      <input ref="/hospital/group_focal/focal_post">
+        <label>Post</label>
+      </input>
+      <input appearance="numbers" ref="/hospital/group_focal/focal_phone">
+        <label>Phone Number</label>
+      </input>
+      <input ref="/hospital/group_focal/focal_email">
+        <label>Email</label>
+      </input>
+    </group>
+    <input ref="/hospital/opd_patients">
+      <label>Number of OPD patients treated</label>
+    </input>
+    <input ref="/hospital/ipd_patients">
+      <label>Number of IPD patients treated</label>
+    </input>
+    <group appearance="field-list" ref="/hospital/group_hospital_deaths">
+      <label>Number of hospital deaths</label>
+      <input ref="/hospital/group_hospital_deaths/deaths_under_five">
+        <label>Under 5 years old</label>
+      </input>
+      <input ref="/hospital/group_hospital_deaths/deaths_five_over">
+        <label>5 or above</label>
+      </input>
+    </group>
+    <input ref="/hospital/referred_patients">
+      <label>Number of patients referred</label>
+    </input>
+    <group appearance="field-list" ref="/hospital/group_surgical_cases">
+      <label>Number of surgical cases</label>
+      <input ref="/hospital/group_surgical_cases/surgical_cases_major">
+        <label>MAJOR cases</label>
+      </input>
+      <input ref="/hospital/group_surgical_cases/surgical_cases_minor">
+        <label>Minor cases</label>
+      </input>
+    </group>
+    <group ref="/hospital/group_opd_cases">
+      <label>New OPD cases</label>
+      <group appearance="field-list" ref="/hospital/group_opd_cases/group_trauma">
+        <label>Trauma</label>
+        <input ref="/hospital/group_opd_cases/group_trauma/trauma_under_five">
+          <label>Under 5</label>
+        </input>
+        <input ref="/hospital/group_opd_cases/group_trauma/trauma_five_over">
+          <label>5 or above</label>
+        </input>
+      </group>
+      <group appearance="field-list" ref="/hospital/group_opd_cases/group_resp_infection">
+        <label>Acute respiratory infection</label>
+        <input ref="/hospital/group_opd_cases/group_resp_infection/resp_infection_under_five">
+          <label>Under 5</label>
+        </input>
+        <input ref="/hospital/group_opd_cases/group_resp_infection/resp_infection_five_over">
+          <label>5 or above</label>
+        </input>
+      </group>
+      <group appearance="field-list" ref="/hospital/group_opd_cases/group_watery_diarrhoea">
+        <label>Watery Diarrhoea</label>
+        <input ref="/hospital/group_opd_cases/group_watery_diarrhoea/watery_diarrhoea_under_five">
+          <label>Under 5</label>
+        </input>
+        <input ref="/hospital/group_opd_cases/group_watery_diarrhoea/watery_diarrhoea_five_over">
+          <label>5 or above</label>
+        </input>
+      </group>
+      <group appearance="field-list" ref="/hospital/group_opd_cases/group_bloody_diarrhoea">
+        <label>Bloody Diarrhoea</label>
+        <input ref="/hospital/group_opd_cases/group_bloody_diarrhoea/bloody_diarrhoea_under_five">
+          <label>Under 5</label>
+        </input>
+        <input ref="/hospital/group_opd_cases/group_bloody_diarrhoea/bloody_diarrhoea_five_over">
+          <label>5 or above</label>
+        </input>
+      </group>
+      <group appearance="field-list" ref="/hospital/group_opd_cases/group_fever">
+        <label>Fever of unknown origin</label>
+        <input ref="/hospital/group_opd_cases/group_fever/fever_under_five">
+          <label>Under 5</label>
+        </input>
+        <input ref="/hospital/group_opd_cases/group_fever/fever_five_over">
+          <label>5 or above</label>
+        </input>
+      </group>
+    </group>
+    <select1 appearance="quick" ref="/hospital/weekly">
+      <label>Do you wish to complete the section on External Medical Team Support (weekly)?</label>
+      <item>
+        <label>Yes</label>
+        <value>yes</value>
+      </item>
+      <item>
+        <label>No</label>
+        <value>no</value>
+      </item>
+    </select1>
+    <group appearance="field-list" ref="/hospital/group_national_support">
+      <label>NATIONAL</label>
+      <input ref="/hospital/group_national_support/national_team_members">
+        <label>Total Team Members</label>
+      </input>
+      <input ref="/hospital/group_national_support/national_stay_length">
+        <label>Length of Stay In Days</label>
+      </input>
+      <input ref="/hospital/group_national_support/national_contact_name">
+        <label>Contact Person Name</label>
+      </input>
+      <input appearance="numbers" ref="/hospital/group_national_support/national_contact_phone">
+        <label>Contact Person Phone</label>
+      </input>
+      <input ref="/hospital/group_national_support/national_contact_email">
+        <label>Contact Person Email</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/hospital/group_intl_support">
+      <label>INTERNATIONAL</label>
+      <input ref="/hospital/group_intl_support/intl_team_members">
+        <label>Total Team Members</label>
+      </input>
+      <input ref="/hospital/group_intl_support/intl_stay_length">
+        <label>Length of Stay In Days</label>
+      </input>
+      <input ref="/hospital/group_intl_support/intl_contact_name">
+        <label>Contact Person Name</label>
+      </input>
+      <input appearance="numbers" ref="/hospital/group_intl_support/intl_contact_phone">
+        <label>Contact Person Phone</label>
+      </input>
+      <input ref="/hospital/group_intl_support/intl_contact_email">
+        <label>Contact Person Email</label>
+      </input>
+    </group>
+    <input appearance="multiline" ref="/hospital/problems">
+      <label>Problems (if any)</label>
+    </input>
+  </h:body>
+</h:html>

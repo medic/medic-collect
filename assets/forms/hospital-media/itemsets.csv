@@ -1,0 +1,131 @@
+list_name,name,label,hospital_district,hospital_location
+yes_no,yes,Yes,,
+yes_no,no,No,,
+hospital_types,public,Public,,
+hospital_types,private,Private,,
+hospital_types,community,Community,,
+hospital_types,medical_team,Medical Team,,
+hospital_districts,bhaktapur,Bhaktapur,,
+hospital_districts,kathmandu,Kathmandu,,
+hospital_districts,lalitpur,Lalitpur,,
+hospital_districts,other,Other,,
+hospital_locations,bhaktapur,Bhaktapur,bhaktapur,
+hospital_locations,bhaktapur_durbar_square,Bhaktapur Durbar Square,bhaktapur,
+hospital_locations,gathaghar,Gathaghar,bhaktapur,
+hospital_locations,madhyapur_thimi,Madhyapur Thimi,bhaktapur,
+hospital_locations,sallaghari,Sallaghari,bhaktapur,
+hospital_locations,suryabinayak,Suryabinayak,bhaktapur,
+hospital_locations,thimi,Thimi,bhaktapur,
+hospital_locations,other,Other,bhaktapur,
+hospital_locations,babarmahal,Babarmahal,kathmandu,
+hospital_locations,balambu,Balambu,kathmandu,
+hospital_locations,balkhu,Balkhu,kathmandu,
+hospital_locations,baneshwor,Baneshwor,kathmandu,
+hospital_locations,bansbari,Bansbari,kathmandu,
+hospital_locations,basundhara,Basundhara,kathmandu,
+hospital_locations,bhimdhunga,Bhimdhunga,kathmandu,
+hospital_locations,bouddha,Bouddha,kathmandu,
+hospital_locations,chabahil,Chabahil,kathmandu,
+hospital_locations,chhauni,Chhauni,kathmandu,
+hospital_locations,dhapasi,Dhapasi,kathmandu,
+hospital_locations,jorpati,Jorpati,kathmandu,
+hospital_locations,kalanki,Kalanki,kathmandu,
+hospital_locations,kalimati,Kalimati,kathmandu,
+hospital_locations,kathmandu,Kathmandu,kathmandu,
+hospital_locations,kirtipur,Kirtipur,kathmandu,
+hospital_locations,maharajgunj,Maharajgunj,kathmandu,
+hospital_locations,mitrapark,Mitrapark,kathmandu,
+hospital_locations,new_baneshwor,New Baneshwor,kathmandu,
+hospital_locations,pharping,Pharping,kathmandu,
+hospital_locations,putalisadak,Putalisadak,kathmandu,
+hospital_locations,sinamangal,Sinamangal,kathmandu,
+hospital_locations,singhadurbar,Singhadurbar,kathmandu,
+hospital_locations,tinkune,Tinkune,kathmandu,
+hospital_locations,tripureshwor,Tripureshwor,kathmandu,
+hospital_locations,other,Other,kathmandu,
+hospital_locations,jawalakhel,Jawalakhel,lalitpur,
+hospital_locations,lagankhel,Lagankhel,lalitpur,
+hospital_locations,sanepa,Sanepa,lalitpur,
+hospital_locations,other,Other,lalitpur,
+hospital_names,pakistan_army_field_hospital,Pakistan Army Field Hospital,bhaktapur,bhaktapur
+hospital_names,turkey_camp,Turkey Camp,bhaktapur,bhaktapur
+hospital_names,chinese_camp,Chinese Camp,bhaktapur,bhaktapur_durbar_square
+hospital_names,nagarik_hospital,Nagarik Hospital,bhaktapur,gathaghar
+hospital_names,madhyapur_hospital,Madhyapur Hospital,bhaktapur,madhyapur_thimi
+hospital_names,bhaktapur_hospital,Bhaktapur Hospital,bhaktapur,sallaghari
+hospital_names,dr._iwamura_hospital,Dr. Iwamura Hospital,bhaktapur,sallaghari
+hospital_names,siddhi_memorial_hospital,Siddhi Memorial Hospital,bhaktapur,suryabinayak
+hospital_names,korea_nepal_friendship_hospital,Korea Nepal Friendship Hospital,bhaktapur,thimi
+hospital_names,hams_hospital,HAMS Hospital,kathmandu,babarmahal
+hospital_names,nepal_apf_hospital,Nepal APF Hospital,kathmandu,balambu
+hospital_names,shiva_jyoti_hospital,Shiva Jyoti Hospital,kathmandu,balkhu
+hospital_names,vayodha_hospital,Vayodha Hospital,kathmandu,balkhu
+hospital_names,bharosa_hospital_pvt_ltd,Bharosa Hospital Pvt Ltd,kathmandu,baneshwor
+hospital_names,venus_international_hospital,Venus International Hospital,kathmandu,baneshwor
+hospital_names,national_institute_of_neurological_&_allied_sciences,National Institute of Neurological & Allied Sciences,kathmandu,bansbari
+hospital_names,chirayu_national_health_&_research_center_pvt_ltd,Chirayu National Health & Research Center Pvt Ltd,kathmandu,basundhara
+hospital_names,kantipur_general_and_dental_hospital,Kantipur General and Dental Hospital,kathmandu,basundhara
+hospital_names,bhimdhunga_shp,Bhimdhunga SHP,kathmandu,bhimdhunga
+hospital_names,stupa_community_hospital,Stupa Community Hospital,kathmandu,bouddha
+hospital_names,helping_hands_community_hospital,Helping Hands Community Hospital,kathmandu,chabahil
+hospital_names,medicare_national_hospital_pvt_ltd,Medicare National Hospital Pvt Ltd,kathmandu,chabahil
+hospital_names,army_israeli_camp,Army Israeli Camp,kathmandu,chhauni
+hospital_names,nepal_army_hospital,Nepal Army Hospital,kathmandu,chhauni
+hospital_names,grande_hospital,Grande Hospital,kathmandu,dhapasi
+hospital_names,nepal_apanga_sangha_orthopedic_hospital,Nepal Apanga Sangha Orthopedic Hospital,kathmandu,jorpati
+hospital_names,nepal_medical_college,Nepal Medical College,kathmandu,jorpati
+hospital_names,shankarapur_hospital,Shankarapur Hospital,kathmandu,jorpati
+hospital_names,sahid_memorial_hospital,Sahid Memorial Hospital,kathmandu,kalanki
+hospital_names,jyoti_hospital,Jyoti Hospital,kathmandu,kalimati
+hospital_names,bir_hospital,Bir Hospital,kathmandu,kathmandu
+hospital_names,kritipur_hospital_(ngo),Kritipur Hospital (NGO),kathmandu,kirtipur
+hospital_names,nepal_prahari_hospital,Nepal Prahari Hospital,kathmandu,maharajgunj
+hospital_names,teaching_hospital_(tribhuvan_university),Teaching Hospital (Tribhuvan University),kathmandu,maharajgunj
+hospital_names,dirghayu_hospital,Dirghayu hospital,kathmandu,mitrapark
+hospital_names,civil_services_hospital,Civil Services Hospital,kathmandu,new_baneshwor
+hospital_names,manmohan_memorial_community_hospital,Manmohan Memorial Community Hospital,kathmandu,pharping
+hospital_names,capital_hospital,Capital Hospital,kathmandu,putalisadak
+hospital_names,kathmandu_medical_college,Kathmandu Medical College,kathmandu,sinamangal
+hospital_names,chinese_camp,Chinese Camp,kathmandu,singhadurbar
+hospital_names,kantipur_hospital,Kantipur Hospital,kathmandu,tinkune
+hospital_names,blue_cross_hospital_pvt_ltd,Blue Cross hospital Pvt Ltd,kathmandu,tripureshwor
+hospital_names,kathmandu_hospital,Kathmandu Hospital,kathmandu,tripureshwor
+hospital_names,alka_hospital,Alka Hospital,lalitpur,jawalakhel
+hospital_names,midat_hospital,Midat Hospital,lalitpur,lagankhel
+hospital_names,patan_academy_of_health_sciences,Patan Academy of Health Sciences,lalitpur,lagankhel
+hospital_names,star_hospital,Star Hospital,lalitpur,sanepa
+hospital_names,other,Other,bhaktapur,bhaktapur
+hospital_names,other,Other,bhaktapur,bhaktapur_durbar_square
+hospital_names,other,Other,bhaktapur,gathaghar
+hospital_names,other,Other,bhaktapur,madhyapur_thimi
+hospital_names,other,Other,bhaktapur,sallaghari
+hospital_names,other,Other,bhaktapur,suryabinayak
+hospital_names,other,Other,bhaktapur,thimi
+hospital_names,other,Other,kathmandu,babarmahal
+hospital_names,other,Other,kathmandu,balambu
+hospital_names,other,Other,kathmandu,balkhu
+hospital_names,other,Other,kathmandu,baneshwor
+hospital_names,other,Other,kathmandu,bansbari
+hospital_names,other,Other,kathmandu,basundhara
+hospital_names,other,Other,kathmandu,bhimdhunga
+hospital_names,other,Other,kathmandu,bouddha
+hospital_names,other,Other,kathmandu,chabahil
+hospital_names,other,Other,kathmandu,chhauni
+hospital_names,other,Other,kathmandu,dhapasi
+hospital_names,other,Other,kathmandu,jorpati
+hospital_names,other,Other,kathmandu,kalanki
+hospital_names,other,Other,kathmandu,kalimati
+hospital_names,other,Other,kathmandu,kathmandu
+hospital_names,other,Other,kathmandu,kirtipur
+hospital_names,other,Other,kathmandu,maharajgunj
+hospital_names,other,Other,kathmandu,mitrapark
+hospital_names,other,Other,kathmandu,new_baneshwor
+hospital_names,other,Other,kathmandu,pharping
+hospital_names,other,Other,kathmandu,putalisadak
+hospital_names,other,Other,kathmandu,sinamangal
+hospital_names,other,Other,kathmandu,singhadurbar
+hospital_names,other,Other,kathmandu,tinkune
+hospital_names,other,Other,kathmandu,tripureshwor
+hospital_names,other,Other,lalitpur,jawalakhel
+hospital_names,other,Other,lalitpur,lagankhel
+hospital_names,other,Other,lalitpur,sanepa
