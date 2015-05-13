@@ -82,7 +82,12 @@ public class WidgetFactory {
                     case Constants.DATATYPE_TEXT:
                     	String query = fep.getQuestion().getAdditionalAttribute(null, "query");
                         if (query != null) {
-                            questionWidget = new ItemsetWidget(context, fep, readOnlyOverride);
+                        	if (appearance.startsWith("quick")) {
+                        		questionWidget = new ItemsetAutoAdvanceWidget(context, fep, readOnlyOverride);
+                        	}
+                        	else {
+                        		questionWidget = new ItemsetWidget(context, fep, readOnlyOverride);
+                        	}
                         } else if (appearance.startsWith("printer")) {
                             questionWidget = new ExPrinterWidget(context, fep);
                         } else if (appearance.startsWith("ex:")) {
