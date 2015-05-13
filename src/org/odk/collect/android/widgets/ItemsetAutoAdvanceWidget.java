@@ -58,7 +58,7 @@ import android.widget.TextView;
 public class ItemsetAutoAdvanceWidget extends QuestionWidget implements
         android.widget.CompoundButton.OnCheckedChangeListener {
 
-    private static String tag = "ItemsetWidget";
+    private static String tag = "ItemsetAutoAdvanceWidget";
 
     boolean mReadOnly;
     // Hashmap linking label:value
@@ -370,6 +370,9 @@ public class ItemsetAutoAdvanceWidget extends QuestionWidget implements
             // If it got unchecked, we don't care.
         	return;
         }
+
+       	Collect.getInstance().getActivityLogger().logInstanceAction(this, tag, 
+       			mAnswers.get((String) buttonView.getText()), mPrompt.getIndex());
 
        	listener.advance();
     }
