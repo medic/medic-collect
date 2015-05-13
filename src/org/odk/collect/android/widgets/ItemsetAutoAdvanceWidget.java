@@ -19,12 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.javarosa.core.model.FormDef;
-import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.condition.EvaluationContext;
 import org.javarosa.core.model.data.IAnswerData;
-import org.javarosa.core.model.data.SelectOneData;
 import org.javarosa.core.model.data.StringData;
-import org.javarosa.core.model.data.helper.Selection;
 import org.javarosa.core.model.instance.TreeElement;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.javarosa.xpath.XPathNodeset;
@@ -49,7 +46,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -65,8 +61,6 @@ public class ItemsetAutoAdvanceWidget extends QuestionWidget implements
     private static String tag = "ItemsetWidget";
 
     boolean mReadOnly;
-    protected RadioGroup mButtons;
-    private String mAnswer = null;
     // Hashmap linking label:value
     private HashMap<String, String> mAnswers;
 
@@ -83,8 +77,6 @@ public class ItemsetAutoAdvanceWidget extends QuestionWidget implements
         
         LayoutInflater inflater = LayoutInflater.from(getContext());
         
-        mButtons = new RadioGroup(context);
-        mButtons.setId(QuestionWidget.newUniqueId());
         mReadOnly = prompt.isReadOnly() || readOnlyOverride;
         mAnswers = new HashMap<String, String>();
 
@@ -280,7 +272,6 @@ public class ItemsetAutoAdvanceWidget extends QuestionWidget implements
                         }
                         questionLayout.addView(mediaLayout);
                         addView(thisParentLayout);
-                        // mButtons.addView(rb);
                         
                         // have to add it to the radiogroup before checking it,
                         // else it lets two buttons be checked...
@@ -295,7 +286,6 @@ public class ItemsetAutoAdvanceWidget extends QuestionWidget implements
                 ida.close();
             }
 
-            addView(mButtons);
         } else {
             TextView error = new TextView(context);
             error.setText(getContext().getString(R.string.file_missing, itemsetFile.getAbsolutePath()));
@@ -312,7 +302,6 @@ public class ItemsetAutoAdvanceWidget extends QuestionWidget implements
                 return;
             }
         }
-        mAnswer = null;
     }
 
     @Override
@@ -376,7 +365,6 @@ public class ItemsetAutoAdvanceWidget extends QuestionWidget implements
                     button.setChecked(false);
                 }
             }
-            mAnswer = mAnswers.get((String) buttonView.getText());
         }
         else {
             // If it got unchecked, we don't care.
