@@ -23,6 +23,7 @@ import org.kxml2.kdom.Node;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 
@@ -33,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.channels.FileChannel;
@@ -425,6 +427,73 @@ public class FileUtils {
                 org.apache.commons.io.FileUtils.moveFileToDirectory(mediaFile, formMediaPath, true);
             }
             deleteAndReport(tempMediaFolder);
+        }
+    }
+        
+    public static void copyAsset(String path) {
+        String assets[] = null;
+        try {
+            assets = Collect.getInstance().getAssetManager().list(path);
+            if (assets.length == 0) {	// FILE
+                copyAssetFile(path);
+            } 
+            else {	// DIRECTORY
+                String fullPath = Collect.ODK_ROOT + File.separator + path;
+                File dir = new File(fullPath);
+                if (!dir.exists())
+                    dir.mkdir();
+                for (int i = 0; i < assets.length; ++i) {
+                    copyAsset(path + File.separator + assets[i]);
+                }
+            }
+        } catch (IOException ex) {
+            Log.e("asset-copy", "I/O Exception", ex);
+        }
+    }
+    
+    // Copy forms from Assets if they are not already in storage
+    private static void copyAssetFile(String filename) {
+    	File outFile = new File(Collect.ODK_ROOT, filename);
+    	        	
+    	if (outFile.exists()) {
+        	// Do not overwrite existing file
+    		// Allows built-in forms to be updated without being overwritten
+    		return;
+    	}
+    	
+        InputStream in = null;
+        OutputStream out = null;
+
+        try {
+          in = Collect.getInstance().getAssetManager().open(filename);
+          out = new FileOutputStream(outFile);
+          writeFileStream(in, out);
+          Log.d("DiskSyncTask", "Copied default form to storage: " + outFile.toString());
+        } catch(IOException e) {
+            Log.e("DiskSyncTask", "Failed to copy asset file: " + filename, e);
+        }     
+        finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    // NOOP
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    // NOOP
+                }
+            }
+        }  
+    }
+    private static void writeFileStream(InputStream in, OutputStream out) throws IOException {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+          out.write(buffer, 0, read);
         }
     }
 }

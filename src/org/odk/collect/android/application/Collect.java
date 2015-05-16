@@ -40,6 +40,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 
@@ -72,6 +73,7 @@ public class Collect extends Application {
     private FormController mFormController = null;
     private ExternalDataManager externalDataManager;
     private AlarmManager mAlarmManager;
+	private AssetManager mAssetManager;
 
     private static Collect singleton = null;
 
@@ -97,6 +99,17 @@ public class Collect extends Application {
 
     public void setExternalDataManager(ExternalDataManager externalDataManager) {
         this.externalDataManager = externalDataManager;
+    }
+
+    public AssetManager getAssetManager() {
+        if (mAssetManager == null) {
+        	mAssetManager = Collect.getInstance().getAssets();
+        }
+        return mAssetManager;
+    }
+
+    public void setAssetManager(AssetManager assetManager) {
+        this.mAssetManager = assetManager;
     }
 
     public static int getQuestionFontsize() {
