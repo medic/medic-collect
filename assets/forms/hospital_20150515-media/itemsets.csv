@@ -1,0 +1,211 @@
+list_name,name,label,hospital_district,hospital_location
+yes_no,Yes,Yes,,
+yes_no,No,No,,
+hospital_types,Public,Public,,
+hospital_types,Private,Private,,
+hospital_types,NGO,NGO,,
+hospital_types,Field_Hospital,Field Hospital,,
+hospital_types,Medical_Camp,Medical Camp,,
+hospital_districts,Bhaktapur,Bhaktapur,,
+hospital_districts,Dhading,Dhading,,
+hospital_districts,Dolakha,Dolakha,,
+hospital_districts,Gorkha,Gorkha,,
+hospital_districts,Kathmandu,Kathmandu,,
+hospital_districts,Kavrepalanchowk,Kavrepalanchowk,,
+hospital_districts,Lalitpur,Lalitpur,,
+hospital_districts,Makwanpur,Makwanpur,,
+hospital_districts,Nuwakot,Nuwakot,,
+hospital_districts,Okhaldhunga,Okhaldhunga,,
+hospital_districts,Ramechhap,Ramechhap,,
+hospital_districts,Rasuwa,Rasuwa,,
+hospital_districts,Sindhuli,Sindhuli,,
+hospital_districts,Sindhupalchowk,Sindhupalchowk,,
+hospital_districts,Other,Other,,
+hospital_locations,Bhaktapur,Bhaktapur,Bhaktapur,
+hospital_locations,Bhaktapur_Durbar_Square,Bhaktapur Durbar Square,Bhaktapur,
+hospital_locations,Gathaghar,Gathaghar,Bhaktapur,
+hospital_locations,Madhyapur_Thimi,Madhyapur Thimi,Bhaktapur,
+hospital_locations,Sallaghari,Sallaghari,Bhaktapur,
+hospital_locations,Suryabinayak,Suryabinayak,Bhaktapur,
+hospital_locations,Thimi,Thimi,Bhaktapur,
+hospital_locations,Other,Other,Bhaktapur,
+hospital_locations,Dhading,Dhading,Dhading,
+hospital_locations,Other,Other,Dhading,
+hospital_locations,Bhimeshwor_Municipality,Bhimeshwor Municipality,Dolakha,
+hospital_locations,Charikot,Charikot,Dolakha,
+hospital_locations,Dolakha,Dolakha,Dolakha,
+hospital_locations,Other,Other,Dolakha,
+hospital_locations,Gorkha_Municipality,Gorkha Municipality,Gorkha,
+hospital_locations,Other,Other,Gorkha,
+hospital_locations,Babarmahal,Babarmahal,Kathmandu,
+hospital_locations,Balambu,Balambu,Kathmandu,
+hospital_locations,Balkhu,Balkhu,Kathmandu,
+hospital_locations,Baneshwor,Baneshwor,Kathmandu,
+hospital_locations,Bansbari,Bansbari,Kathmandu,
+hospital_locations,Basundhara,Basundhara,Kathmandu,
+hospital_locations,Bhimdhunga,Bhimdhunga,Kathmandu,
+hospital_locations,Bouddha,Bouddha,Kathmandu,
+hospital_locations,Chabahil,Chabahil,Kathmandu,
+hospital_locations,Chhauni,Chhauni,Kathmandu,
+hospital_locations,Dhapasi,Dhapasi,Kathmandu,
+hospital_locations,Gwarko,Gwarko,Kathmandu,
+hospital_locations,Jorpati,Jorpati,Kathmandu,
+hospital_locations,Kalanki,Kalanki,Kathmandu,
+hospital_locations,Kalimati,Kalimati,Kathmandu,
+hospital_locations,Kathmandu,Kathmandu,Kathmandu,
+hospital_locations,Kirtipur,Kirtipur,Kathmandu,
+hospital_locations,Maharajgunj,Maharajgunj,Kathmandu,
+hospital_locations,Mitrapark,Mitrapark,Kathmandu,
+hospital_locations,New_Baneshwor,New Baneshwor,Kathmandu,
+hospital_locations,Pharping,Pharping,Kathmandu,
+hospital_locations,Putalisadak,Putalisadak,Kathmandu,
+hospital_locations,Sinamangal,Sinamangal,Kathmandu,
+hospital_locations,Singhadurbar,Singhadurbar,Kathmandu,
+hospital_locations,Tinkune,Tinkune,Kathmandu,
+hospital_locations,Tripureshwor,Tripureshwor,Kathmandu,
+hospital_locations,Other,Other,Kathmandu,
+hospital_locations,Dhulikhel,Dhulikhel,Kavrepalanchowk,
+hospital_locations,Methinkot,Methinkot,Kavrepalanchowk,
+hospital_locations,Other,Other,Kavrepalanchowk,
+hospital_locations,Indian_Army_Medical_Team,Indian Army Medical Team,Lalitpur,
+hospital_locations,Jawalakhel,Jawalakhel,Lalitpur,
+hospital_locations,Lagankhel,Lagankhel,Lalitpur,
+hospital_locations,Sanepa,Sanepa,Lalitpur,
+hospital_locations,Other,Other,Lalitpur,
+hospital_locations,Hetauda,Hetauda,Makwanpur,
+hospital_locations,Other,Other,Makwanpur,
+hospital_locations,Trisuli,Trisuli,Nuwakot,
+hospital_locations,Other,Other,Nuwakot,
+hospital_locations,Okhaldhunga,Okhaldhunga,Okhaldhunga,
+hospital_locations,Rumjatar,Rumjatar,Okhaldhunga,
+hospital_locations,Other,Other,Okhaldhunga,
+hospital_locations,Manthali,Manthali,Ramechhap,
+hospital_locations,Ramechhap,Ramechhap,Ramechhap,
+hospital_locations,Other,Other,Ramechhap,
+hospital_locations,Dhunche,Dhunche,Rasuwa,
+hospital_locations,Other,Other,Rasuwa,
+hospital_locations,Sindhuli,Sindhuli,Sindhuli,
+hospital_locations,Other,Other,Sindhuli,
+hospital_locations,Chautara,Chautara,Sindhupalchowk,
+hospital_locations,Other,Other,Sindhupalchowk,
+hospital_names,Pakistan Army Field Hospital,Pakistan Army Field Hospital,Bhaktapur,Bhaktapur
+hospital_names,Other,Other,Bhaktapur,Bhaktapur
+hospital_names,Turkey Camp,Turkey Camp,Bhaktapur,Bhaktapur
+hospital_names,Chinese Camp,Chinese Camp,Bhaktapur,Bhaktapur_Durbar_Square
+hospital_names,Other,Other,Bhaktapur,Bhaktapur_Durbar_Square
+hospital_names,Nagarik Hospital,Nagarik Hospital,Bhaktapur,Gathaghar
+hospital_names,Other,Other,Bhaktapur,Gathaghar
+hospital_names,Madhyapur Hospital,Madhyapur Hospital,Bhaktapur,Madhyapur_Thimi
+hospital_names,Other,Other,Bhaktapur,Madhyapur_Thimi
+hospital_names,Bhaktapur Hospital,Bhaktapur Hospital,Bhaktapur,Sallaghari
+hospital_names,Dr. Iwamura Hospital,Dr. Iwamura Hospital,Bhaktapur,Sallaghari
+hospital_names,Other,Other,Bhaktapur,Sallaghari
+hospital_names,Siddhi Memorial Hospital,Siddhi Memorial Hospital,Bhaktapur,Suryabinayak
+hospital_names,Other,Other,Bhaktapur,Suryabinayak
+hospital_names,Korea Nepal Friendship Hospital,Korea Nepal Friendship Hospital,Bhaktapur,Thimi
+hospital_names,Other,Other,Bhaktapur,Thimi
+hospital_names,"District hospital, Dhading","District hospital, Dhading",Dhading,Dhading
+hospital_names,Other,Other,Dhading,Dhading
+hospital_names,Gaurisankar Hospital,Gaurisankar Hospital,Dolakha,Bhimeshwor_Municipality
+hospital_names,Other,Other,Dolakha,Bhimeshwor_Municipality
+hospital_names,Charikot PHC,Charikot PHC,Dolakha,Charikot
+hospital_names,Other,Other,Dolakha,Charikot
+hospital_names,Jiri Hospital,Jiri Hospital,Dolakha,Dolakha
+hospital_names,Other,Other,Dolakha,Dolakha
+hospital_names,"District hospital, Gorkha","District hospital, Gorkha",Gorkha,Gorkha_Municipality
+hospital_names,Other,Other,Gorkha,Gorkha_Municipality
+hospital_names,HAMS Hospital,HAMS Hospital,Kathmandu,Babarmahal
+hospital_names,Other,Other,Kathmandu,Babarmahal
+hospital_names,Nepal APF Hospital,Nepal APF Hospital,Kathmandu,Balambu
+hospital_names,Other,Other,Kathmandu,Balambu
+hospital_names,Shiva Jyoti Hospital,Shiva Jyoti Hospital,Kathmandu,Balkhu
+hospital_names,Vayodha Hospital,Vayodha Hospital,Kathmandu,Balkhu
+hospital_names,Other,Other,Kathmandu,Balkhu
+hospital_names,Bharosa Hospital Pvt Ltd,Bharosa Hospital Pvt Ltd,Kathmandu,Baneshwor
+hospital_names,Venus International Hospital,Venus International Hospital,Kathmandu,Baneshwor
+hospital_names,Other,Other,Kathmandu,Baneshwor
+hospital_names,National Institute of Neurological & Allied Sciences,National Institute of Neurological & Allied Sciences,Kathmandu,Bansbari
+hospital_names,Other,Other,Kathmandu,Bansbari
+hospital_names,Chirayu National Health & Research Center Pvt Ltd,Chirayu National Health & Research Center Pvt Ltd,Kathmandu,Basundhara
+hospital_names,Kantipur General and Dental Hospital,Kantipur General and Dental Hospital,Kathmandu,Basundhara
+hospital_names,Other,Other,Kathmandu,Basundhara
+hospital_names,Bhimdhunga SHP,Bhimdhunga SHP,Kathmandu,Bhimdhunga
+hospital_names,Other,Other,Kathmandu,Bhimdhunga
+hospital_names,Stupa Community Hospital,Stupa Community Hospital,Kathmandu,Bouddha
+hospital_names,Other,Other,Kathmandu,Bouddha
+hospital_names,Helping Hands Community Hospital,Helping Hands Community Hospital,Kathmandu,Chabahil
+hospital_names,Medicare National Hospital Pvt Ltd,Medicare National Hospital Pvt Ltd,Kathmandu,Chabahil
+hospital_names,Om Hospital & Research Center,Om Hospital & Research Center,Kathmandu,Chabahil
+hospital_names,Other,Other,Kathmandu,Chabahil
+hospital_names,Army Israeli Camp,Army Israeli Camp,Kathmandu,Chhauni
+hospital_names,Nepal Army Hospital,Nepal Army Hospital,Kathmandu,Chhauni
+hospital_names,Other,Other,Kathmandu,Chhauni
+hospital_names,Grande Hospital,Grande Hospital,Kathmandu,Dhapasi
+hospital_names,Other,Other,Kathmandu,Dhapasi
+hospital_names,Kist Medical College,Kist Medical College,Kathmandu,Gwarko
+hospital_names,Other,Other,Kathmandu,Gwarko
+hospital_names,Nepal Apanga Sangha Orthopedic Hospital,Nepal Apanga Sangha Orthopedic Hospital,Kathmandu,Jorpati
+hospital_names,Nepal Medical College,Nepal Medical College,Kathmandu,Jorpati
+hospital_names,Shankarapur Hospital,Shankarapur Hospital,Kathmandu,Jorpati
+hospital_names,Other,Other,Kathmandu,Jorpati
+hospital_names,Sahid Memorial Hospital,Sahid Memorial Hospital,Kathmandu,Kalanki
+hospital_names,Other,Other,Kathmandu,Kalanki
+hospital_names,Jyoti Hospital,Jyoti Hospital,Kathmandu,Kalimati
+hospital_names,Other,Other,Kathmandu,Kalimati
+hospital_names,Bir Hospital,Bir Hospital,Kathmandu,Kathmandu
+hospital_names,Other,Other,Kathmandu,Kathmandu
+hospital_names,Kritipur Hospital (NGO),Kritipur Hospital (NGO),Kathmandu,Kirtipur
+hospital_names,Other,Other,Kathmandu,Kirtipur
+hospital_names,Nepal Prahari Hospital,Nepal Prahari Hospital,Kathmandu,Maharajgunj
+hospital_names,Teaching Hospital (Tribhuvan University),Teaching Hospital (Tribhuvan University),Kathmandu,Maharajgunj
+hospital_names,Other,Other,Kathmandu,Maharajgunj
+hospital_names,Dirghayu hospital,Dirghayu hospital,Kathmandu,Mitrapark
+hospital_names,Other,Other,Kathmandu,Mitrapark
+hospital_names,Civil Services Hospital,Civil Services Hospital,Kathmandu,New_Baneshwor
+hospital_names,Other,Other,Kathmandu,New_Baneshwor
+hospital_names,Manmohan Memorial Community Hospital,Manmohan Memorial Community Hospital,Kathmandu,Pharping
+hospital_names,Other,Other,Kathmandu,Pharping
+hospital_names,Capital Hospital,Capital Hospital,Kathmandu,Putalisadak
+hospital_names,Other,Other,Kathmandu,Putalisadak
+hospital_names,Kathmandu Medical College,Kathmandu Medical College,Kathmandu,Sinamangal
+hospital_names,Other,Other,Kathmandu,Sinamangal
+hospital_names,Chinese Camp,Chinese Camp,Kathmandu,Singhadurbar
+hospital_names,Other,Other,Kathmandu,Singhadurbar
+hospital_names,Kantipur Hospital,Kantipur Hospital,Kathmandu,Tinkune
+hospital_names,Other,Other,Kathmandu,Tinkune
+hospital_names,Blue Cross hospital Pvt Ltd,Blue Cross hospital Pvt Ltd,Kathmandu,Tripureshwor
+hospital_names,Kathmandu Hospital,Kathmandu Hospital,Kathmandu,Tripureshwor
+hospital_names,Other,Other,Kathmandu,Tripureshwor
+hospital_names,Dhulikhel Hospital,Dhulikhel Hospital,Kavrepalanchowk,Dhulikhel
+hospital_names,Sheer Memorial Hospital,Sheer Memorial Hospital,Kavrepalanchowk,Dhulikhel
+hospital_names,Other,Other,Kavrepalanchowk,Dhulikhel
+hospital_names,Methinkot Hospital,Methinkot Hospital,Kavrepalanchowk,Methinkot
+hospital_names,Other,Other,Kavrepalanchowk,Methinkot
+hospital_names,Indian Army Medical Team,Indian Army Medical Team,Lalitpur,Indian_Army_Medical_Team
+hospital_names,Other,Other,Lalitpur,Indian_Army_Medical_Team
+hospital_names,Alka Hospital,Alka Hospital,Lalitpur,Jawalakhel
+hospital_names,Other,Other,Lalitpur,Jawalakhel
+hospital_names,Midat Hospital,Midat Hospital,Lalitpur,Lagankhel
+hospital_names,Patan Academy of Health Sciences,Patan Academy of Health Sciences,Lalitpur,Lagankhel
+hospital_names,Other,Other,Lalitpur,Lagankhel
+hospital_names,Star Hospital,Star Hospital,Lalitpur,Sanepa
+hospital_names,Other,Other,Lalitpur,Sanepa
+hospital_names,Hetauda Community Hospital,Hetauda Community Hospital,Makwanpur,Hetauda
+hospital_names,Hetauda Hospital,Hetauda Hospital,Makwanpur,Hetauda
+hospital_names,Other,Other,Makwanpur,Hetauda
+hospital_names,Trisuli Hospital,Trisuli Hospital,Nuwakot,Trisuli
+hospital_names,Other,Other,Nuwakot,Trisuli
+hospital_names,Okhaldhunga Community Hospital,Okhaldhunga Community Hospital,Okhaldhunga,Okhaldhunga
+hospital_names,Other,Other,Okhaldhunga,Okhaldhunga
+hospital_names,"District Hospital, Okhaldhunga","District Hospital, Okhaldhunga",Okhaldhunga,Rumjatar
+hospital_names,Other,Other,Okhaldhunga,Rumjatar
+hospital_names,Manthali Hospital,Manthali Hospital,Ramechhap,Manthali
+hospital_names,Other,Other,Ramechhap,Manthali
+hospital_names,"District Hospital, Ramechhap","District Hospital, Ramechhap",Ramechhap,Ramechhap
+hospital_names,Other,Other,Ramechhap,Ramechhap
+hospital_names,"District hospital, Rasuwa","District hospital, Rasuwa",Rasuwa,Dhunche
+hospital_names,Other,Other,Rasuwa,Dhunche
+hospital_names,"District hospital, Sindhuli","District hospital, Sindhuli",Sindhuli,Sindhuli
+hospital_names,Other,Other,Sindhuli,Sindhuli
+hospital_names,Chautara Hospital,Chautara Hospital,Sindhupalchowk,Chautara
+hospital_names,Other,Other,Sindhupalchowk,Chautara

@@ -1,0 +1,351 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>Daily Hospital Surveillance (20150515)</h:title>
+    <model>
+      <itext>
+        <translation default="true()" lang="default"/>
+      </itext>
+      <instance>
+        <hospital_20150515 id="hospital_20150515" prefix="J1!NH004!" delimiter="#">
+          <report_date tag="date"/>
+          <hospital_district tag="hdis"/>
+          <other_hospital_district tag="hdiso"/>
+          <hospital_location tag="hloc"/>
+          <other_hospital_location tag="hloco"/>
+          <hospital_name tag="hname"/>
+          <other_hospital_name tag="hnameo"/>
+          <hospital_type tag="htype"/>
+          <group_focal>
+            <focal_name tag="hfname" />
+            <focal_post tag="hfpost" />
+            <focal_phone tag="hfphone" />
+            <focal_email tag="hfemail" />
+          </group_focal>
+          <opd_patients tag="opd" />
+          <ipd_patients tag="ipd"/>
+          <surgery_major tag="sm"/>
+          <surgery_complications tag="sc" />
+          <deliveries_vaginal tag="dv" />
+          <deliveries_cs tag="dc" />
+          <mental_health tag="mh" />
+          <referred tag="pr" />
+          <group_influenza>
+            <influenza_under_five tag="iu5" />
+            <influenza_five_over tag="i5o" />
+          </group_influenza>
+          <group_respiratory>
+            <respiratory_under_five tag="ru5" />
+            <respiratory_five_over tag="r5o" />
+          </group_respiratory>
+          <group_watery_diarrhoea>
+            <watery_diarrhoea_under_five tag="wu5" />
+            <watery_diarrhoea_five_over tag="w5o" />
+          </group_watery_diarrhoea>
+          <group_bloody_diarrhoea>
+            <bloody_diarrhoea_under_five tag="bu5" />
+            <bloody_diarrhoea_five_over tag="b5o" />
+          </group_bloody_diarrhoea>
+          <group_fever_jaundice>
+            <fever_jaundice_under_five tag="fju5" />
+            <fever_jaundice_five_over tag="fj5o" />
+          </group_fever_jaundice>
+          <group_fever_rash>
+            <fever_rash_under_five tag="fru5" />
+            <fever_rash_five_over tag="fr5o" />
+          </group_fever_rash>
+          <group_fever_other>
+            <fever_other_under_five tag="fou5" />
+            <fever_other_five_over tag="fo5o" />
+          </group_fever_other>
+          <outbreak tag="ob" />
+          <outbreak_what tag="ob_wt" />
+          <outbreak_where tag="ob_wr" />
+          <needs tag="nd"/>
+          <meta>
+            <start tag="m_st" />
+            <end tag="m_et" />
+            <today tag="m_t" />
+            <phonenumber tag="m_p" />
+            <deviceID tag="m_d" />
+            <subscriberID tag="m_s" />
+            <instanceID tag="m_i" />
+          </meta>
+        </hospital_20150515>
+      </instance>
+      <bind constraint=". &lt;= today()" jr:constraintMsg="Dates in the future are not allowed." nodeset="/hospital_20150515/report_date" required="true()" type="date"/>
+      <bind nodeset="/hospital_20150515/hospital_district" required="true()" type="select1"/>
+      <bind nodeset="/hospital_20150515/other_hospital_district" relevant=" /hospital_20150515/hospital_district  = &quot;Other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/hospital_location" relevant=" /hospital_20150515/hospital_district  != &quot;Other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/other_hospital_location" relevant=" /hospital_20150515/hospital_district  = &quot;Other&quot; or  /hospital_20150515/hospital_location  = &quot;Other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/hospital_name" relevant=" /hospital_20150515/hospital_district  != &quot;Other&quot; and  /hospital_20150515/hospital_location  != &quot;Other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/other_hospital_name" relevant=" /hospital_20150515/hospital_district  = &quot;Other&quot; or  /hospital_20150515/hospital_location  = &quot;Other&quot; or  /hospital_20150515/hospital_name  = &quot;Other&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/hospital_type" required="true()" type="select1"/>
+      <bind nodeset="/hospital_20150515/group_focal/focal_name" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/group_focal/focal_post" required="false()" type="string"/>
+      <bind constraint="string-length(.) &gt;= 8 and string-length(.) &lt;= 10" jr:constraintMsg="Phone number must be between 8 and 10 digits long." nodeset="/hospital_20150515/group_focal/focal_phone" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/group_focal/focal_email" required="false()" type="string"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/opd_patients" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/ipd_patients" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/surgery_major" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/surgery_complications" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/deliveries_vaginal" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/deliveries_cs" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/mental_health" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/referred" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_influenza/influenza_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_influenza/influenza_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_respiratory/respiratory_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_respiratory/respiratory_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_watery_diarrhoea/watery_diarrhoea_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_watery_diarrhoea/watery_diarrhoea_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_bloody_diarrhoea/bloody_diarrhoea_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_bloody_diarrhoea/bloody_diarrhoea_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_fever_jaundice/fever_jaundice_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_fever_jaundice/fever_jaundice_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_fever_rash/fever_rash_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_fever_rash/fever_rash_five_over" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_fever_other/fever_other_under_five" required="true()" type="int"/>
+      <bind constraint="(. &gt;=0) and (. &lt; 10000)" jr:constraintMsg="Number must be between 0 and 9999." nodeset="/hospital_20150515/group_fever_other/fever_other_five_over" required="true()" type="int"/>
+      <bind nodeset="/hospital_20150515/outbreak" required="true()" type="select1"/>
+      <bind nodeset="/hospital_20150515/outbreak_what" relevant=" /hospital_20150515/outbreak  = &quot;Yes&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/outbreak_where" relevant=" /hospital_20150515/outbreak  = &quot;Yes&quot;" required="true()" type="string"/>
+      <bind nodeset="/hospital_20150515/needs" required="false()" type="string"/>
+      <bind jr:preload="timestamp" jr:preloadParams="start" nodeset="/hospital_20150515/meta/start" type="dateTime"/>
+      <bind jr:preload="timestamp" jr:preloadParams="end" nodeset="/hospital_20150515/meta/end" type="dateTime"/>
+      <bind jr:preload="date" jr:preloadParams="today" nodeset="/hospital_20150515/meta/today" type="date"/>
+      <bind jr:preload="property" jr:preloadParams="uri:subscriberid" nodeset="/hospital_20150515/meta/subscriberID" type="string"/>
+      <bind jr:preload="property" jr:preloadParams="uri:deviceid" nodeset="/hospital_20150515/meta/deviceID" type="string"/>
+      <bind jr:preload="property" jr:preloadParams="phonenumber" nodeset="/hospital_20150515/meta/phonenumber" type="string"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/hospital_20150515/meta/instanceID" readonly="true()" type="string"/>
+    </model>
+  </h:head>
+  <h:body class="pages">
+    <input appearance="no-calendar" ref="/hospital_20150515/report_date">
+      <label>Date of report</label>
+    </input>
+    <select1 appearance="quick" ref="/hospital_20150515/hospital_district">
+      <label>Hospital District</label>
+      <item>
+        <label>Bhaktapur</label>
+        <value>Bhaktapur</value>
+      </item>
+      <item>
+        <label>Kathmandu</label>
+        <value>Kathmandu</value>
+      </item>
+      <item>
+        <label>Lalitpur</label>
+        <value>Lalitpur</value>
+      </item>
+      <item>
+        <label>Rasuwa</label>
+        <value>Rasuwa</value>
+      </item>
+      <item>
+        <label>Dhading</label>
+        <value>Dhading</value>
+      </item>
+      <item>
+        <label>Sindhupalchowk</label>
+        <value>Sindhupalchowk</value>
+      </item>
+      <item>
+        <label>Okhaldhunga</label>
+        <value>Okhaldhunga</value>
+      </item>
+      <item>
+        <label>Gorkha</label>
+        <value>Gorkha</value>
+      </item>
+      <item>
+        <label>Sindhuli</label>
+        <value>Sindhuli</value>
+      </item>
+      <item>
+        <label>Ramechhap</label>
+        <value>Ramechhap</value>
+      </item>
+      <item>
+        <label>Dolakha</label>
+        <value>Dolakha</value>
+      </item>
+      <item>
+        <label>Kavrepalanchowk</label>
+        <value>Kavrepalanchowk</value>
+      </item>
+      <item>
+        <label>Nuwakot</label>
+        <value>Nuwakot</value>
+      </item>
+      <item>
+        <label>Makwanpur</label>
+        <value>Makwanpur</value>
+      </item>
+      <item>
+        <label>Other</label>
+        <value>Other</value>
+      </item>
+    </select1>
+    <input ref="/hospital_20150515/other_hospital_district">
+      <label>Hospital District (please type it out)</label>
+    </input>
+    <input appearance="quick" ref="/hospital_20150515/hospital_location" query="instance('hospital_locations')/root/item[hospital_district= /hospital_20150515/hospital_district ]">
+      <label>Hospital Location</label>
+    </input>
+    <input ref="/hospital_20150515/other_hospital_location">
+      <label>Hospital Location (please type it out)</label>
+    </input>
+    <input appearance="quick" ref="/hospital_20150515/hospital_name" query="instance('hospital_names')/root/item[hospital_district= /hospital_20150515/hospital_district  and hospital_location= /hospital_20150515/hospital_location ]">
+      <label>Name of Hospital/Temp. Hospital</label>
+    </input>
+    <input ref="/hospital_20150515/other_hospital_name">
+      <label>Name of Hospital/Temp. Hospital (please type it out)</label>
+    </input>
+    <select1 appearance="quick" ref="/hospital_20150515/hospital_type">
+      <label>Hospital Type</label>
+      <item>
+        <label>Public</label>
+        <value>Public</value>
+      </item>
+      <item>
+        <label>Private</label>
+        <value>Private</value>
+      </item>
+      <item>
+        <label>NGO</label>
+        <value>NGO</value>
+      </item>
+      <item>
+        <label>Field Hospital</label>
+        <value>Field_Hospital</value>
+      </item>
+      <item>
+        <label>Medical Camp</label>
+        <value>Medical_Camp</value>
+      </item>
+    </select1>
+    <group appearance="field-list" ref="/hospital_20150515/group_focal">
+      <label>Focal Point</label>
+      <input ref="/hospital_20150515/group_focal/focal_name">
+        <label>Name</label>
+      </input>
+      <input ref="/hospital_20150515/group_focal/focal_post">
+        <label>Post</label>
+      </input>
+      <input appearance="numbers" ref="/hospital_20150515/group_focal/focal_phone">
+        <label>Phone Number</label>
+      </input>
+      <input ref="/hospital_20150515/group_focal/focal_email">
+        <label>Email</label>
+      </input>
+    </group>
+    <input ref="/hospital_20150515/opd_patients">
+      <label>New OPD patients treated (all)</label>
+    </input>
+    <input ref="/hospital_20150515/ipd_patients">
+      <label>New cases admitted (earthquake victims only)</label>
+    </input>
+    <input ref="/hospital_20150515/surgery_major">
+      <label>No. of major surgeries performed (earthquake victims only)</label>
+    </input>
+    <input ref="/hospital_20150515/surgery_complications">
+      <label>No. of post surgery complications (earthquake victims only)</label>
+    </input>
+    <input ref="/hospital_20150515/deliveries_vaginal">
+      <label>No. of vaginal deliveries performed (all)</label>
+    </input>
+    <input ref="/hospital_20150515/deliveries_cs">
+      <label>No. of C/S deliveries performed (all)</label>
+    </input>
+    <input ref="/hospital_20150515/mental_health">
+      <label>No. of clients provided psychosocial counseling/mental health services (earthquake survivors)</label>
+    </input>
+    <input ref="/hospital_20150515/referred">
+      <label>No. of patients referred out from the hospital (earthquake victims only)</label>
+    </input>
+    <group appearance="field-list" ref="/hospital_20150515/group_influenza">
+      <label>Number of NEW cases (epidemic prone) in general OPD (all patients)</label>
+      <input ref="/hospital_20150515/group_influenza/influenza_under_five">
+        <label>Influenza Like Illness &lt; 5 Years</label>
+      </input>
+      <input ref="/hospital_20150515/group_influenza/influenza_five_over">
+        <label>Influenza Like Illness &gt;= 5 Years</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/hospital_20150515/group_respiratory">
+      <label>Number of NEW cases (epidemic prone) in general OPD (all patients)</label>
+      <input ref="/hospital_20150515/group_respiratory/respiratory_under_five">
+        <label>Severe Acute Respiratory Syndrome &lt; 5 Years</label>
+      </input>
+      <input ref="/hospital_20150515/group_respiratory/respiratory_five_over">
+        <label>Severe Acute Respiratory Syndrome &gt;= 5 Years</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/hospital_20150515/group_watery_diarrhoea">
+      <label>Number of NEW cases (epidemic prone) in general OPD (all patients)</label>
+      <input ref="/hospital_20150515/group_watery_diarrhoea/watery_diarrhoea_under_five">
+        <label>Watery Diarrhoea &lt; 5 Years</label>
+      </input>
+      <input ref="/hospital_20150515/group_watery_diarrhoea/watery_diarrhoea_five_over">
+        <label>Watery Diarrhoea &gt;=5 Years</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/hospital_20150515/group_bloody_diarrhoea">
+      <label>Number of NEW cases (epidemic prone) in general OPD (all patients)</label>
+      <input ref="/hospital_20150515/group_bloody_diarrhoea/bloody_diarrhoea_under_five">
+        <label>Bloody Diarrhoea &lt; 5 Years</label>
+      </input>
+      <input ref="/hospital_20150515/group_bloody_diarrhoea/bloody_diarrhoea_five_over">
+        <label>Bloody Diarrhoea &gt;=5 Years</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/hospital_20150515/group_fever_jaundice">
+      <label>Number of NEW cases (epidemic prone) in general OPD (all patients)</label>
+      <input ref="/hospital_20150515/group_fever_jaundice/fever_jaundice_under_five">
+        <label>Fever with Jaundice &lt; 5 Years</label>
+      </input>
+      <input ref="/hospital_20150515/group_fever_jaundice/fever_jaundice_five_over">
+        <label>Fever with Jaundice &gt;= 5 Years</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/hospital_20150515/group_fever_rash">
+      <label>Number of NEW cases (epidemic prone) in general OPD (all patients)</label>
+      <input ref="/hospital_20150515/group_fever_rash/fever_rash_under_five">
+        <label>Fever with rash &lt; 5 Years</label>
+      </input>
+      <input ref="/hospital_20150515/group_fever_rash/fever_rash_five_over">
+        <label>Fever with rash &gt;= 5 Years</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/hospital_20150515/group_fever_other">
+      <label>Number of NEW cases (epidemic prone) in general OPD (all patients)</label>
+      <input ref="/hospital_20150515/group_fever_other/fever_other_under_five">
+        <label>Fever without rash and jaundice &lt; 5 Years</label>
+      </input>
+      <input ref="/hospital_20150515/group_fever_other/fever_other_five_over">
+        <label>Fever without rash and jaundice &gt;= 5 Years</label>
+      </input>
+    </group>
+    <select1 appearance="quick" ref="/hospital_20150515/outbreak">
+      <label>Do the data/information (on the previous section) suggest a potential outbreak?</label>
+      <item>
+        <label>Yes</label>
+        <value>Yes</value>
+      </item>
+      <item>
+        <label>No</label>
+        <value>No</value>
+      </item>
+    </select1>
+    <input ref="/hospital_20150515/outbreak_what">
+      <label>What is the potential outbreak?</label>
+    </input>
+    <input ref="/hospital_20150515/outbreak_where">
+      <label>Where is the potential outbreak?</label>
+    </input>
+    <input appearance="multiline" ref="/hospital_20150515/needs">
+      <label>Any immediate needs/support required?</label>
+    </input>
+  </h:body>
+</h:html>
