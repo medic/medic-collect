@@ -17,6 +17,7 @@ package org.odk.collect.android.activities;
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.preferences.PreferencesActivity;
+import org.odk.collect.android.utilities.FileUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,6 +32,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -88,6 +90,13 @@ public class SplashScreenActivity extends Activity {
             mSharedPreferences.getString(PreferencesActivity.KEY_SPLASH_PATH,
                 getString(R.string.default_splash_path));
 
+        if (firstRun) {
+        	// Copy collect.settings from assets so that when you re-launch ODK Collect, 
+        	// it will automatically load those settings, and delete that file.
+        	Log.i("SplashScreen", "First Run. Copying collect.settings");
+        	FileUtils.copyAsset("collect.settings");
+        }
+        
         // if you've increased version code, then update the version number and set firstRun to true
         if (mSharedPreferences.getLong(PreferencesActivity.KEY_LAST_VERSION, 0) < packageInfo.versionCode) {
             editor.putLong(PreferencesActivity.KEY_LAST_VERSION, packageInfo.versionCode);
