@@ -469,6 +469,8 @@ public class FileUtils {
           out = new FileOutputStream(outFile);
           writeFileStream(in, out);
           Log.d("DiskSyncTask", "Copied default form to storage: " + outFile.toString());
+        } catch(FileNotFoundException e) {
+            Log.i("DiskSyncTask", "Asset file does not exist: " + filename);
         } catch(IOException e) {
             Log.e("DiskSyncTask", "Failed to copy asset file: " + filename, e);
         }     
