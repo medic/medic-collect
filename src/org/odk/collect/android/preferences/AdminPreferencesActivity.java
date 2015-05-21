@@ -79,6 +79,9 @@ public class AdminPreferencesActivity extends PreferenceActivity {
     public static String KEY_SAVE_AS = "save_as";
     public static String KEY_MARK_AS_FINALIZED = "mark_as_finalized";
 
+    public static String KEY_NOTIFICATION_TOGGLE = "notification_toggle";
+    public static String KEY_NOTIFICATION_CONFIG = "notification_config";
+
     public static String KEY_AUTOSEND_WIFI = "autosend_wifi";
     public static String KEY_AUTOSEND_NETWORK = "autosend_network";
 

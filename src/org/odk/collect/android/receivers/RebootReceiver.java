@@ -11,8 +11,6 @@ public class RebootReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (Collect.getInstance().getResources().getBoolean(R.bool.show_alarm_notifications)) {
-        	Collect.getInstance().setAlarm();
-        }
+        Collect.getInstance().getScheduledNotifications().initialize();
 	}
 }

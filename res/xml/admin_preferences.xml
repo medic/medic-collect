@@ -100,6 +100,18 @@
             android:summary="@string/found_in_settings"
             android:title="@string/autosend_network" />
         <CheckBoxPreference
+            android:id="@+id/notification_toggle"
+            android:defaultValue="true"
+            android:key="notification_toggle"
+            android:summary="@string/found_in_settings"
+            android:title="@string/notification_toggle" />
+        <CheckBoxPreference
+            android:id="@+id/notification_config"
+            android:defaultValue="true"
+            android:key="notification_config"
+            android:summary="@string/found_in_settings"
+            android:title="@string/notification_config" />
+        <CheckBoxPreference
             android:id="@+id/navigation"
             android:defaultValue="true"
             android:key="navigation"

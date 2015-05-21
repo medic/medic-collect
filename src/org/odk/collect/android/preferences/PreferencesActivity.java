@@ -14,12 +14,16 @@
 
 package org.odk.collect.android.preferences;
 
+import it.sauronsoftware.cron4j.SchedulingPattern;
+
 import java.util.ArrayList;
 
 import org.odk.collect.android.R;
+import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.logic.FormController;
 import org.odk.collect.android.logic.PropertyManager;
 import org.odk.collect.android.utilities.MediaUtils;
+import org.odk.collect.android.utilities.ScheduledNotifications;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -109,6 +113,11 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
   public static final String KEY_NAVIGATION = "navigation";
   public static final String KEY_CONSTRAINT_BEHAVIOR = "constraint_behavior";
+  
+  public static final String KEY_NOTIFICATION_TOGGLE = "notification_toggle";
+  public static final String KEY_NOTIFICATION_SCHEDULE = "notification_schedule";
+  public static final String KEY_NOTIFICATION_TITLE = "notification_title";
+  public static final String KEY_NOTIFICATION_CONTENT = "notification_content";
 
   private PreferenceScreen mSplashPathPreference;
 
@@ -125,13 +134,20 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
   protected EditTextPreference mUsernamePreference;
   protected EditTextPreference mPasswordPreference;
-
+  
+  private CheckBoxPreference mNotificationTogglePreference;
+  protected EditTextPreference mNotificationSchedulePreference;
+  protected EditTextPreference mNotificationTitlePreference;
+  protected EditTextPreference mNotificationContentPreference;
+  
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     addPreferencesFromResource(R.xml.preferences);
 
     setTitle(getString(R.string.general_preferences));
+
+    Collect.getInstance().setPreferenceActivity(this);
 
     // not super safe, but we're just putting in this mode to help
     // administrate
@@ -160,10 +176,73 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
     mSplashPathPreference = (PreferenceScreen) findPreference(KEY_SPLASH_PATH);
     mConstraintBehaviorPreference = (ListPreference) findPreference(KEY_CONSTRAINT_BEHAVIOR);
 
+    PreferenceCategory notificationCategory = (PreferenceCategory) findPreference(getString(R.string.notification_category));
+    mNotificationTogglePreference = (CheckBoxPreference) findPreference(KEY_NOTIFICATION_TOGGLE);
+    mNotificationTogglePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+	      	if ((boolean)newValue) {
+	      		Collect.getInstance().getScheduledNotifications().set(mNotificationSchedulePreference.getText());
+	      	}
+	      	else {
+	      		Collect.getInstance().getScheduledNotifications().cancel();
+	      	}
+	      	return true;
+        }
+      });
+    mNotificationSchedulePreference= (EditTextPreference) findPreference(KEY_NOTIFICATION_SCHEDULE);
+    mNotificationTitlePreference= (EditTextPreference) findPreference(KEY_NOTIFICATION_TITLE);
+    mNotificationContentPreference= (EditTextPreference) findPreference(KEY_NOTIFICATION_CONTENT);
+    
+    mNotificationSchedulePreference.setSummary(mNotificationSchedulePreference.getText());
+    mNotificationSchedulePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+
+      @Override
+      public boolean onPreferenceChange(Preference preference, Object newValue) {
+    	if (Collect.getInstance().getScheduledNotifications().set((String)newValue)) {
+            mNotificationSchedulePreference.setSummary((String)newValue);
+            return true;    		
+    	}
+    	else {
+    		final AlertDialog.Builder builder = new AlertDialog.Builder(Collect.getInstance().getPreferenceActivity());
+            builder.setTitle(getString(R.string.notification_schedule_not_saved));
+            builder.setMessage(getString(R.string.notification_schedule_error));
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.show();
+    		return false;
+    	}
+      }
+    });
+
+    mNotificationTitlePreference.setOnPreferenceChangeListener(this);
+    mNotificationTitlePreference.setSummary(mNotificationTitlePreference.getText());
+
+    mNotificationContentPreference.setOnPreferenceChangeListener(this);
+    mNotificationContentPreference.setSummary(mNotificationContentPreference.getText());
+
     mUsernamePreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_USERNAME);
     mPasswordPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_PASSWORD);
 
     mProtocolSettings = (PreferenceScreen) findPreference(KEY_PROTOCOL_SETTINGS);
+
+    boolean notificationToggleAvailable = adminPreferences.getBoolean(
+        AdminPreferencesActivity.KEY_NOTIFICATION_TOGGLE, true);
+    if (!(notificationToggleAvailable || adminMode)) {
+    	notificationCategory.removePreference(mNotificationTogglePreference);
+    }
+
+    boolean notificationConfigAvailable = adminPreferences.getBoolean(
+            AdminPreferencesActivity.KEY_NOTIFICATION_CONFIG, true);
+    if (!(notificationConfigAvailable || adminMode)) {
+    	notificationCategory.removePreference(mNotificationSchedulePreference);
+    	notificationCategory.removePreference(mNotificationTitlePreference);
+    	notificationCategory.removePreference(mNotificationContentPreference);
+    }
+
+    if (!(notificationToggleAvailable || notificationConfigAvailable || adminMode)) {
+      getPreferenceScreen().removePreference(notificationCategory);
+    }
 
     boolean autosendWifiAvailable = adminPreferences.getBoolean(
         AdminPreferencesActivity.KEY_AUTOSEND_WIFI, true);

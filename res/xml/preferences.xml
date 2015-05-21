@@ -61,6 +61,40 @@
             android:title="@string/autosend_network" />
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="@string/notification_category"
+        android:title="@string/notification_category" >
+        <CheckBoxPreference
+            android:id="@+id/notification_toggle"
+            android:defaultValue="false"
+            android:key="notification_toggle"
+            android:summary="@string/notification_toggle_summary"
+            android:title="@string/notification_toggle" />
+        <EditTextPreference
+            android:id="@+id/notification_schedule"
+            android:defaultValue="@string/default_notification_schedule"
+            android:dialogTitle="@string/change_notification_schedule"
+            android:inputType="textNoSuggestions"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:key="notification_schedule"
+            android:title="@string/notification_schedule" />
+        <EditTextPreference
+            android:id="@+id/notification_title"
+            android:defaultValue="@string/default_notification_title"
+            android:dialogTitle="@string/change_notification_title"
+            android:inputType="text"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:key="notification_title"
+            android:title="@string/notification_title" />
+        <EditTextPreference
+            android:id="@+id/notification_content"
+            android:defaultValue="@string/default_notification_content"
+            android:dialogTitle="@string/change_notification_content"
+            android:inputType="text"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:key="notification_content"
+            android:title="@string/notification_content" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="@string/client"
         android:title="@string/client" >
        <ListPreference android:id="@+id/constraint_behavior"
