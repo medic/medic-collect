@@ -122,7 +122,7 @@
   <string name="username">Jina la mtumiaji</string>
   <string name="view_hierarchy">Enda</string>
   <string name="general_preferences">Mazingira ya Jumla</string>
-  <string name="click_to_web">Gusa ili kuelekea http://opendatakit.org</string>
+  <string name="click_to_web">Gusa ili kuelekea http://medicmobile.org</string>
   <string name="client">Sura ya kutumika</string>
   <string name="show_splash">Onyesha kioo</string>
   <string name="show_splash_summary">Huonyesha ala linapoanza</string>
@@ -132,7 +132,7 @@
   <string name="use_odk_default">Tumia picha ya kawaida</string>
   <string name="change_splash_path">Badilisha picha</string>
   <string name="show_location">Onyesha Eneo/Mahali</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">Hifadhi mabadiliko</string>
   <string name="go_to_location">Enda kwa Eneo/Mahali</string>
   <string name="change_formlist_url">Njia ya orodha ya Fomu (imeelekezwa URL)</string>

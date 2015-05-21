@@ -130,7 +130,7 @@
   <string name="username">Gebruikersnaam</string>
   <string name="view_hierarchy">Ga naar vraag</string>
   <string name="general_preferences">Instellingen</string>
-  <string name="click_to_web">Ga naar http://opendatakit.org</string>
+  <string name="click_to_web">Ga naar http://medicmobile.org</string>
   <string name="client">Client</string>
   <string name="show_splash">Toon welkomstscherm</string>
   <string name="show_splash_summary">Toon welkomstscherm bij opstarten van de applicatie</string>
@@ -140,7 +140,7 @@
   <string name="use_odk_default">Gebruik standaard afbeelding</string>
   <string name="change_splash_path">Wijzig afbeelding</string>
   <string name="show_location">Toon positie</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">Wijzigingen opslaan</string>
   <string name="go_to_location">Ga naar positie</string>
   <string name="change_formlist_url">Form List Path (toegevoegd aan Server URL)</string>

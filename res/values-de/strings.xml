@@ -121,7 +121,7 @@
   <string name="username">Benutzername</string>
   <string name="view_hierarchy">Zur Eingabeaufforderung</string>
   <string name="general_preferences">Einstellungen ändern</string>
-  <string name="click_to_web">Berühren um zu http://opendatakit.org zu gelangen</string>
+  <string name="click_to_web">Berühren um zu http://medicmobile.org zu gelangen</string>
   <string name="client">Kunde</string>
   <string name="show_splash">Startbild anzeigen</string>
   <string name="show_splash_summary">Wird angezeigt während die Applikation aufstartet</string>
@@ -131,7 +131,7 @@
   <string name="use_odk_default">Standardbild verwenden</string>
   <string name="change_splash_path">Bild ändern</string>
   <string name="show_location">Standort anzeigen</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">Änderungen speichern</string>
   <string name="go_to_location">Zum Standort</string>
   <string name="change_formlist_url">Formularlisten-Pfad (der Server-URL angehängt)</string>

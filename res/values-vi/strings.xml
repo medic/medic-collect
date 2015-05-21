@@ -122,7 +122,7 @@
   <string name="username">Tên truy cập</string>
   <string name="view_hierarchy">Di chuyển đến</string>
   <string name="general_preferences">Thay đổi thiết lập</string>
-  <string name="click_to_web">Nhấn đề xem http://opendatakit.org</string>
+  <string name="click_to_web">Nhấn đề xem http://medicmobile.org</string>
   <string name="client">Máy khách</string>
   <string name="show_splash">Hiển thị màn hình chào</string>
   <string name="show_splash_summary">Hiển thị khi chương trình khởi động</string>
@@ -132,7 +132,7 @@
   <string name="use_odk_default">Chọn ảnh mặc định</string>
   <string name="change_splash_path">Đổi ảnh</string>
   <string name="show_location">Hiển thị vị trí</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">Lưu thay đổi</string>
   <string name="go_to_location">Đến vị trí</string>
   <string name="change_formlist_url">Danh sách đường dẫn biểu mẫu</string>

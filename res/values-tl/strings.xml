@@ -121,7 +121,7 @@
   <string name="username">Username</string>
   <string name="view_hierarchy">Pumunta sa Udyok</string>
   <string name="general_preferences">Palitan ang Settings</string>
-  <string name="click_to_web">i-Tap para pumunta sa http://opendatakit.org</string>
+  <string name="click_to_web">i-Tap para pumunta sa http://medicmobile.org</string>
   <string name="client">Client</string>
   <string name="show_splash">Ipakita ang Panimulang Tabing</string>
   <string name="show_splash_summary">Pinapakita sa umpisa ng application</string>
@@ -131,7 +131,7 @@
   <string name="use_odk_default">Gamitin ang Paunang natukoy na Imahe</string>
   <string name="change_splash_path">Palitan ang Imahe</string>
   <string name="show_location">Ipakita ang Lokasyon</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">Impukin ang mga binago</string>
   <string name="go_to_location">Pumunta sa Lokasyon</string>
   <string name="change_formlist_url">Form List Path (appended to Server URL)</string>

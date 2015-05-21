@@ -131,7 +131,7 @@
   <string name="username">Nom d\'usuari</string>
   <string name="view_hierarchy">Ves a entrada de dades</string>
   <string name="general_preferences">Configuració general</string>
-  <string name="click_to_web">Toca per visitar http://opendatakit.org</string>
+  <string name="click_to_web">Toca per visitar http://medicmobile.org</string>
   <string name="client">Interfície d\'usuari</string>
   <string name="show_splash">Mostrar pantalla de benvinguda</string>
   <string name="show_splash_summary">Mostrar quan inicia l\'aplicació</string>
@@ -141,7 +141,7 @@
   <string name="use_odk_default">Usar imatge per defecte</string>
   <string name="change_splash_path">Canviar imatge</string>
   <string name="show_location">Mostra Localització</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">Desar els canvis</string>
   <string name="go_to_location">Anar a Localització</string>
   <string name="change_formlist_url">Camí a carpeta de formularis (afegit a URL servidor)</string>

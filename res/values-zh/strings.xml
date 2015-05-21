@@ -121,7 +121,7 @@
   <string name="username">用户名</string>
   <string name="view_hierarchy">跳到提示</string>
   <string name="general_preferences">设置</string>
-  <string name="click_to_web">点击访问 http://opendatakit.org</string>
+  <string name="click_to_web">点击访问 http://medicmobile.org</string>
   <string name="client">用户界面</string>
   <string name="show_splash">显示开始界面</string>
   <string name="show_splash_summary">当应用开始时显示</string>
@@ -131,7 +131,7 @@
   <string name="use_odk_default">使用默认图片</string>
   <string name="change_splash_path">修改图片</string>
   <string name="show_location">显示位置</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">保存修改</string>
   <string name="go_to_location">转到位置</string>
   <string name="change_formlist_url">表格列表路径 (附加到服务器URL之后)</string>

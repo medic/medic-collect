@@ -163,7 +163,7 @@
 <string name="username">Username</string>
 <string name="view_hierarchy">Go To Prompt</string>
 <string name="general_preferences">General Settings</string>
-<string name="click_to_web">Tap to visit http://opendatakit.org</string>
+<string name="click_to_web">Tap to visit http://medicmobile.org</string>
 <string name="client">User Interface</string>
 <string name="show_splash">Show splash screen</string>
 <string name="show_splash_summary">Shows when application starts</string>
@@ -173,7 +173,7 @@
 <string name="use_odk_default">Use default image</string>
 <string name="change_splash_path">Change image</string>
 <string name="show_location">Show Location</string>
-<string name="app_url">http://opendatakit.org</string>
+<string name="app_url">http://medicmobile.org</string>
 <string name="keep_changes">Save Changes</string>
 <string name="go_to_location">Go to Location</string>
 <string name="change_formlist_url">Form list path (appended to URL)</string>

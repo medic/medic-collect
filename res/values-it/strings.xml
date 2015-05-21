@@ -132,7 +132,7 @@
   <string name="username">Nome Utente</string>
   <string name="view_hierarchy">Apri visione gerarchica</string>
   <string name="general_preferences">Impostazioni Generali</string>
-  <string name="click_to_web">Toccare per visitare http://opendatakit.org</string>
+  <string name="click_to_web">Toccare per visitare http://medicmobile.org</string>
   <string name="client">Interfaccia utente</string>
   <string name="show_splash">Mostra schermata di avvio</string>
   <string name="show_splash_summary">Indica quando l\'applicazione si avvia</string>
@@ -142,7 +142,7 @@
   <string name="use_odk_default">Usa immagine di default</string>
   <string name="change_splash_path">Cambiare immagine</string>
   <string name="show_location">Mostra Posizione</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">Salva le modifiche</string>
   <string name="go_to_location">Vai al punto di</string>
   <string name="change_formlist_url">Percorso Elenco Moduli (allegato alla URL del server)</string>

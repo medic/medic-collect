@@ -131,7 +131,7 @@
   <string name="username">प्रयोगकर्ताको नाम </string>
   <string name="view_hierarchy">प्रम्टमा जानुहोस् </string>
   <string name="general_preferences">जनरल सेटिङ्स </string>
-  <string name="click_to_web">http://opendatakit.org खोल्नको लागि थिच्नु होला |</string>
+  <string name="click_to_web">http://medicmobile.org खोल्नको लागि थिच्नु होला |</string>
   <string name="client">प्रयोगकर्ताको अन्तरक्रिया गर्ने ठाउँ </string>
   <string name="show_splash">पहिलो पर्दाको दृश्य देखाउनुहोस् |</string>
   <string name="show_splash_summary">एप्लिकेशन सुरु हुँदा देखाइन्छ |</string>
@@ -141,7 +141,7 @@
   <string name="use_odk_default">डिफल्ट तस्विर प्रयोग गर्नुहोस् </string>
   <string name="change_splash_path">तस्विर बदल्नुहोस् </string>
   <string name="show_location">स्थान देखाउनुहोस् </string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">परिवर्तनहरु संचित गर्नुहोस् </string>
   <string name="go_to_location">स्थानमा जानुहोस्</string>
   <string name="change_formlist_url">फारम सूचीको मार्ग (URL मा जोडिसकिएको छ )</string>

@@ -128,7 +128,7 @@
   <string name="username">ชื่อผู้ใช้</string>
   <string name="view_hierarchy">ข้ามไปที่</string>
   <string name="general_preferences">ตั้งค่าทั่วไป</string>
-  <string name="click_to_web">แตะเพื่อเข้าสู่เว็บ http://opendatakit.org</string>
+  <string name="click_to_web">แตะเพื่อเข้าสู่เว็บ http://medicmobile.org</string>
   <string name="client">ส่วนติดต่อผู้ใช้งาน</string>
   <string name="show_splash">แสดงภาพเริ่มต้น</string>
   <string name="show_splash_summary">แสดงเมื่อเริ่มการทำงาน</string>
@@ -138,7 +138,7 @@
   <string name="use_odk_default">ใช้ภาพที่กำหนดไว้</string>
   <string name="change_splash_path">เปลี่ยนภาพใหม่</string>
   <string name="show_location">แสดงตำแหน่งที่อยู่</string>
-  <string name="app_url">http://opendatakit.org</string>
+  <string name="app_url">http://medicmobile.org</string>
   <string name="keep_changes">บันทึกการเปลี่ยนแปลง</string>
   <string name="go_to_location">ไปที่ตำแหน่ง</string>
   <string name="change_formlist_url">Form list path (appended to URL)</string>
