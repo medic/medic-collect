@@ -200,8 +200,14 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
       @Override
       public boolean onPreferenceChange(Preference preference, Object newValue) {
-    	if (Collect.getInstance().getScheduledNotifications().set((String)newValue)) {
-            mNotificationSchedulePreference.setSummary((String)newValue);
+    	ScheduledNotifications schedule = Collect.getInstance().getScheduledNotifications();
+    	String pattern = (String)newValue;
+    	
+    	if (schedule.isValidSchedule(pattern)) {
+            mNotificationSchedulePreference.setSummary(pattern);
+            if (schedule.isNotificationToggleOn()) {
+            	schedule.set(pattern);
+            }
             return true;    		
     	}
     	else {
