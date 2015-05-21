@@ -322,14 +322,14 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
       }
     });
 
-    boolean changeProtocol = adminPreferences.getBoolean(
+    boolean changeProtocolAvailable = adminPreferences.getBoolean(
         AdminPreferencesActivity.KEY_CHANGE_SERVER, true);
-    if (!(changeProtocol || adminMode)) {
+    if (!(changeProtocolAvailable || adminMode)) {
       serverCategory.removePreference(mProtocolPreference);
     }
-    boolean changeProtocolSettings = adminPreferences.getBoolean(
+    boolean changeProtocolSettingsAvailable = adminPreferences.getBoolean(
         AdminPreferencesActivity.KEY_CHANGE_PROTOCOL_SETTINGS, true);
-    if (!(changeProtocolSettings || adminMode)) {
+    if (!(changeProtocolSettingsAvailable || adminMode)) {
       serverCategory.removePreference(mProtocolSettings);
     }
 
@@ -409,6 +409,10 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
             AdminPreferencesActivity.KEY_CHANGE_OWN_PHONE_NUMBER, true);
     if (!(ownPhoneNumberAvailable || adminMode)) {
       serverCategory.removePreference(mOwnPhoneNumberPreference);
+    }
+    
+    if (!( changeProtocolAvailable || changeProtocolSettingsAvailable || googleAccountAvailable || usernameAvailable || passwordAvailable || ownPhoneNumberAvailable || adminMode)) {
+        getPreferenceScreen().removePreference(serverCategory);
     }
 
 	boolean navigationAvailable = adminPreferences.getBoolean(
