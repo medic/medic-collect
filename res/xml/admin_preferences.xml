@@ -82,6 +82,12 @@
             android:summary="@string/found_in_settings"
             android:title="@string/password" />
         <CheckBoxPreference
+            android:id="@+id/change_own_phone_number"
+            android:defaultValue="true"
+            android:key="change_own_phone_number"
+            android:summary="@string/found_in_settings"
+            android:title="@string/change_own_phone_number" />
+        <CheckBoxPreference
             android:id="@+id/change_google_account"
             android:defaultValue="true"
             android:key="change_google_account"

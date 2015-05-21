@@ -43,6 +43,13 @@
             android:inputType="textNoSuggestions"
             android:key="password"
             android:title="@string/password" />
+        <EditTextPreference
+            android:id="@+id/own_phone_number"
+			android:defaultValue="@string/default_own_phone_number"
+            android:dialogTitle="@string/change_own_phone_number"
+            android:inputType="phone"
+            android:key="own_phone_number"
+            android:title="@string/own_phone_number" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="@string/autosend"

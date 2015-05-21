@@ -134,6 +134,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
   protected EditTextPreference mUsernamePreference;
   protected EditTextPreference mPasswordPreference;
+  protected EditTextPreference mOwnPhoneNumberPreference;
   
   private CheckBoxPreference mNotificationTogglePreference;
   protected EditTextPreference mNotificationSchedulePreference;
@@ -229,7 +230,9 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
     mUsernamePreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_USERNAME);
     mPasswordPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_PASSWORD);
-
+    
+    mOwnPhoneNumberPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_OWN_PHONE_NUMBER);
+    
     mProtocolSettings = (PreferenceScreen) findPreference(KEY_PROTOCOL_SETTINGS);
 
     boolean notificationToggleAvailable = adminPreferences.getBoolean(
@@ -400,7 +403,15 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
       serverCategory.removePreference(mPasswordPreference);
     }
 
-    boolean navigationAvailable = adminPreferences.getBoolean(
+	mOwnPhoneNumberPreference.setOnPreferenceChangeListener(this);
+	mOwnPhoneNumberPreference.setSummary(mOwnPhoneNumberPreference.getText());
+    boolean ownPhoneNumberAvailable = adminPreferences.getBoolean(
+            AdminPreferencesActivity.KEY_CHANGE_OWN_PHONE_NUMBER, true);
+    if (!(ownPhoneNumberAvailable || adminMode)) {
+      serverCategory.removePreference(mOwnPhoneNumberPreference);
+    }
+
+	boolean navigationAvailable = adminPreferences.getBoolean(
         AdminPreferencesActivity.KEY_NAVIGATION, true);
     mNavigationPreference.setSummary(mNavigationPreference.getEntry());
     mNavigationPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
