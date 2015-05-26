@@ -76,10 +76,18 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
     	instance = ++counter; // roughly track the scan # we're on... logging use only
     	Log.i(t, "["+instance+"] doInBackground begins!");
     	
+		SharedPreferences adminPreferences = Collect.getInstance().getSharedPreferences(
+		        AdminPreferencesActivity.ADMIN_PREFERENCES, 0);
 		
+		boolean loadForms = adminPreferences.getBoolean(
 				AdminPreferencesActivity.KEY_LOAD_DEFAULT_FORMS, false);
+		
+		if (loadForms) {
 			FileUtils.copyAsset("forms");
+			Log.i(t, "Loading default forms");
+		}
 		else {
+			Log.i(t, "Not loading default forms");
 		}
 		
     	try {
