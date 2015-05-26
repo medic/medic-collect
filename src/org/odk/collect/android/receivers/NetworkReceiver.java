@@ -237,14 +237,14 @@ public class NetworkReceiver extends BroadcastReceiver implements InstanceUpload
                 notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(Collect.getInstance())
-                .setSmallIcon(R.drawable.notes)
+                .setSmallIcon(R.drawable.ic_medic_mobile)
                 .setContentTitle(Collect.getInstance().getString(R.string.odk_auto_note))
                 .setContentIntent(pendingNotify)
                 .setContentText(message.toString().trim())
                 .setAutoCancel(true)
                 .setLargeIcon(
                         BitmapFactory.decodeResource(Collect.getInstance().getResources(),
-                                android.R.drawable.ic_dialog_info));
+                        		android.R.drawable.ic_dialog_info));
 
         NotificationManager mNotificationManager = (NotificationManager)Collect.getInstance()
                 .getSystemService(Context.NOTIFICATION_SERVICE);

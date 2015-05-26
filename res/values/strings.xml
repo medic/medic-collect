@@ -349,8 +349,8 @@
 <string name="gme_table_error">Unable to find or create a Google Maps Engine table</string>
 <string name="gme_create_400">Received 400 BAD REQUEST. This is a known bug with Google Maps Engine after a table is newly created, please try submitting again in a few seconds.</string>
 <string name="picasa_upload_error">Failed to upload photo that does not exist: %1$s</string>
-<string name="odk_auth_auth_fail">ODK Autosend authentication failure, please make sure your settings are correct</string>
-<string name="odk_auto_note">ODK Autosend Notification</string>
+<string name="odk_auth_auth_fail">Autosend authentication failure, please make sure your settings are correct</string>
+<string name="odk_auto_note">Autosend Notification</string>
 <string name="notification_error">Error displaying notification text</string>
 <string name="delete_after_send">Delete after send</string>
 <string name="delete_after_send_summary">Deletes finalized forms and media after sending to server</string>
