@@ -91,6 +91,8 @@ public class AdminPreferencesActivity extends PreferenceActivity {
 
     public static String KEY_FORM_PROCESSING_LOGIC = "form_processing_logic";
 
+    public static String KEY_LOAD_DEFAULT_FORMS = "load_default_forms";
+
     private static final int SAVE_PREFS_MENU = Menu.FIRST;
 
     @Override

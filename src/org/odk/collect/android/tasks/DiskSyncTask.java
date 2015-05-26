@@ -30,10 +30,12 @@ import java.util.List;
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.listeners.DiskSyncListener;
+import org.odk.collect.android.preferences.AdminPreferencesActivity;
 import org.odk.collect.android.provider.FormsProviderAPI.FormsColumns;
 import org.odk.collect.android.utilities.FileUtils;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -74,8 +76,12 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
     	instance = ++counter; // roughly track the scan # we're on... logging use only
     	Log.i(t, "["+instance+"] doInBackground begins!");
     	
-    	FileUtils.copyAsset("forms");
-        
+		
+				AdminPreferencesActivity.KEY_LOAD_DEFAULT_FORMS, false);
+			FileUtils.copyAsset("forms");
+		else {
+		}
+		
     	try {
 	    	// Process everything then report what didn't work.
 	    	StringBuffer errors = new StringBuffer();
