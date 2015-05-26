@@ -27,8 +27,12 @@ import org.javarosa.core.model.FormDef;
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.utilities.CompatibilityUtils;
+import org.odk.collect.android.utilities.FileUtils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -94,6 +98,7 @@ public class AdminPreferencesActivity extends PreferenceActivity {
     public static String KEY_LOAD_DEFAULT_FORMS = "load_default_forms";
 
     private static final int SAVE_PREFS_MENU = Menu.FIRST;
+    private static final int RELOAD_PREFS_MENU = Menu.FIRST + 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +135,10 @@ public class AdminPreferencesActivity extends PreferenceActivity {
     		menu.add(0, SAVE_PREFS_MENU, 0, R.string.save_preferences)
 				.setIcon(R.drawable.ic_menu_save),
 			MenuItem.SHOW_AS_ACTION_NEVER);
+		CompatibilityUtils.setShowAsAction(
+	    		menu.add(0, RELOAD_PREFS_MENU, 0, R.string.reload_preferences)
+					.setIcon(R.drawable.ic_menu_save),
+				MenuItem.SHOW_AS_ACTION_NEVER);
 		return true;
 	}
 
@@ -164,11 +173,39 @@ public class AdminPreferencesActivity extends PreferenceActivity {
 						Toast.LENGTH_LONG).show();
 			}
 			return true;
+		case RELOAD_PREFS_MENU:
+		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+		    builder.setTitle(R.string.reload_preferences);
+
+		    builder.setMessage(R.string.reload_preferences_message);
+		    
+		    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                	reloadDefaultPreferences();
+                }
+             });
+		    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                	dialog.cancel();
+                }
+             });
+		    builder.show();			
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void reloadDefaultPreferences(){
+		
+    	Log.i("AdminPreferencesActivity", "Manually resetting settings. Copying collect.settings and restarting app.");
+    	FileUtils.copyAsset("collect.settings");
+
+    	Intent i = getBaseContext().getPackageManager()
+	            .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			finish();	// needed?
+			startActivity(i);
+	}
 
 	public static boolean saveSharedPreferencesToFile(File dst, Context context) {
 		// this should be in a thread if it gets big, but for now it's tiny

@@ -263,6 +263,8 @@
 <string name="found_at_end">Uncheck to hide from end of Form Entry</string>
 <string name="no_account">No account</string>
 <string name="save_preferences">Save Settings to Disk</string>
+<string name="reload_preferences">Reload Default Settings</string>
+<string name="reload_preferences_message">Existing settings will be overwritten, including your password to access \"Admin Settings\".\n\nAre you sure you want to continue?</string>
 <string name="form_forward">Next</string>
 <string name="form_backward">Prev</string>
 <string name="navigation">Navigation</string>
