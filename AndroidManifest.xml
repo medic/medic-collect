@@ -9,8 +9,8 @@
 	the specific language governing permissions and limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.odk.collect.android"
-    android:versionCode="1056"
+    package="org.medicmobile.collect.android"
+    android:versionCode="1057"
     android:versionName="1.4.5" >
 
     <uses-feature android:name="android.hardware.location" android:required="false" />
@@ -75,12 +75,12 @@
             android:authorities="org.odk.collect.android.provider.odk.instances" />
 
         <activity
-            android:name=".activities.MainMenuActivity"
+            android:name="org.odk.collect.android.activities.MainMenuActivity"
             android:configChanges="orientation"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".activities.FormEntryActivity"
+            android:name="org.odk.collect.android.activities.FormEntryActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize" >
@@ -95,22 +95,22 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name=".activities.NotificationActivity"
+            android:name="org.odk.collect.android.activities.NotificationActivity"
             android:label="@string/app_name"
             android:taskAffinity=""
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
             />
         <activity
-            android:name=".activities.DrawActivity"
+            android:name="org.odk.collect.android.activities.DrawActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.GoogleDriveActivity"
+            android:name="org.odk.collect.android.activities.GoogleDriveActivity"
             android:label="@string/app_name" 
             android:windowSoftInputMode="stateHidden"
             />
         <activity
-            android:name=".activities.InstanceChooserList"
+            android:name="org.odk.collect.android.activities.InstanceChooserList"
             android:label="@string/app_name" />
 
         <intent-filter>
@@ -123,10 +123,10 @@
         </intent-filter>
 
         <activity
-            android:name=".activities.InstanceChooserTabs"
+            android:name="org.odk.collect.android.activities.InstanceChooserTabs"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.FormChooserList"
+            android:name="org.odk.collect.android.activities.FormChooserList"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -139,25 +139,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.FormManagerList"
+            android:name="org.odk.collect.android.activities.FormManagerList"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.FormDownloadList"
+            android:name="org.odk.collect.android.activities.FormDownloadList"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.DataManagerList"
+            android:name="org.odk.collect.android.activities.DataManagerList"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.FileManagerTabs"
+            android:name="org.odk.collect.android.activities.FileManagerTabs"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.GoogleMapsEngineUploaderActivity"
+            android:name="org.odk.collect.android.activities.GoogleMapsEngineUploaderActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.GoogleMapsEngineUploaderActivityWithGoogleTask"
+            android:name="org.odk.collect.android.activities.GoogleMapsEngineUploaderActivityWithGoogleTask"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.InstanceUploaderList"
+            android:name="org.odk.collect.android.activities.InstanceUploaderList"
             android:label="@string/app_name">
 	        <intent-filter>
 	            <action android:name="android.intent.action.VIEW" />
@@ -167,43 +167,43 @@
 	        </intent-filter>
         </activity>
         <activity
-            android:name=".activities.InstanceUploaderActivity"
+            android:name="org.odk.collect.android.activities.InstanceUploaderActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".preferences.PreferencesActivity"
+            android:name="org.odk.collect.android.preferences.PreferencesActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".preferences.GMEPreferencesActivity"
+            android:name="org.odk.collect.android.preferences.GMEPreferencesActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".preferences.MedicMobilePreferencesActivity"
+            android:name="org.odk.collect.android.preferences.MedicMobilePreferencesActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".preferences.OtherPreferencesActivity"
+            android:name="org.odk.collect.android.preferences.OtherPreferencesActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".preferences.AggregatePreferencesActivity"
+            android:name="org.odk.collect.android.preferences.AggregatePreferencesActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".preferences.AdminPreferencesActivity"
+            android:name="org.odk.collect.android.preferences.AdminPreferencesActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.FormHierarchyActivity"
+            android:name="org.odk.collect.android.activities.FormHierarchyActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.GeoPointActivity"
+            android:name="org.odk.collect.android.activities.GeoPointActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.GeoPointMapActivity"
+            android:name="org.odk.collect.android.activities.GeoPointMapActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.GeoPointMapActivitySdk7"
+            android:name="org.odk.collect.android.activities.GeoPointMapActivitySdk7"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.BearingActivity"
+            android:name="org.odk.collect.android.activities.BearingActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.SplashScreenActivity"
+            android:name="org.odk.collect.android.activities.SplashScreenActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Dialog" >
             <intent-filter>
@@ -215,7 +215,7 @@
         </activity>
         <!-- Enable Shortcuts for Command Actions -->
         <activity
-            android:name=".activities.AndroidShortcuts"
+            android:name="org.odk.collect.android.activities.AndroidShortcuts"
             android:label="ODK Form"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
@@ -225,7 +225,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".receivers.NetworkReceiver"
+            android:name="org.odk.collect.android.receivers.NetworkReceiver"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -235,15 +235,15 @@
             </intent-filter>
         </receiver>
 		
-		<receiver android:name=".receivers.RebootReceiver"  android:enabled="true">
+		<receiver android:name="org.odk.collect.android.receivers.RebootReceiver"  android:enabled="true">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED"/>
 			</intent-filter>
 		</receiver>
         
-		<receiver android:name=".receivers.AlarmReceiver"  android:enabled="true"/>
+		<receiver android:name="org.odk.collect.android.receivers.AlarmReceiver"  android:enabled="true"/>
 		
-        <service android:name=".services.AlarmService" />
+        <service android:name="org.odk.collect.android.services.AlarmService" />
         
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
