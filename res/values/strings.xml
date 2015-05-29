@@ -19,11 +19,11 @@
 <string name="add_more">Add more</string>
 <string name="add_repeat">Add a new \"%s\" group?</string>
 <string name="add_repeat_no">Do Not Add</string>
-<string name="advance">forward to\nnext\nprompt</string>
+<string name="advance">forward</string>
 <string name="altitude">Altitude</string>
 <string name="audio_file_error">No audio file was specified.</string>
 <string name="audio_file_invalid">File: %s is not a valid audio file.</string>
-<string name="backup">backward to\nprevious\nprompt</string>
+<string name="backup">backward</string>
 <string name="barcode_scanner_error">Sorry, Barcode Scanner is not installed!</string>
 <string name="cancel">Cancel</string>
 <string name="cancel_loading_form">Cancel</string>
