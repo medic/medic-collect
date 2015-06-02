@@ -68,11 +68,11 @@
         <provider
             android:exported="true"
             android:name="org.odk.collect.android.provider.FormsProvider"
-            android:authorities="org.odk.collect.android.provider.odk.forms" />
+            android:authorities="org.medicmobile.collect.android.provider.odk.forms" />
         <provider
             android:exported="true"
             android:name="org.odk.collect.android.provider.InstanceProvider"
-            android:authorities="org.odk.collect.android.provider.odk.instances" />
+            android:authorities="org.medicmobile.collect.android.provider.odk.instances" />
 
         <activity
             android:name="org.odk.collect.android.activities.MainMenuActivity"
