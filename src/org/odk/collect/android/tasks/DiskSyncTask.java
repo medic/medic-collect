@@ -57,6 +57,7 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
     int instance;
     
     DiskSyncListener mListener;
+    boolean mLoadForms = false;
     
     String statusMessage;
 
@@ -82,7 +83,7 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
 		boolean loadForms = adminPreferences.getBoolean(
 				AdminPreferencesActivity.KEY_LOAD_DEFAULT_FORMS, false);
 		
-		if (loadForms) {
+		if (mLoadForms && loadForms) {
 			FileUtils.copyAsset("forms");
 			Log.i(t, "Loading default forms");
 		}
@@ -320,6 +321,10 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
 
     public void setDiskSyncListener(DiskSyncListener l) {
         mListener = l;
+    }
+
+    public void setReloadForms(boolean value) {
+        mLoadForms = value;
     }
 
 
