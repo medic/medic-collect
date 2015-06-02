@@ -67,11 +67,11 @@
 
         <provider
             android:exported="true"
-            android:name="org.odk.collect.android.provider.FormsProvider"
+            android:name="org.medicmobile.collect.android.provider.FormsProvider"
             android:authorities="org.medicmobile.collect.android.provider.odk.forms" />
         <provider
             android:exported="true"
-            android:name="org.odk.collect.android.provider.InstanceProvider"
+            android:name="org.medicmobile.collect.android.provider.InstanceProvider"
             android:authorities="org.medicmobile.collect.android.provider.odk.instances" />
 
         <activity
