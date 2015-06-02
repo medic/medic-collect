@@ -10,7 +10,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.medicmobile.collect.android"
-    android:versionCode="1057"
+    android:versionCode="1058"
     android:versionName="1.4.5" >
 
     <uses-feature android:name="android.hardware.location" android:required="false" />
