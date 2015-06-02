@@ -190,7 +190,8 @@ public class AdminPreferencesActivity extends PreferenceActivity {
                 	dialog.cancel();
                 }
              });
-		    builder.show();			
+		    builder.show();
+		    return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
