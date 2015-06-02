@@ -27,6 +27,7 @@ import org.odk.collect.android.preferences.PreferencesActivity;
 import org.odk.collect.android.tasks.DownloadFormListTask;
 import org.odk.collect.android.tasks.DownloadFormsTask;
 import org.odk.collect.android.utilities.CompatibilityUtils;
+import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.android.utilities.WebUtils;
 
 import android.app.AlertDialog;
@@ -78,6 +79,7 @@ public class FormDownloadList extends ListActivity implements FormListDownloader
     private static final int PROGRESS_DIALOG = 1;
     private static final int AUTH_DIALOG = 2;
     private static final int MENU_PREFERENCES = Menu.FIRST;
+    private static final int MENU_LOAD_DEFAULT_FORMS = Menu.FIRST + 1;
 
     private static final String BUNDLE_TOGGLED_KEY = "toggled";
     private static final String BUNDLE_SELECTED_COUNT = "selectedcount";
@@ -367,6 +369,10 @@ public class FormDownloadList extends ListActivity implements FormListDownloader
     		menu.add(0, MENU_PREFERENCES, 0, R.string.general_preferences)
         		.setIcon(R.drawable.ic_menu_preferences),
         	MenuItem.SHOW_AS_ACTION_NEVER);
+		CompatibilityUtils.setShowAsAction(
+	    		menu.add(0, MENU_LOAD_DEFAULT_FORMS, 0, R.string.reload_forms)
+					.setIcon(R.drawable.ic_menu_refresh),
+				MenuItem.SHOW_AS_ACTION_NEVER);
         return true;
     }
 
@@ -379,7 +385,28 @@ public class FormDownloadList extends ListActivity implements FormListDownloader
                 Intent i = new Intent(this, PreferencesActivity.class);
                 startActivity(i);
                 return true;
-        }
+    		case MENU_LOAD_DEFAULT_FORMS:
+    		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+    		    builder.setTitle(R.string.reload_forms);
+
+    		    builder.setMessage(R.string.reload_forms_message);
+    		    
+    		    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+            			int forms = FileUtils.copyAssetWithFormCount("forms");
+            			Log.i(t, String.format("Loaded %d default forms", forms));
+            			Toast.makeText(getApplicationContext(), String.format(getResources().getString(R.string.reload_forms_complete), forms), Toast.LENGTH_SHORT).show();
+                    }
+                 });
+    		    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    	dialog.cancel();
+                    }
+                 });
+    		    builder.show();	
+    		    return true;
+    		}
         return super.onMenuItemSelected(featureId, item);
     }
 
