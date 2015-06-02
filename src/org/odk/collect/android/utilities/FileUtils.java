@@ -58,6 +58,8 @@ public class FileUtils {
     public static final String TITLE = "title";
     public static final String SUBMISSIONURI = "submission";
     public static final String BASE64_RSA_PUBLIC_KEY = "base64RsaPublicKey";
+    
+    public static int mAssetFormCopyCount = 0;
 
 
     public static boolean createFolder(String path) {
@@ -430,6 +432,11 @@ public class FileUtils {
         }
     }
         
+    public static int copyAssetWithFormCount(String path) {
+    	mAssetFormCopyCount = 0;
+    	copyAsset(path);
+    	return mAssetFormCopyCount;
+    }
     public static void copyAsset(String path) {
         String assets[] = null;
         try {
@@ -469,6 +476,9 @@ public class FileUtils {
           out = new FileOutputStream(outFile);
           writeFileStream(in, out);
           Log.d("DiskSyncTask", "Copied default form to storage: " + outFile.toString());
+          if (filename.endsWith(".xml")) {
+          	mAssetFormCopyCount++;
+          }
         } catch(FileNotFoundException e) {
             Log.i("DiskSyncTask", "Asset file does not exist: " + filename);
         } catch(IOException e) {

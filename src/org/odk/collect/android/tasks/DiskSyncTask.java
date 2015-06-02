@@ -84,8 +84,8 @@ public class DiskSyncTask extends AsyncTask<Void, String, String> {
 				AdminPreferencesActivity.KEY_LOAD_DEFAULT_FORMS, false);
 		
 		if (mLoadForms && loadForms) {
-			FileUtils.copyAsset("forms");
-			Log.i(t, "Loading default forms");
+			int forms = FileUtils.copyAssetWithFormCount("forms");
+			Log.i(t, String.format("Loaded %d default forms", forms));
 		}
 		else {
 			Log.i(t, "Not loading default forms");
