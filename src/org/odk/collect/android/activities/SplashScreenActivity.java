@@ -93,8 +93,10 @@ public class SplashScreenActivity extends Activity {
         if (firstRun) {
         	// Copy collect.settings from assets so that when you re-launch ODK Collect, 
         	// it will automatically load those settings, and delete that file.
-        	Log.i("SplashScreen", "First Run. Copying collect.settings");
+        	Log.i("SplashScreen", "First Run. Copying collect.settings and forms");
         	FileUtils.copyAsset("collect.settings");
+        	int forms = FileUtils.copyAssetWithFormCount("forms");
+			Log.i("SplashScreen", String.format("Loaded %d default forms", forms));
         }
         
         // if you've increased version code, then update the version number and set firstRun to true

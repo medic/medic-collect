@@ -283,7 +283,7 @@
 <string name="form_processing_logic_1">January 2015 (safest)</string>
 <string name="form_processing_logic_2">Mid 2014 (slow)</string>
 <string name="form_processing_logic_3">Early 2014 (fast)</string>
-<string name="load_default_forms">Load default forms</string>
+<string name="load_default_forms">Auto-Reload default forms</string>
 <string name="load_default_forms_summary">Forms will be reloaded if they have been deleted.</string>
 <string name="change_url_default">URL</string>
 <string name="launch_printer">Initiate Printing</string>
