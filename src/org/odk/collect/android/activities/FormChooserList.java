@@ -132,8 +132,12 @@ public class FormChooserList extends ListActivity implements DiskSyncListener {
             // caller is waiting on a picked form
             setResult(RESULT_OK, new Intent().setData(formUri));
         } else {
-            // caller wants to view/edit a form, so launch formentryactivity
-            startActivity(new Intent(Intent.ACTION_EDIT, formUri));
+            // caller wants to view/edit a form, so launch formentryactivity.
+            // Use explicit intent to avoid being picked up by ODK
+            startActivity(new Intent(getApplicationContext(), FormEntryActivity.class)
+            				.setData(formUri)
+            				.setAction(Intent.ACTION_EDIT)
+            				);
         }
 
         finish();

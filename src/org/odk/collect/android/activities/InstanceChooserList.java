@@ -118,8 +118,12 @@ public class InstanceChooserList extends ListActivity {
                     	          DO_NOT_EXIT);
             	return;
             }
-            // caller wants to view/edit a form, so launch formentryactivity
-            startActivity(new Intent(Intent.ACTION_EDIT, instanceUri));
+            // caller wants to view/edit a form, so launch formentryactivity.
+            // Use explicit intent to avoid being picked up by ODK Collect
+            startActivity(new Intent(getApplicationContext(), FormEntryActivity.class)
+		            		.setData(instanceUri)
+		            		.setAction(Intent.ACTION_EDIT)
+		            		);
         }
         finish();
     }
