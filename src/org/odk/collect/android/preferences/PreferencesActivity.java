@@ -119,6 +119,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
   public static final String KEY_NOTIFICATION_TITLE = "notification_title";
   public static final String KEY_NOTIFICATION_CONTENT = "notification_content";
 
+  private PreferenceScreen mInfoPreference;
   private PreferenceScreen mSplashPathPreference;
 
   private ListPreference mSelectedGoogleAccountPreference;
@@ -166,6 +167,12 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
     mAutosendNetworkPreference = (CheckBoxPreference) findPreference(KEY_AUTOSEND_NETWORK);
     PreferenceCategory serverCategory = (PreferenceCategory) findPreference(getString(R.string.server_preferences));
     
+    mInfoPreference = (PreferenceScreen) findPreference(KEY_INFO);
+    mInfoPreference.setSummary("Version: " 
+    							+ Collect.getInstance().getVersionDetails()
+    							+ "\n"
+    							+ getString(R.string.click_to_web));
+
     mProtocolPreference = (ListPreference) findPreference(KEY_PROTOCOL);
 
     mSelectedGoogleAccountPreference = (ListPreference) findPreference(KEY_SELECTED_GOOGLE_ACCOUNT);

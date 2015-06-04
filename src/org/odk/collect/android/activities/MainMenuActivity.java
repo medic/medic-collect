@@ -116,10 +116,10 @@ public class MainMenuActivity extends Activity {
 		setContentView(R.layout.main_menu);
 
 		{
-			// dynamically construct the "ODK Collect vA.B" string
+			// Do not show versioned name, just app name. Version can be seen in settings.
 			TextView mainMenuMessageLabel = (TextView) findViewById(R.id.main_menu_header);
 			mainMenuMessageLabel.setText(Collect.getInstance()
-					.getVersionedAppName());
+					.getAppName());
 		}
 
 		setTitle(getString(R.string.main_menu));

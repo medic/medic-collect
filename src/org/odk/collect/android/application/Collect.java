@@ -149,6 +149,24 @@ public class Collect extends Application {
         return getString(R.string.app_name) + versionDetail;
     }
 
+    public String getVersionDetails() {
+        String versionDetail = "";
+        try {
+            PackageInfo pinfo;
+            pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            int versionNumber = pinfo.versionCode;
+            String versionName = pinfo.versionName;
+            versionDetail = versionName + "." + versionNumber + "";
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionDetail;
+    }
+
+    public String getAppName() {
+        return getString(R.string.app_name);    	
+    }
+
     /**
      * Creates required directories on the SDCard (or other external storage)
      *
