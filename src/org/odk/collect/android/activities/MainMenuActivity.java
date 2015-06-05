@@ -593,6 +593,8 @@ public class MainMenuActivity extends Activity {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			try {
 				if (input != null) {
