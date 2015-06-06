@@ -14,15 +14,7 @@
 
 package org.odk.collect.android.activities;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.ref.WeakReference;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.preferences.AdminPreferencesActivity;
@@ -30,6 +22,7 @@ import org.odk.collect.android.preferences.PreferencesActivity;
 import org.odk.collect.android.provider.InstanceProviderAPI;
 import org.odk.collect.android.provider.InstanceProviderAPI.InstanceColumns;
 import org.odk.collect.android.utilities.CompatibilityUtils;
+import org.odk.collect.android.utilities.SharedPreferencesUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,7 +30,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -124,22 +116,20 @@ public class MainMenuActivity extends Activity {
 
 		setTitle(getString(R.string.main_menu));
 
-		File f = new File(Collect.ODK_ROOT + "/collect.settings");
-		if (f.exists()) {
-			boolean success = loadSharedPreferencesFromFile(f);
-			if (success) {
+		if (SharedPreferencesUtils.filesExist()) {
+			if (SharedPreferencesUtils.loadSharedPreferences()) {
 				Toast.makeText(this,
 						"Settings successfully loaded from file",
 						Toast.LENGTH_LONG).show();
-				f.delete();
-			} else {
+			}
+			else {
 				Toast.makeText(
 						this,
 						"Sorry, settings file is corrupt and should be deleted or replaced",
 						Toast.LENGTH_LONG).show();
 			}
 		}
-
+		
 		mReviewSpacer = findViewById(R.id.review_spacer);
 		mGetFormsSpacer = findViewById(R.id.get_forms_spacer);
 
@@ -535,76 +525,4 @@ public class MainMenuActivity extends Activity {
 			}
 		}
 	}
-
-	private boolean loadSharedPreferencesFromFile(File src) {
-		// this should probably be in a thread if it ever gets big
-		boolean res = false;
-		ObjectInputStream input = null;
-		try {
-			input = new ObjectInputStream(new FileInputStream(src));
-			Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(
-					this).edit();
-			prefEdit.clear();
-			// first object is preferences
-			Map<String, ?> entries = (Map<String, ?>) input.readObject();
-			for (Entry<String, ?> entry : entries.entrySet()) {
-				Object v = entry.getValue();
-				String key = entry.getKey();
-
-				if (v instanceof Boolean)
-					prefEdit.putBoolean(key, ((Boolean) v).booleanValue());
-				else if (v instanceof Float)
-					prefEdit.putFloat(key, ((Float) v).floatValue());
-				else if (v instanceof Integer)
-					prefEdit.putInt(key, ((Integer) v).intValue());
-				else if (v instanceof Long)
-					prefEdit.putLong(key, ((Long) v).longValue());
-				else if (v instanceof String)
-					prefEdit.putString(key, ((String) v));
-			}
-			prefEdit.commit();
-
-			// second object is admin options
-			Editor adminEdit = getSharedPreferences(AdminPreferencesActivity.ADMIN_PREFERENCES, 0).edit();
-			adminEdit.clear();
-			// first object is preferences
-			Map<String, ?> adminEntries = (Map<String, ?>) input.readObject();
-			for (Entry<String, ?> entry : adminEntries.entrySet()) {
-				Object v = entry.getValue();
-				String key = entry.getKey();
-
-				if (v instanceof Boolean)
-					adminEdit.putBoolean(key, ((Boolean) v).booleanValue());
-				else if (v instanceof Float)
-					adminEdit.putFloat(key, ((Float) v).floatValue());
-				else if (v instanceof Integer)
-					adminEdit.putInt(key, ((Integer) v).intValue());
-				else if (v instanceof Long)
-					adminEdit.putLong(key, ((Long) v).longValue());
-				else if (v instanceof String)
-					adminEdit.putString(key, ((String) v));
-			}
-			adminEdit.commit();
-
-			res = true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (input != null) {
-					input.close();
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		return res;
-	}
-
 }

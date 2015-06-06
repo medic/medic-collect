@@ -15,10 +15,6 @@
 package org.odk.collect.android.preferences;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -28,6 +24,7 @@ import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.utilities.CompatibilityUtils;
 import org.odk.collect.android.utilities.FileUtils;
+import org.odk.collect.android.utilities.SharedPreferencesUtils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -158,18 +155,21 @@ public class AdminPreferencesActivity extends PreferenceActivity {
 				}
 			}
 
-			File dst = new File(writeDir.getAbsolutePath()
+			File jsonFile = new File(writeDir.getAbsolutePath()
+					+ "/collect.json");
+			File hashFile = new File(writeDir.getAbsolutePath()
 					+ "/collect.settings");
-			boolean success = AdminPreferencesActivity.saveSharedPreferencesToFile(dst, this);
+			boolean success = SharedPreferencesUtils.saveSharedPreferencesToJsonFile(jsonFile, this)
+							&& SharedPreferencesUtils.saveSharedPreferencesToFile(hashFile, this);
 			if (success) {
 				Toast.makeText(
 						this,
-						"Settings successfully written to "
-								+ dst.getAbsolutePath(), Toast.LENGTH_LONG)
+						"Setting files successfully written to "
+								+ writeDir.getAbsolutePath(), Toast.LENGTH_LONG)
 						.show();
 			} else {
 				Toast.makeText(this,
-						"Error writing settings to " + dst.getAbsolutePath(),
+						"Error writing setting files to " + writeDir.getAbsolutePath(),
 						Toast.LENGTH_LONG).show();
 			}
 			return true;
@@ -198,8 +198,9 @@ public class AdminPreferencesActivity extends PreferenceActivity {
 
 	public void reloadDefaultPreferences(){
 		
-    	Log.i("AdminPreferencesActivity", "Manually resetting settings. Copying collect.settings and restarting app.");
+    	Log.i("AdminPreferencesActivity", "Manually resetting settings. Copying settings from assets and restarting app.");
     	FileUtils.copyAsset("collect.settings");
+    	FileUtils.copyAsset("collect.json");
 
     	Intent i = getBaseContext().getPackageManager()
 	            .getLaunchIntentForPackage( getBaseContext().getPackageName() );
@@ -208,39 +209,7 @@ public class AdminPreferencesActivity extends PreferenceActivity {
 			startActivity(i);
 	}
 
-	public static boolean saveSharedPreferencesToFile(File dst, Context context) {
-		// this should be in a thread if it gets big, but for now it's tiny
-		boolean res = false;
-		ObjectOutputStream output = null;
-		try {
-			output = new ObjectOutputStream(new FileOutputStream(dst));
-			SharedPreferences pref = PreferenceManager
-					.getDefaultSharedPreferences(context);
-			SharedPreferences adminPreferences = context.getSharedPreferences(
-					AdminPreferencesActivity.ADMIN_PREFERENCES, 0);
-
-			output.writeObject(pref.getAll());
-			output.writeObject(adminPreferences.getAll());
-
-			res = true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (output != null) {
-					output.flush();
-					output.close();
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		return res;
-	}
-
-    public static FormDef.EvalBehavior getConfiguredFormProcessingLogic(Context context) {
+	public static FormDef.EvalBehavior getConfiguredFormProcessingLogic(Context context) {
         FormDef.EvalBehavior mode;
 
         SharedPreferences adminPreferences = context.getSharedPreferences(ADMIN_PREFERENCES, 0);

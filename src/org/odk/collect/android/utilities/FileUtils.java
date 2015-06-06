@@ -20,6 +20,7 @@ import org.kxml2.kdom.Document;
 import org.kxml2.kdom.Element;
 import org.kxml2.kdom.Node;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -27,6 +28,7 @@ import android.util.Log;
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,9 +37,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -501,6 +505,35 @@ public class FileUtils {
             }
         }  
     }
+    
+    public static boolean writeStringToFile(File outFile, String str) {
+
+    	boolean res = false;
+
+        InputStream in = null;
+        OutputStream out = null;
+
+        try {
+          in = new ByteArrayInputStream(str.getBytes("UTF-8"));
+          out = new FileOutputStream(outFile);
+          writeFileStream(in, out);
+          res = true;
+        }
+        catch(IOException e) {
+            Log.e(t, "Failed to write string to file: " + outFile.toString(), e);
+        }     
+        finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    // NOOP
+                }
+            }
+        }
+        return res;
+    }
+
     private static void writeFileStream(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;

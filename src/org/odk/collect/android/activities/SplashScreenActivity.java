@@ -91,22 +91,32 @@ public class SplashScreenActivity extends Activity {
                 getString(R.string.default_splash_path));
 
         if (firstRun) {
-        	// Copy collect.settings from assets so that when you re-launch ODK Collect, 
-        	// it will automatically load those settings, and delete that file.
-        	Log.i("SplashScreen", "First Run. Copying collect.settings and forms");
+        	// Copy settings from assets so that when you re-launch ODK Collect, 
+        	// it will automatically load those settings, and delete the files.
+        	// Only do so if a true first run, not if just running a newer version
+        	Log.i("SplashScreen", "First Run. Copying settings and forms");
+        	FileUtils.copyAsset("collect.json");
         	FileUtils.copyAsset("collect.settings");
         	int forms = FileUtils.copyAssetWithFormCount("forms");
 			Log.i("SplashScreen", String.format("Loaded %d default forms", forms));
         }
         
         // if you've increased version code, then update the version number and set firstRun to true
-        if (mSharedPreferences.getLong(PreferencesActivity.KEY_LAST_VERSION, 0) < packageInfo.versionCode) {
-            editor.putLong(PreferencesActivity.KEY_LAST_VERSION, packageInfo.versionCode);
+        int version = 0;
+        try {
+        	version = mSharedPreferences.getInt(PreferencesActivity.KEY_LAST_VERSION, 0);
+            if (version < packageInfo.versionCode) {
+                editor.putInt(PreferencesActivity.KEY_LAST_VERSION, packageInfo.versionCode);
+                editor.commit();
+                firstRun = true;
+            }
+        }
+        catch (Exception e) {
+            editor.putInt(PreferencesActivity.KEY_LAST_VERSION, packageInfo.versionCode);
             editor.commit();
-
             firstRun = true;
         }
-
+        
         // do all the first run things
         if (firstRun || showSplash) {
             editor.putBoolean(PreferencesActivity.KEY_FIRST_RUN, false);
