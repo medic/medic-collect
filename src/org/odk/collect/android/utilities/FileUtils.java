@@ -458,7 +458,7 @@ public class FileUtils {
                 }
             }
         } catch (IOException ex) {
-            Log.e("asset-copy", "I/O Exception", ex);
+            Log.e(t, "I/O Exception while copying assets", ex);
         }
     }
     
@@ -479,14 +479,14 @@ public class FileUtils {
           in = Collect.getInstance().getAssetManager().open(filename);
           out = new FileOutputStream(outFile);
           writeFileStream(in, out);
-          Log.d("DiskSyncTask", "Copied default form to storage: " + outFile.toString());
+          Log.d(t, "Copied default form to storage: " + outFile.toString());
           if (filename.endsWith(".xml")) {
           	mAssetFormCopyCount++;
           }
         } catch(FileNotFoundException e) {
-            Log.i("DiskSyncTask", "Asset file does not exist: " + filename);
+            Log.i(t, "Asset file does not exist: " + filename);
         } catch(IOException e) {
-            Log.e("DiskSyncTask", "Failed to copy asset file: " + filename, e);
+            Log.e(t, "Failed to copy asset file: " + filename, e);
         }     
         finally {
             if (in != null) {
