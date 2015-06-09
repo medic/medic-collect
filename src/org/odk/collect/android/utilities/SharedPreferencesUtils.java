@@ -85,9 +85,10 @@ public class SharedPreferencesUtils {
 			
 			Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
 			Editor adminEdit = mContext.getSharedPreferences(AdminPreferencesActivity.ADMIN_PREFERENCES, 0).edit();
-	
-			prefEdit.clear();
-			adminEdit.clear();
+
+			// Do not clear preferences to allow for partial settings update
+			// prefEdit.clear();
+			// adminEdit.clear();
 			
 			putJSONObjectIntoPreferences(generalPrefs, prefEdit);			
 			putJSONObjectIntoPreferences(adminPrefs, adminEdit);
