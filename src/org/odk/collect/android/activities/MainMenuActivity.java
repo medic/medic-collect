@@ -22,6 +22,7 @@ import org.odk.collect.android.preferences.PreferencesActivity;
 import org.odk.collect.android.provider.InstanceProviderAPI;
 import org.odk.collect.android.provider.InstanceProviderAPI.InstanceColumns;
 import org.odk.collect.android.utilities.CompatibilityUtils;
+import org.odk.collect.android.utilities.EncryptionUtils;
 import org.odk.collect.android.utilities.SharedPreferencesUtils;
 
 import android.app.Activity;
@@ -420,7 +421,7 @@ public class MainMenuActivity extends Activity {
 							String value = input.getText().toString();
 							String pw = mAdminPreferences.getString(
 									AdminPreferencesActivity.KEY_ADMIN_PW, "");
-							if (pw.compareTo(value) == 0) {
+							if (pw == "" || pw.compareTo(EncryptionUtils.getSHA2(value)) == 0) {
 								Intent i = new Intent(getApplicationContext(),
 										AdminPreferencesActivity.class);
 								startActivity(i);

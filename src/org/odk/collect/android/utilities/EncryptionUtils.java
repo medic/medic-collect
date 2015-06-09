@@ -37,6 +37,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.io.IOUtils;
+import org.javarosa.core.util.MD5;
 import org.kxml2.io.KXmlSerializer;
 import org.kxml2.kdom.Document;
 import org.kxml2.kdom.Element;
@@ -564,6 +565,43 @@ public class EncryptionUtils {
 		// Step 2: build the encrypted-submission manifest (overwrites
 		// submission.xml)...
 		writeSubmissionManifest(formInfo, submissionXml, mediaFiles);
+	}
+	
+	public static String getMD5(String str) {
+		byte[] bytes = null;
+		
+		try {
+			bytes = str.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			Log.e(t, "Failed to getBytes from string: " + str, e);
+		}
+		if (bytes!=null) {
+			return MD5.toHex(MD5.hash(bytes));
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public static String getSHA2(String str) {
+		// Based off of http://www.mkyong.com/java/java-sha-hashing-example/
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			Log.e(t, "Failed to getSHA2 from string: " + str, e);
+			return "";
+		}
+        md.update(str.getBytes());
+
+        byte byteData[] = md.digest();
+ 
+        //convert the byte to hex format
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
 	}
 	
 	private static void writeSubmissionManifest(

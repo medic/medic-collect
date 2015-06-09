@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
+import org.odk.collect.android.utilities.EncryptionUtils;
 
 public class PasswordDialogPreference extends DialogPreference implements
         OnClickListener {
@@ -31,14 +32,6 @@ public class PasswordDialogPreference extends DialogPreference implements
         passwordEditText = (EditText) view.findViewById(R.id.pwd_field);
         verifyEditText = (EditText) view.findViewById(R.id.verify_field);
 
-        final String adminPW = getPersistedString("");
-        // populate the fields if a pw exists
-        if (!adminPW.equalsIgnoreCase("")) {
-            passwordEditText.setText(adminPW);
-            passwordEditText.setSelection(passwordEditText.getText().length());
-            verifyEditText.setText(adminPW);
-        }
-
         Button positiveButton = (Button) view
                 .findViewById(R.id.positive_button);
         positiveButton.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +43,7 @@ public class PasswordDialogPreference extends DialogPreference implements
 
                 if (!pw.equalsIgnoreCase("") && !ver.equalsIgnoreCase("") && pw.equals(ver)) {
                     // passwords are the same
-                    persistString(pw);
+                    persistString(EncryptionUtils.getSHA2(pw));
                     Toast.makeText(PasswordDialogPreference.this.getContext(),
                             R.string.admin_password_changed, Toast.LENGTH_SHORT).show();
                     PasswordDialogPreference.this.getDialog().dismiss();
