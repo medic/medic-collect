@@ -17,6 +17,7 @@ package org.odk.collect.android.activities;
 import java.util.ArrayList;
 
 import org.odk.collect.android.R;
+import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.provider.FormsProviderAPI.FormsColumns;
 
 import android.app.Activity;
@@ -63,7 +64,7 @@ public class AndroidShortcuts extends Activity {
         ArrayList<Uri> commands = new ArrayList<Uri>();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select ODK Shortcut");
+        builder.setTitle(Collect.getInstance().getString(R.string.shortcut_select_title, "Select Form"));
 
         Cursor c = null;
         try {
@@ -113,7 +114,7 @@ public class AndroidShortcuts extends Activity {
      * Returns the results to the calling intent.
      */
     private void returnShortcut(String name, Uri command) {
-        Intent shortcutIntent = new Intent(Intent.ACTION_VIEW);
+        Intent shortcutIntent = new Intent(getApplicationContext(), FormEntryActivity.class);
         shortcutIntent.setData(command);
 
         Intent intent = new Intent();

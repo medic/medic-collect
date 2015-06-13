@@ -150,6 +150,8 @@
 <string name="server_requires_auth">Server Requires Authentication</string>
 <string name="server_url">URL</string>
 <string name="server_preferences">Server Settings</string>
+<string name="shortcut">Medic Mobile Form</string>
+<string name="shortcut_select_title">Select Form</string>
 <string name="sms_gateway">Gateway phone number</string>
 <string name="sms_gateway_summary">Phone number that receives the forms when sending via SMS</string>
 <string name="own_phone_number">Own phone number</string>

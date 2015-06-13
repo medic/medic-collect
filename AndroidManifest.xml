@@ -10,7 +10,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.medicmobile.collect.android"
-    android:versionCode="1064"
+    android:versionCode="1065"
     android:versionName="1.4.5" >
 
     <uses-feature android:name="android.hardware.location" android:required="false" />
@@ -214,7 +214,7 @@
         <!-- Enable Shortcuts for Command Actions -->
         <activity
             android:name="org.odk.collect.android.activities.AndroidShortcuts"
-            android:label="ODK Form"
+            android:label="@string/shortcut"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
