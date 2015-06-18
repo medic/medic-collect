@@ -299,7 +299,7 @@
   <string name="go_shared">Partagé avec moi</string>
   <string name="modified_on_date_at_time">\'Modifié\' EEE, MMM dd, yyyy \'à\' HH:mm</string>
   <string name="protocol_settings">Configurer les paramètres de la plate-forme</string>
-  <string name="aggregate_preferences">Paramètres d\'ODK Aggregate</string>
+  <string name="aggregate_preferences">Paramètres de la plate-forme</string>
   <string name="other_preferences">Autres paramètres de la plate-forme</string>
   <string name="gme_preferences">Paramètres de Google Maps Engine</string>
   <string name="no_coordinates">L\'instance n\'a pas de coordonnées. Impossible de télécharger.</string>
@@ -312,8 +312,8 @@
   <string name="gme_table_error">Il est impossible de retrouver ou créer une table Google Maps Engine.</string>
   <string name="gme_create_400">Réception de 400 BAD REQUEST. Il s\'agit d\'un bug connu dans Google Maps Engine après la création d\'une nouvelle table. Essayer de l\'enregistrer à nouveau dans quelques secondes.</string>
   <string name="picasa_upload_error">Échec de téléchargement de photo qui n\'existe pas: %1$s</string>
-  <string name="odk_auth_auth_fail">Échec d\'authentification d\'ODK Auto-envoi. Merci de vous assurez que vos paramètres sont corrects.</string>
-  <string name="odk_auto_note">Notification d\'ODK Auto-envoi</string>
+  <string name="odk_auth_auth_fail">Échec d\'authentification auto-envoi. Assurez que vos paramètres sont corrects.</string>
+  <string name="odk_auto_note">Notification auto-envoi</string>
   <string name="notification_error">Erreur d\'affichage du texte de notification</string>
   <string name="delete_after_send">Supprimer après l\'envoi</string>
   <string name="delete_after_send_summary">Suppression des médias et formulaire finalisés après l\'envoi au serveur</string>
