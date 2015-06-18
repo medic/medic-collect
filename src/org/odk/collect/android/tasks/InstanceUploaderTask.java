@@ -440,7 +440,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         	{
     			Log.d(t, errorMsg.toString());
                 WebUtils.clearHttpConnectionManager();
-                outcome.mResults.put(id, fail + errorMsg);
+                outcome.mResults.put(id, Collect.getInstance().getString(R.string.error_prefix) + errorMsg);
                 cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
                 Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
                 return true;

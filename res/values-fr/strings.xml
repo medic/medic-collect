@@ -60,6 +60,7 @@
   <string name="enter_data_button">Remplir un Formulaire</string>
   <string name="error_occured">Une erreur s\'est produite</string>
   <string name="error_attaching_binary_file">Erreur pendant l\'attachement du média: %s</string>
+  <string name="error_prefix">Erreur: </string>
   <string name="fetching_file">Récupération de %1$s.\n\nFormulaire %2$s de %3$s formulaire(s).</string>
   <string name="file_deleted_error">Désolé, %1$s de %2$s formulaires sélectionnés ont échoué la suppression.</string>
   <string name="file_deleted_ok">%s formulaire(s) supprimé(s) avec succès.</string>
@@ -127,6 +128,11 @@
   <string name="server_url">URL</string>
   <string name="server_preferences">Serveur</string>
   <string name="sms_gateway">Passerelle SMS</string>
+  <string name="own_phone_number">Mon numéro de téléphone</string>
+  <string name="own_phone_number_summary">Le numéro de téléphone associé à la personne qui envoie les rapports</string>
+  <string name="own_phone_number_missing_error">Numéro de téléphone manquant. Corrigez-le en allant à \'Modifier les Parametres\' et ensuite \'Mon numéro de téléphone\'</string>
+  <string name="notification_toggle">Montrer les alertes</string>
+  <string name="notification_toggle_summary">Vous recevrez des alertes pour soumettre vos rapports</string>
   <string name="toggle_selected">Basculer tous</string>
   <string name="trigger">OK. Continuer.</string>
   <string name="uploading_data">Envoi du formulaire…</string>
@@ -134,7 +140,7 @@
   <string name="username">Nom d\'utilisateur</string>
   <string name="view_hierarchy">Aller à la ligne de saisie</string>
   <string name="general_preferences">Modifier les Paramètres</string>
-  <string name="click_to_web">Sélectionner pour aller à http://medicmobile.org</string>
+  <string name="click_to_web">Toucher pour aller à http://medicmobile.org</string>
   <string name="client">Client</string>
   <string name="show_splash">Afficher l\'écran de Bienvenue</string>
   <string name="show_splash_summary">Montrer lors du démarrage</string>
