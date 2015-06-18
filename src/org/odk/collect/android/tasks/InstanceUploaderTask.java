@@ -375,7 +375,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         							Collect.getInstance().getString(R.string.default_own_phone_number) );
 
         if (from.trim().equals("")) {
-        	errorMessage.append("Missing 'Own phone number' in 'Configure platform settings'");
+        	errorMessage.append(Collect.getInstance().getString(R.string.own_phone_number_missing_error));
         	return false;
         }
         try {

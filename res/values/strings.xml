@@ -156,6 +156,7 @@
 <string name="sms_gateway_summary">Phone number that receives the forms when sending via SMS</string>
 <string name="own_phone_number">Own phone number</string>
 <string name="own_phone_number_summary">Phone number of the person submitting the forms</string>
+<string name="own_phone_number_missing_error">Missing \'Own phone number\' in \'Configure platform settings\'</string>
 <string name="sms_upload">Upload SMS payload</string>
 <string name="sms_upload_summary">Check this option to use the SMS content instead of the XML when uploading forms</string>
 <string name="toggle_selected">Toggle All</string>
