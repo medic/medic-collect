@@ -69,8 +69,8 @@ public class AlarmService extends IntentService
     	String content = settings.getString(PreferencesActivity.KEY_NOTIFICATION_CONTENT, res.getString(R.string.default_notification_content));
     	
 		builder.setContentIntent(pendingIntent)
-		            .setSmallIcon(R.drawable.ic_medic_mobile)
-		            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_medic_mobile))
+		            .setSmallIcon(R.drawable.ic_notification)
+		            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_notification))
 		            .setTicker(title + ": " + content)
 		            .setAutoCancel(true)
 		            .setContentTitle(title)
