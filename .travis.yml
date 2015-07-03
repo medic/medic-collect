@@ -1,2 +1,4 @@
 language: android
-
+android:
+  components:
+    - android-22
