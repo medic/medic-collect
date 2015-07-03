@@ -1,0 +1,39 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:1.2.3'
+	}
+}
+
+apply plugin: 'android'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+android {
+	compileSdkVersion 22
+	buildToolsVersion '22.0.1'
+	packagingOptions {
+		exclude 'META-INF/LICENSE'
+		exclude 'META-INF/LICENSE.txt'
+		exclude 'META-INF/NOTICE'
+		exclude 'META-INF/NOTICE.txt'
+		exclude 'META-INF/DEPENDENCIES'
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFile getDefaultProguardFile('proguard-android.txt')
+			signingConfig signingConfigs.debug
+		}
+	}
+}

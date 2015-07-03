@@ -28,5 +28,6 @@ local.properties
 # PDT-specific
 .buildpath
 
-
-
+/.gradle/
+/build/
+/.javarosa-dependencies/
