@@ -19,6 +19,14 @@ dependencies {
 }
 
 android {
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = ['src']
+			resources.srcDirs = ['src']
+			res.srcDirs = ['res']
+		}
+	}
 	compileSdkVersion 22
 	buildToolsVersion '22.0.1'
 	packagingOptions {
