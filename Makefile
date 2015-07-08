@@ -20,5 +20,6 @@ android-logs:
 deploy:
 	rm -rf build/outputs/apk/
 	${GRADLEW} --daemon --parallel assemble
+	rm -f build/outputs/apk/*-unaligned.apk
 	ls build/outputs/apk/*-debug.apk | \
 					xargs -n1 ${ADB} install -r
