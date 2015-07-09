@@ -156,7 +156,7 @@ public class Collect extends Application {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             int versionNumber = pinfo.versionCode;
             String versionName = pinfo.versionName;
-            versionDetail = versionName + "." + versionNumber + "";
+            versionDetail = versionName + "." + versionNumber + " " + getString(R.string.flavor);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -164,7 +164,7 @@ public class Collect extends Application {
     }
 
     public String getAppName() {
-        return getString(R.string.app_name);    	
+        return getString(R.string.app_name);
     }
 
     /**
@@ -251,7 +251,7 @@ public class Collect extends Application {
     public CookieStore getCookieStore() {
         return cookieStore;
     }
-    
+
     @Override
     public void onCreate() {
         singleton = this;
@@ -271,14 +271,14 @@ public class Collect extends Application {
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         super.onCreate();
-        
+
         PropertyManager mgr = new PropertyManager(this);
 
         FormController.initializeJavaRosa(mgr);
-        
+
         mScheduledNotifications = new ScheduledNotifications();
         mScheduledNotifications.initialize();
-        
+
         mActivityLogger = new ActivityLogger(
                 mgr.getSingularProperty(PropertyManager.DEVICE_ID_PROPERTY));
     }
