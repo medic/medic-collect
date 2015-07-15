@@ -53,6 +53,10 @@ android {
 		exclude 'META-INF/DEPENDENCIES'
 	}
 
+	lintOptions {
+		abortOnError false
+	}
+
 	buildTypes {
 		release {
 			minifyEnabled false
