@@ -80,7 +80,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
   // AGGREGATE SPECIFIC
   public static final String KEY_SERVER_URL = "server_url";
-    
+
   // GME SPECIFIC
   public static final String KEY_GME_PROJECT_ID = "gme_project_id";
   public static final String KEY_GME_ID_HASHMAP = "gme_id_hashmap";
@@ -113,7 +113,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
   public static final String KEY_NAVIGATION = "navigation";
   public static final String KEY_CONSTRAINT_BEHAVIOR = "constraint_behavior";
-  
+
   public static final String KEY_NOTIFICATION_TOGGLE = "notification_toggle";
   public static final String KEY_NOTIFICATION_SCHEDULE = "notification_schedule";
   public static final String KEY_NOTIFICATION_TITLE = "notification_title";
@@ -136,12 +136,12 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
   protected EditTextPreference mUsernamePreference;
   protected EditTextPreference mPasswordPreference;
   protected EditTextPreference mOwnPhoneNumberPreference;
-  
+
   private CheckBoxPreference mNotificationTogglePreference;
   protected EditTextPreference mNotificationSchedulePreference;
   protected EditTextPreference mNotificationTitlePreference;
   protected EditTextPreference mNotificationContentPreference;
-  
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -166,10 +166,10 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
     mAutosendWifiPreference = (CheckBoxPreference) findPreference(KEY_AUTOSEND_WIFI);
     mAutosendNetworkPreference = (CheckBoxPreference) findPreference(KEY_AUTOSEND_NETWORK);
     PreferenceCategory serverCategory = (PreferenceCategory) findPreference(getString(R.string.server_preferences));
-    
+
     mInfoPreference = (PreferenceScreen) findPreference(KEY_INFO);
-    mInfoPreference.setSummary("Version: " 
-    							+ Collect.getInstance().getVersionDetails()
+    mInfoPreference.setSummary("Version: "
+    							+ Collect.getInstance().getVersionName()
     							+ "\n"
     							+ getString(R.string.click_to_web));
 
@@ -202,7 +202,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
     mNotificationSchedulePreference= (EditTextPreference) findPreference(KEY_NOTIFICATION_SCHEDULE);
     mNotificationTitlePreference= (EditTextPreference) findPreference(KEY_NOTIFICATION_TITLE);
     mNotificationContentPreference= (EditTextPreference) findPreference(KEY_NOTIFICATION_CONTENT);
-    
+
     mNotificationSchedulePreference.setSummary(mNotificationSchedulePreference.getText());
     mNotificationSchedulePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 
@@ -210,13 +210,13 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
       public boolean onPreferenceChange(Preference preference, Object newValue) {
     	ScheduledNotifications schedule = Collect.getInstance().getScheduledNotifications();
     	String pattern = (String)newValue;
-    	
+
     	if (schedule.isValidSchedule(pattern)) {
             mNotificationSchedulePreference.setSummary(pattern);
             if (schedule.isNotificationToggleOn()) {
             	schedule.set(pattern);
             }
-            return true;    		
+            return true;
     	}
     	else {
     		final AlertDialog.Builder builder = new AlertDialog.Builder(Collect.getInstance().getPreferenceActivity());
@@ -237,9 +237,9 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
 
     mUsernamePreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_USERNAME);
     mPasswordPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_PASSWORD);
-    
+
     mOwnPhoneNumberPreference = (EditTextPreference) findPreference(PreferencesActivity.KEY_OWN_PHONE_NUMBER);
-    
+
     mProtocolSettings = (PreferenceScreen) findPreference(KEY_PROTOCOL_SETTINGS);
 
     boolean notificationToggleAvailable = adminPreferences.getBoolean(
@@ -417,7 +417,7 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
     if (!(ownPhoneNumberAvailable || adminMode)) {
       serverCategory.removePreference(mOwnPhoneNumberPreference);
     }
-    
+
     if (!( changeProtocolAvailable || changeProtocolSettingsAvailable || googleAccountAvailable || usernameAvailable || passwordAvailable || ownPhoneNumberAvailable || adminMode)) {
         getPreferenceScreen().removePreference(serverCategory);
     }

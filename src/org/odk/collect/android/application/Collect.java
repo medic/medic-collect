@@ -149,18 +149,16 @@ public class Collect extends Application {
         return getString(R.string.app_name) + versionDetail;
     }
 
-    public String getVersionDetails() {
-        String versionDetail = "";
+    public String getVersionName() {
+        String versionName = "";
         try {
             PackageInfo pinfo;
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            int versionNumber = pinfo.versionCode;
-            String versionName = pinfo.versionName;
-            versionDetail = versionName + "." + versionNumber + " " + getString(R.string.flavor);
+            versionName = pinfo.versionName;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
-        return versionDetail;
+        return versionName;
     }
 
     public String getAppName() {
