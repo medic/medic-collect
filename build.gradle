@@ -20,9 +20,9 @@ dependencies {
 
 android {
 	defaultConfig {
-			versionCode 1068      // increment with every release
-			versionName '1.4.5.' + versionCode   // change with every release
-			archivesBaseName = "medic-collect-" + versionName // + "." + versionCode
+			versionCode 1069      // should be autoincremented with every build
+			versionName '1.4.5.' + versionCode   // keep the base version from upstream
+			archivesBaseName = "medic-collect-" + versionName
 	}
 	productFlavors {
 		base {
@@ -31,11 +31,9 @@ android {
 			// src/main
 		}
 		demo {
-			applicationId = 'org.medicmobile.webapp.mobile.demo'
 			versionName = android.defaultConfig.versionName + "-demo"
 		}
 		intrahealthsenegal {
-			applicationId = 'org.medicmobile.webapp.mobile.intrahealthsenegal'
 			versionName = android.defaultConfig.versionName + "-seda"
 		}
 	}
