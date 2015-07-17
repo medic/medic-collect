@@ -6,9 +6,10 @@ android:
 before_deploy:
   # For historical reasons, Android versionCode started at 1069, and versionName
   # starts with `1.4.5.`
-  - export TRAVIS_PUBLISH_DIR="build/publish/1.4.5.$(expr 1069 + $TRAVIS_BUILD_NUMBER)"
-  - mkdir -p "$TRAVIS_PUBLISH_DIR"
-  - cp build/outputs/apk/*-release.apk "$TRAVIS_PUBLISH_DIR"
+  - export MEDIC_BUILD_VERSION="1.4.5.$(expr 1069 + $TRAVIS_BUILD_NUMBER)"
+  - export MEDIC_PUBLISH_DIR="build/publish/${MEDIC_BUILD_VERSION}"
+  - mkdir -p "$MEDIC_PUBLISH_DIR"
+  - cp build/outputs/apk/*-release.apk "$MEDIC_PUBLISH_DIR"
 deploy:
   skip_cleanup: true
   provider: s3
@@ -25,7 +26,7 @@ deploy:
 after_success:
   - git config --global user.email "dev@medicmobile.org"
   - git config --global user.name "Travis CI"
-  - git tag travis-$TRAVIS_BUILD_NUMBER
+  - git tag "v${MEDIC_BUILD_VERSION}"
   - git push --tags "https://${github_auth}@github.com/${TRAVIS_REPO_SLUG}" >/dev/null 2>/dev/null
 branches:
   except:
