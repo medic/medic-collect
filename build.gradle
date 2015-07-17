@@ -22,7 +22,6 @@ def isReleaseBuild = {
 	return System.env.TRAVIS == 'true' &&
 			System.env.TRAVIS_BRANCH == 'master'
 }
-
 def getVersionCode = {
 	// 1069 was the last version code before moving builds to travis
 	final int BASE_VERSION_CODE = 1069
@@ -45,9 +44,9 @@ def getVersionName = {
 
 android {
 	defaultConfig {
-			versionCode getVersionCode()
-			versionName getVersionName()
-			archivesBaseName = "medic-collect-" + versionName
+		versionCode getVersionCode()
+		versionName getVersionName()
+		archivesBaseName = "medic-collect-" + versionName
 	}
 	productFlavors {
 		base {
