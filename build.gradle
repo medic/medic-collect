@@ -18,10 +18,35 @@ dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
+def isReleaseBuild = {
+	return System.env.TRAVIS == 'true' &&
+			System.env.TRAVIS_BRANCH == 'master'
+}
+
+def getVersionCode = {
+	// 1069 was the last version code before moving builds to travis
+	final int BASE_VERSION_CODE = 1069
+	if(isReleaseBuild()) {
+		return BASE_VERSION_CODE +
+				Integer.parseInt(System.env.TRAVIS_BUILD_NUMBER)
+	}
+	return BASE_VERSION_CODE
+}
+def getVersionName = {
+	// 1.4.5 is a historic version name which we wish to keep
+	def versionName = "1.4.5.${getVersionCode()}"
+	if(isReleaseBuild()) {
+		// It's a release build!
+		return versionName
+	}
+	// Anything built outside of CI is not a proper release
+	return "${versionName}-SNAPSHOT"
+}
+
 android {
 	defaultConfig {
-			versionCode 1069      // should be autoincremented with every build
-			versionName '1.4.5.' + versionCode   // keep the base version from upstream
+			versionCode getVersionCode()
+			versionName getVersionName()
 			archivesBaseName = "medic-collect-" + versionName
 	}
 	productFlavors {
