@@ -5,7 +5,11 @@ android:
     - android-22
 before_deploy:
   - "mkdir -p build/publish/travis-${TRAVIS_BUILD_NUMBER}"
-  - "cp build/outputs/apk/*-release.apk build/publish/travis-${TRAVIS_BUILD_NUMBER}"
+  # For historical reasons, Android versionCode started at 1069, and versionName
+  # starts with `1.4.5.`
+  - >
+      cp build/outputs/apk/*-release.apk 
+          build/publish/1.4.5.$(expr 1069 + "${TRAVIS_BUILD_NUMBER}")
 deploy:
   skip_cleanup: true
   provider: s3
