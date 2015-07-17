@@ -9,7 +9,6 @@ before_deploy:
   - export TRAVIS_PUBLISH_DIR="build/publish/1.4.5.$(expr 1069 + $TRAVIS_BUILD_NUMBER)"
   - mkdir -p "$TRAVIS_PUBLISH_DIR"
   - cp build/outputs/apk/*-release.apk "$TRAVIS_PUBLISH_DIR"
-          
 deploy:
   skip_cleanup: true
   provider: s3
