@@ -7,15 +7,15 @@ android:
     - build-tools-22.0.1
     - android-22
 after_success:
-  - export MEDIC_BUILD_VERSION="1.4.5.$(expr 1069 + $TRAVIS_BUILD_NUMBER)"
+  - export MEDIC_VERSION_NAME="1.4.5.$(expr 1069 + $TRAVIS_BUILD_NUMBER)"
   - git config --global user.email "dev@medicmobile.org"
   - git config --global user.name "Travis CI"
-  - git tag "v${MEDIC_BUILD_VERSION}"
+  - git tag "v${MEDIC_VERSION_NAME}"
   - git push --tags "https://${github_auth}@github.com/${TRAVIS_REPO_SLUG}" >/dev/null 2>/dev/null
 before_deploy:
   # For historical reasons, Android versionCode started at 1069, and versionName
   # starts with `1.4.5.`
-  - export MEDIC_PUBLISH_DIR="build/publish/${MEDIC_BUILD_VERSION}"
+  - export MEDIC_PUBLISH_DIR="build/publish/${MEDIC_VERSION_NAME}"
   - mkdir -p "$MEDIC_PUBLISH_DIR"
   - cp build/outputs/apk/*-release.apk "$MEDIC_PUBLISH_DIR"
 deploy:
