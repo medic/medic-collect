@@ -7,6 +7,14 @@ These notes were taken during an initial setup of Medic Collect using Eclipse, p
 
 ##Instructions
 
+### Command line
+
+To build and deploy the APK to a connected device/emulator:
+
+	make
+
+### Eclipse/Android Studio
+
 In Eclipse `Import project`
 
 In project.properties change `target=Google Inc.:Google APIs:19` to `target=android-19`
