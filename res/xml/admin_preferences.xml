@@ -4,14 +4,6 @@
         android:key="odk_preferences"
         android:summary="@string/admin_access_settings"
         android:title="@string/general_preferences" >
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetClass="org.odk.collect.android.preferences.PreferencesActivity"
-            android:targetPackage="org.medicmobile.collect.android" >
-            <extra
-                android:name="adminMode"
-                android:value="true" />
-        </intent>
     </Preference>
 
     <org.odk.collect.android.preferences.PasswordDialogPreference
@@ -36,7 +28,7 @@
 	    android:key="load_default_forms"
 	    android:summary="@string/load_default_forms_summary"
 	    android:title="@string/load_default_forms" />
-  
+
     <PreferenceCategory android:title="@string/user_access_main_menu" >
         <CheckBoxPreference
             android:id="@+id/edit_saved"

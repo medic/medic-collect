@@ -18,6 +18,7 @@ import java.io.File;
 
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 
 import org.javarosa.core.model.FormDef;
 import org.odk.collect.android.R;
@@ -53,6 +54,8 @@ public class AdminPreferencesActivity extends PreferenceActivity {
     public static String KEY_ADMIN_PW = "admin_pw";
 
     // keys for each preference
+    // general preferences
+    public static String KEY_GENERAL_PREFS = "odk_preferences";
     // main menu
     public static String KEY_EDIT_SAVED = "edit_saved";
     public static String KEY_SEND_FINALIZED = "send_finalized";
@@ -120,6 +123,16 @@ public class AdminPreferencesActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        Preference mGeneralPrefs = (Preference) findPreference(KEY_GENERAL_PREFS);
+        mGeneralPrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+          public boolean onPreferenceClick(Preference preference) {
+              Intent intent = new Intent(getBaseContext(), org.odk.collect.android.preferences.PreferencesActivity.class);
+              intent.putExtra("adminMode", "true");
+              startActivity(intent);
+              return true;
+          }
+        });
     }
 
     @Override
@@ -179,7 +192,7 @@ public class AdminPreferencesActivity extends PreferenceActivity {
 		    builder.setTitle(R.string.reload_preferences);
 
 		    builder.setMessage(R.string.reload_preferences_message);
-		    
+
 		    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                 	reloadDefaultPreferences();
@@ -197,7 +210,7 @@ public class AdminPreferencesActivity extends PreferenceActivity {
 	}
 
 	public void reloadDefaultPreferences(){
-		
+
     	Log.i("AdminPreferencesActivity", "Manually resetting settings. Copying settings from assets and restarting app.");
     	FileUtils.copyAsset("collect.settings");
     	FileUtils.copyAsset("collect.json");
