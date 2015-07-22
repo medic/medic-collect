@@ -57,9 +57,11 @@ android {
 		}
 		demo {
 			versionName = android.defaultConfig.versionName + "-demo"
+			applicationId = 'org.medicmobile.collect.android.demo'
 		}
 		intrahealthsenegal {
 			versionName = android.defaultConfig.versionName + "-seda"
+			applicationId = 'org.medicmobile.collect.android.intrahealthsenegal'
 		}
 	}
 	sourceSets {
