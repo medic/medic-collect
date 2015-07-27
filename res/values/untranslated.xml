@@ -8,8 +8,8 @@
 	the specific language governing permissions and limitations under the License. -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- strings that should not be translated -->
-	<string translatable="false" name="app_name">Medic Mobile</string>
-	<string translatable="false" name="atomic_name">Medic Mobile</string>
+	<string translatable="false" name="app_name">Collect</string>
+	<string translatable="false" name="atomic_name">Collect</string>
 	<string translatable="false" name="flavor"></string>
 	<string translatable="false" name="protocol_odk_default">odk_default</string>
 	<string translatable="false" name="protocol_google_maps_engine">google_maps_engine</string>
@@ -25,7 +25,7 @@
 	<string translatable="false" name="default_username">demo</string>
 	<string translatable="false" name="default_password">medic</string>
 	<string translatable="false" name="default_notification_schedule">0 16 L * *</string>
-	<string translatable="false" name="default_notification_title">Medic Mobile</string>
+	<string translatable="false" name="default_notification_title">Collect</string>
 	<string translatable="false" name="default_notification_content">Submit your reports today</string>
 	<item name="mapview" type="id"/>
 </resources>
