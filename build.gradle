@@ -9,6 +9,14 @@ buildscript {
 
 apply plugin: 'android'
 
+gradle.projectsEvaluated {
+	tasks.withType(JavaCompile) {
+		// Disable compiler warnings - most of them come from ODK and
+		// are quite noisy
+		options.compilerArgs << '-nowarn'
+	}
+}
+
 repositories {
 	mavenLocal()
 	mavenCentral()
