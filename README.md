@@ -3,7 +3,8 @@
 ## Overview
 
 These instructions should help you get setup using Eclipse to develop on Medic Collect, building JavaRosa from source.
-These notes were taken during an initial setup of Medic Collect using Eclipse, please update as needed. You will also find instructions on preparing builds for deployments.
+
+Please update these notes as needed. You will also find instructions on preparing builds for deployments.
 
 ## Instructions
 
