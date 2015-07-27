@@ -7,7 +7,7 @@ android:
   - build-tools-22.0.1
   - android-22
 before_script:
-  - export MEDIC_VERSION_NAME="1.4.5.$(expr 1069 + $TRAVIS_BUILD_NUMBER)"
+  - export MEDIC_VERSION_NAME="1.4.5.$(expr 1097 + $TRAVIS_BUILD_NUMBER)"
 script:
   - ./gradlew test assembleDebug
 after_success:
@@ -16,7 +16,7 @@ after_success:
   - git tag "v${MEDIC_VERSION_NAME}"
   - git push --tags "https://${github_auth}@github.com/${TRAVIS_REPO_SLUG}" >/dev/null 2>/dev/null
 before_deploy:
-  # For historical reasons, Android versionCode started at 1069, and versionName
+  # For historical reasons, Android versionCode started at 1097, and versionName
   # starts with `1.4.5.`
   - export MEDIC_PUBLISH_DIR="build/publish/${MEDIC_VERSION_NAME}"
   - mkdir -p "$MEDIC_PUBLISH_DIR"
