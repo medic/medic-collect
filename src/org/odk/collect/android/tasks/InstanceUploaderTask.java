@@ -98,7 +98,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
     private static final String fail = "Error: ";
 
     private InstanceUploaderListener mStateListener;
-    
+
     private static final String SMS_SEND_ACTION = "CTS_SMS_SEND_ACTION";
     private static final String SMS_DELIVERY_ACTION = "CTS_SMS_DELIVERY_ACTION";
 
@@ -112,38 +112,38 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
     private static String getFileContents(final File file) throws IOException {
         final InputStream inputStream = new FileInputStream(file);
         final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        
+
         final StringBuilder stringBuilder = new StringBuilder();
-        
+
         boolean done = false;
-        
+
         while (!done) {
             final String line = reader.readLine();
             done = (line == null);
-            
+
             if (line != null) {
                 stringBuilder.append(line);
             }
         }
-        
+
         reader.close();
         inputStream.close();
-        
+
         return stringBuilder.toString();
     }
-    
+
     /**
      * Uploads to urlString the submission identified by id with filepath of instance
      * @param gateway - Phone number to receive the SMS
      * @param id
      * @param instanceFilePath
      * @param toUpdate - Instance URL for recording status update.
-     * @throws InterruptedException 
+     * @throws InterruptedException
      */
     private boolean smsOneSubmission(String gateway, String id, String instanceFilePath, Uri toUpdate, Outcome outcome) throws InterruptedException {
 
     	String smsFileContent = "";
-    	
+
     	Collect.getInstance().getActivityLogger().logAction(this, gateway, instanceFilePath);
 
         File instanceFile = new File(instanceFilePath);
@@ -151,14 +151,14 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 
         // Check gateway phone number
     	PhoneNumber validated_gateway = null;
-        
+
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
         try {
         		validated_gateway = phoneUtil.parse(gateway, getUserCountry(Collect.getInstance().getApplicationContext()));
         } catch (NumberParseException e) {
         	System.err.println("NumberParseException was thrown: " + e.toString());
         }
-        
+
         if (validated_gateway==null || !phoneUtil.isValidNumber(validated_gateway)) {
         	// invalid phone number
 			System.err.println("Invalid phone number for SMS gateway: " + gateway );
@@ -173,10 +173,10 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 			    .update(toUpdate, cv, null, null);
 			return true;
         }
-        
+
         // find all files in parent directory
         File[] allFiles = instanceFile.getParentFile().listFiles();
-        
+
         // add media files
         for (File f : allFiles) {
             String fileName = f.getName();
@@ -198,16 +198,16 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 				} catch (IOException e) {
 					e.printStackTrace();	// Auto-generated catch block
 				}
-				
+
             	// prepare contents
         	    SmsManager smsManager = SmsManager.getDefault();
         	    ArrayList<String> parts = smsManager.divideMessage(smsFileContent);
         	    int numParts = parts.size();
-        	    
+
         	    // prepare responses
         	    SmsBroadcastReceiver mSendReceiver;
         	    SmsBroadcastReceiver mDeliveryReceiver;
-        	    
+
         	    mSendReceiver = new SmsBroadcastReceiver(SMS_SEND_ACTION);
         	    mDeliveryReceiver = new SmsBroadcastReceiver(SMS_DELIVERY_ACTION);
 
@@ -222,7 +222,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 
         	    Collect.getInstance().getApplicationContext().registerReceiver(mSendReceiver, sendIntentFilter);
         	    Collect.getInstance().getApplicationContext().registerReceiver(mDeliveryReceiver, deliveryIntentFilter);
-        	    
+
         	    ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
         	    ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
 
@@ -230,13 +230,13 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         	    	sentIntents.add(PendingIntent.getBroadcast(Collect.getInstance().getApplicationContext(), 0, mSendIntent, 0));
         	    	deliveryIntents.add(PendingIntent.getBroadcast(Collect.getInstance().getApplicationContext(), 0, mDeliveryIntent, 0));
         	    }
-        	    
+
         	    // Send Message, in parts if necessary
         	    if (smsFileContent.length() > 0) {
         	    	smsManager.sendMultipartTextMessage(gateway, null, parts, sentIntents, deliveryIntents);
         	    	mSendReceiver.waitForCalls(numParts, TIME_OUT);
         	    	mDeliveryReceiver.waitForCalls(numParts, TIME_OUT);
-        	    	
+
         	    	Set <String> errors = new HashSet <String>();
 
         	    	if (hasErrors(mSendReceiver, errors, "Send") || hasErrors(mDeliveryReceiver, errors, "Delivery")) {
@@ -269,13 +269,13 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         			    .update(toUpdate, cv, null, null);
         			return true;
         	    }
-        	            	    
+
             } else {
                 continue; // ignore other files
             }
         }
 
-        if (smsFileContent.isEmpty()) {	// File was not found
+        if (smsFileContent.length() == 0) {	// File was not found
 			System.err.println("Form does not have SMS data");
 			outcome.mResults.put(
 				id,
@@ -294,14 +294,14 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	        return true;
         }
     }
-    
+
     /**
      * Gets the Results from sending SMS
      * @param receiver - Broadcast receiver to check results
      * @param errors - Errors messages will be added to this set
      * @param action - Name of receiver, used only in console output
      * @return true if errors were found, false if no errors were found
-     * @throws InterruptedException 
+     * @throws InterruptedException
      */
     private boolean hasErrors(SmsBroadcastReceiver receiver,
 			Set<String> errors, String action) {
@@ -329,11 +329,11 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 			System.err.println(action + " error for message part " + i + ": " + errorMsg);
 			errors.add(errorMsg);
     	}
-    	if (errorMsg.isEmpty()) {
+    	if (errorMsg.length() == 0) {
     		return false;	// no errors
     	}
     	else {
-    		return true;	// yes, errors 
+    		return true;	// yes, errors
     	}
 	}
 
@@ -344,19 +344,19 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
      */
     private boolean isUploadPayloadSms(){
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
-        String protocol = settings.getString(PreferencesActivity.KEY_PROTOCOL, 
+        String protocol = settings.getString(PreferencesActivity.KEY_PROTOCOL,
 				Collect.getInstance().getString(R.string.protocol_odk_default));
-        
+
         // Use SMS file as payload only if Plaform is "Other" and "Upload SMS payload" is selected
-        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_medic_mobile)) 
-        		&& settings.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD, 
+        if (protocol.equals(Collect.getInstance().getString(R.string.protocol_medic_mobile))
+        		&& settings.getBoolean(PreferencesActivity.KEY_SMS_UPLOAD,
         				Collect.getInstance().getResources().getBoolean(R.bool.default_upload_sms)))
         {
             return true;
         }
         return false;
     }
-    
+
 	/**
      * Prepares the SMS payload to be uploaded
      * @param httppost
@@ -366,12 +366,12 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
      * @author Marc Abbyad (marc@medicmobile.org)
      */
     private boolean prepareSmsPayload(HttpPost httppost, File instanceSmsFile, StringBuilder errorMessage) {
-    	
+
 
         Long timestamp = System.currentTimeMillis();
         String message = "";
         String from = PreferenceManager.getDefaultSharedPreferences(
-        					Collect.getInstance()).getString(PreferencesActivity.KEY_OWN_PHONE_NUMBER, 
+        					Collect.getInstance()).getString(PreferencesActivity.KEY_OWN_PHONE_NUMBER,
         							Collect.getInstance().getString(R.string.default_own_phone_number) );
 
         if (from.trim().equals("")) {
@@ -386,7 +386,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
             errorMessage.append("Form File Not Found: " + instanceSmsFile.toString());
             return false;
 		}
-        
+
         try {
             //Post Data
             List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
@@ -447,7 +447,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         	}
         	Collect.getInstance().getActivityLogger().logAction(this, urlString, "Payload prepared for SMS upload");
         }
-        
+
         boolean openRosaServer = false;
         if (uriRemap.containsKey(u)) {
             // we already issued a head request and got a response,
@@ -530,7 +530,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
                 	WebUtils.discardEntityBytes(response);
 
                     Log.w(t, "Status code on Head request: " + statusCode);
-                    
+
                     if (!uploadSMS && statusCode >= HttpStatus.SC_OK && statusCode < HttpStatus.SC_MULTIPLE_CHOICES) {
                     	outcome.mResults.put(
                             id,
@@ -607,9 +607,9 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         // cookiestore (referenced by localContext) that will enable
         // authenticated publication to the server.
         //
-          
+
         if (uploadSMS) {
-        	     
+
             //making POST request
             try {
             	HttpResponse response = httpclient.execute(httppost, localContext);
@@ -619,7 +619,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
                 int responseCode = response.getStatusLine().getStatusCode();
                 WebUtils.discardEntityBytes(response);
 
-            
+
 	            if (responseCode != HttpStatus.SC_OK && responseCode != HttpStatus.SC_CREATED && responseCode != HttpStatus.SC_ACCEPTED) {
 	            	if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
 	            		// clear the cookies -- should not be necessary?
@@ -648,11 +648,11 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	            cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
 	            Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
 	            return true;
-	        }        	
+	        }
         }
         else {
 	        // get instance file
-	
+
 	        // Under normal operations, we upload the instanceFile to
 	        // the server.  However, during the save, there is a failure
 	        // window that may mark the submission as complete but leave
@@ -668,28 +668,28 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	        } else {
 	            submissionFile = instanceFile;
 	        }
-	
+
 	        if (!instanceFile.exists() && !submissionFile.exists()) {
 	        	outcome.mResults.put(id, fail + "instance XML file does not exist!");
 	            cv.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
 	            Collect.getInstance().getContentResolver().update(toUpdate, cv, null, null);
 	            return true;
 	        }
-	
+
 	        // find all files in parent directory
 	        File[] allFiles = instanceFile.getParentFile().listFiles();
-	
+
 	        // add media files
 	        List<File> files = new ArrayList<File>();
 	        for (File f : allFiles) {
 	            String fileName = f.getName();
-	
+
 	            int dotIndex = fileName.lastIndexOf(".");
 	            String extension = "";
 	            if (dotIndex != -1) {
 	                extension = fileName.substring(dotIndex + 1);
 	            }
-	
+
 	            if (fileName.startsWith(".")) {
 	                // ignore invisible files
 	                continue;
@@ -712,29 +712,29 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	                Log.w(t, "unrecognized file type " + f.getName());
 	            }
 	        }
-	
+
 	        boolean first = true;
 	        int j = 0;
 	        int lastJ;
 	        while (j < files.size() || first) {
 	        	lastJ = j;
 	            first = false;
-	
+
 	            httppost = WebUtils.createOpenRosaHttpPost(u);
-	
+
 	            MimeTypeMap m = MimeTypeMap.getSingleton();
-	
+
 	            long byteCount = 0L;
-	
+
 	            // mime post
 	            MultipartEntity entity = new MultipartEntity();
-	
+
 	            // add the submission file first...
 	            FileBody fb = new FileBody(submissionFile, "text/xml");
 	            entity.addPart("xml_submission_file", fb);
 	            Log.i(t, "added xml_submission_file: " + submissionFile.getName());
 	            byteCount += submissionFile.length();
-	
+
 	            for (; j < files.size(); j++) {
 	                File f = files.get(j);
 	                String fileName = f.getName();
@@ -744,7 +744,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	                    extension = fileName.substring(idx + 1);
 	                }
 	                String contentType = m.getMimeTypeFromExtension(extension);
-	
+
 	                // we will be processing every one of these, so
 	                // we only need to deal with the content type determination...
 	                if (extension.equals("xml")) {
@@ -799,7 +799,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	                    byteCount += f.length();
 	                    Log.w(t, "added unrecognized file (" + contentType + ") " + f.getName());
 	                }
-	
+
 	                // we've added at least one attachment to the request...
 	                if (j + 1 < files.size()) {
 	                    if ((j-lastJ+1 > 100) || (byteCount + files.get(j + 1).length() > 10000000L)) {
@@ -816,9 +816,9 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	                    }
 	                }
 	            }
-	
+
 	            httppost.setEntity(entity);
-	        
+
 	            // prepare response and return uploaded
 	            HttpResponse response = null;
 	            try {
@@ -826,7 +826,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	                response = httpclient.execute(httppost, localContext);
 	                int responseCode = response.getStatusLine().getStatusCode();
 	                WebUtils.discardEntityBytes(response);
-	
+
 	                Log.i(t, "Response code:" + responseCode);
 	                // verify that the response was a 201 or 202.
 	                // If it wasn't, the submission has failed.
@@ -873,7 +873,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 
     // TODO: This method is like 350 lines long, down from 400.
     // still. ridiculous. make it smaller.
-    
+
 	/**
      * Uploads to urlString the submission identified by id with filepath of instance
      * @param urlString destination URL
@@ -905,14 +905,14 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        
+
       //Post Data
         List<org.apache.http.NameValuePair> nameValuePair = new ArrayList<org.apache.http.NameValuePair>(2);
         nameValuePair.add(new org.apache.http.message.BasicNameValuePair("message_id", "999999"));
         nameValuePair.add(new org.apache.http.message.BasicNameValuePair("sent_timestamp", timestamp.toString()));
         nameValuePair.add(new org.apache.http.message.BasicNameValuePair("message", message));
         nameValuePair.add(new org.apache.http.message.BasicNameValuePair("from", from));
- 
+
       //Encoding POST data
         try {
         	httpPost.setEntity(new org.apache.http.client.entity.UrlEncodedFormEntity(nameValuePair));
@@ -920,7 +920,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
             // log exception
             e.printStackTrace();
         }
- 
+
         //making POST request.
         try {
         	org.apache.http.HttpResponse response = httpClient.execute(httpPost);
@@ -933,7 +933,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
             // Log exception
             e.printStackTrace();
         }
-        
+
         return true;
     }
 
@@ -943,7 +943,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
     		uploadMethod = (String) params[0];
     	}
     	Long[] values = (Long[]) params[1];
-    	
+
     	Outcome outcome = new Outcome();
 
         String selection = InstanceColumns._ID + "=?";
@@ -986,7 +986,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 	                if(uploadMethod != null && uploadMethod.equals(FormEntryActivity.KEY_UPLOAD_METHOD_SMS)) {
 		                String gateway = settings.getString(PreferencesActivity.KEY_SMS_GATEWAY,
 		                    				Collect.getInstance().getString(R.string.default_sms_gateway));
-		                		                
+
 		                try {
 							if ( !smsOneSubmission(gateway, id, instance, toUpdate, outcome) ) {
 							   	return outcome; // get credentials...
@@ -1012,17 +1012,17 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 		                    if ( submissionUrl.charAt(0) != '/') {
 		                    	submissionUrl = "/" + submissionUrl;
 		                    }
-	
+
 		                    urlString = urlString + submissionUrl;
 		                }
-	
+
 		                // add the deviceID to the request...
 		                try {
 							urlString += "?deviceID=" + URLEncoder.encode(deviceId, "UTF-8");
 						} catch (UnsupportedEncodingException e) {
 							// unreachable...
 						}
-		                	
+
 		                if ( !uploadOneSubmission(urlString, id, instance, toUpdate, localContext, uriRemap, outcome) ) {
 		                	return outcome; // get credentials...
 		                }
@@ -1073,7 +1073,7 @@ public static String getUserCountry(Context context) {
                     mStateListener.authRequest(outcome.mAuthRequestingServer, outcome.mResults);
                 } else {
                     mStateListener.uploadingComplete(outcome.mResults);
-                    
+
                     StringBuilder selection = new StringBuilder();
                     Set<String> keys = outcome.mResults.keySet();
                     Iterator<String> it = keys.iterator();
@@ -1147,8 +1147,8 @@ public static String getUserCountry(Context context) {
             mStateListener = sl;
         }
     }
-    
-    
+
+
     public static void copyToBytes(InputStream input, OutputStream output,
             int bufferSize) throws IOException {
         byte[] buf = new byte[bufferSize];
@@ -1165,7 +1165,7 @@ public static String getUserCountry(Context context) {
     	private String mAction;
     	private Object mLock;
     	private ArrayList<Integer> mResultCodes = new ArrayList<Integer>();
-    
+
     	SmsBroadcastReceiver(String action) {
 	    	mAction = action;
 	    	reset();

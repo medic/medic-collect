@@ -65,7 +65,7 @@ public class InstanceUploaderList extends ListActivity implements
 	private static final int MENU_SHOW_UNSENT = Menu.FIRST + 1;
 	private static final int INSTANCE_UPLOADER = 0;
 	private static final int INSTANCE_SMSER = 0;
-	
+
 	private static final int GOOGLE_USER_DIALOG = 1;
 
 	private Button mUploadButton;
@@ -73,7 +73,7 @@ public class InstanceUploaderList extends ListActivity implements
 	private Button mToggleButton;
 
 	private SharedPreferences mPrefs;
-	
+
 	private boolean mShowUnsent = true;
 	private SimpleCursorAdapter mInstances;
 	private ArrayList<Long> mSelected = new ArrayList<Long>();
@@ -155,20 +155,20 @@ public class InstanceUploaderList extends ListActivity implements
 				}
 			}
 		});
-		
+
 		mSMSButton = (Button) findViewById(R.id.upload_sms_button);
-		
-        // Show "Send as SMS" button if using Medic Mobile platform AND 
+
+        // Show "Send as SMS" button if using Medic Mobile platform AND
 		// a SMS Gateway number is set in preferences
 		Collect instance = Collect.getInstance();
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(instance);
 
-		String protocol = mPrefs.getString(PreferencesActivity.KEY_PROTOCOL, 
+		String protocol = mPrefs.getString(PreferencesActivity.KEY_PROTOCOL,
         		instance.getString(R.string.protocol_odk_default));
-        
-        if (!protocol.equals(instance.getString(R.string.protocol_medic_mobile)) 
+
+        if (!protocol.equals(instance.getString(R.string.protocol_medic_mobile))
         		|| mPrefs.getString(PreferencesActivity.KEY_SMS_GATEWAY,
-    				instance.getString(R.string.default_sms_gateway)).isEmpty()) {
+    				instance.getString(R.string.default_sms_gateway)).length() == 0) {
         	mSMSButton.setVisibility(View.GONE);
         }
         else {
@@ -186,7 +186,7 @@ public class InstanceUploaderList extends ListActivity implements
 
 				if (mSelected.size() > 0) {
 					// items selected
-					smsSelectedFiles();						
+					smsSelectedFiles();
 				  mToggled = false;
 					mSelected.clear();
 					InstanceUploaderList.this.getListView().clearChoices();
@@ -228,7 +228,7 @@ public class InstanceUploaderList extends ListActivity implements
 			}
 		});
 		mToggleButton.setOnLongClickListener(this);
-		
+
 		Cursor c = mShowUnsent ? getUnsentCursor() : getAllCursor();
 
 		String[] data = new String[] { InstanceColumns.DISPLAY_NAME,
@@ -518,7 +518,7 @@ public class InstanceUploaderList extends ListActivity implements
 		alertDialog.show();
 		return true;
 	}
-	
+
 	@Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
