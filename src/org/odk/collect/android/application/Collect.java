@@ -161,6 +161,10 @@ public class Collect extends Application {
         return versionName;
     }
 
+    public String getAppNameWithByline() {
+        return getAppName() + " " + getString(R.string.byline);
+    }
+
     public String getAppName() {
         return getString(R.string.app_name);
     }

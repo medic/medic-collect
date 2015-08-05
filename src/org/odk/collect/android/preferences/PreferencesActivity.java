@@ -168,7 +168,8 @@ public class PreferencesActivity extends PreferenceActivity implements OnPrefere
     PreferenceCategory serverCategory = (PreferenceCategory) findPreference(getString(R.string.server_preferences));
 
     mInfoPreference = (PreferenceScreen) findPreference(KEY_INFO);
-    mInfoPreference.setSummary("Version: "
+    mInfoPreference.setTitle(Collect.getInstance().getAppNameWithByline());
+    mInfoPreference.setSummary("Version: Collect "
     							+ Collect.getInstance().getVersionName()
     							+ "\n"
     							+ getString(R.string.click_to_web));

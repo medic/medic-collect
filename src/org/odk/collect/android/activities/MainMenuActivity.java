@@ -111,8 +111,7 @@ public class MainMenuActivity extends Activity {
 		{
 			// Do not show versioned name, just app name. Version can be seen in settings.
 			TextView mainMenuMessageLabel = (TextView) findViewById(R.id.main_menu_header);
-			mainMenuMessageLabel.setText(Collect.getInstance()
-					.getAppName());
+			mainMenuMessageLabel.setText(Collect.getInstance().getAppNameWithByline());
 		}
 
 		setTitle(getString(R.string.main_menu));
@@ -130,7 +129,7 @@ public class MainMenuActivity extends Activity {
 						Toast.LENGTH_LONG).show();
 			}
 		}
-		
+
 		mReviewSpacer = findViewById(R.id.review_spacer);
 		mGetFormsSpacer = findViewById(R.id.get_forms_spacer);
 
@@ -200,7 +199,7 @@ public class MainMenuActivity extends Activity {
 							FormDownloadList.class);
 				}
 				startActivity(i);
-				
+
 			}
 		});
 
