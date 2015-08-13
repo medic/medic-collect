@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -198,9 +199,9 @@ public final class WebUtils {
 	private static final void setOpenRosaHeaders(HttpRequest req) {
 		req.setHeader(OPEN_ROSA_VERSION_HEADER, OPEN_ROSA_VERSION);
 		GregorianCalendar g = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-		g.setTime(new Date());
-		req.setHeader(DATE_HEADER,
-				DateFormat.format("E, dd MMM yyyy hh:mm:ss zz", g).toString());
+		g.setTime(new Date());		
+		SimpleDateFormat sdf = new SimpleDateFormat("E, dd MMM yyyy hh:mm:ss zz", Locale.US);
+		req.setHeader(DATE_HEADER, sdf.format(g.getTime()));
 	}
 
 	public static final HttpHead createOpenRosaHttpHead(Uri u) {
