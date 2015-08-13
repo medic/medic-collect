@@ -128,7 +128,7 @@ public class AdminPreferencesActivity extends PreferenceActivity {
         mGeneralPrefs.setOnPreferenceClickListener(new OnPreferenceClickListener() {
           public boolean onPreferenceClick(Preference preference) {
               Intent intent = new Intent(getBaseContext(), org.odk.collect.android.preferences.PreferencesActivity.class);
-              intent.putExtra("adminMode", "true");
+              intent.putExtra("adminMode", true);
               startActivity(intent);
               return true;
           }
