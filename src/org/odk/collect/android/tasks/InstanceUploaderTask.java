@@ -390,13 +390,15 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         try {
             //Post Data
             List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-        	nameValuePair.add(new BasicNameValuePair("message_id", "999999"));
         	nameValuePair.add(new BasicNameValuePair("sent_timestamp", timestamp.toString()));
         	nameValuePair.add(new BasicNameValuePair("message", message));
         	nameValuePair.add(new BasicNameValuePair("from", from));
 
             //Encoding POST data
         	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
+        	
+        	//Set header to match content
+        	httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
         } catch (UnsupportedEncodingException e) {
             // log exception
