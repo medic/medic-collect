@@ -26,7 +26,7 @@
   <string name="change_password">Mot de passe</string>
   <string name="change_protocol_settings_default">Paramètres de la plate-forme</string>
   <string name="change_sms_gateway">Numéro de la passerelle</string>
-  <string name="change_username">Nom d\'utilisateur ODK</string>
+  <string name="change_username">Nom d\'utilisateur</string>
   <string name="clearanswer_confirm">Enlever la réponse à \"%s\" ?</string>
   <string name="clear_answer">Enlever la réponse</string>
   <string name="clear_answer_ask">Enlever cette réponse ?</string>
@@ -145,7 +145,7 @@
   <string name="show_splash">Afficher l\'écran de Bienvenue</string>
   <string name="show_splash_summary">Montrer lors du démarrage</string>
   <string name="splash_path">Image sélectionnée</string>
-  <string name="default_splash_path">Défaut d\'ODK</string>
+  <string name="default_splash_path">Défaut</string>
   <string name="select_another_image">Sélectionner une autre Image</string>
   <string name="use_odk_default">Utiliser l\'Image par Défaut</string>
   <string name="change_splash_path">Modifier l\'image</string>

@@ -35,11 +35,11 @@
 <string name="capture_image">Take Picture</string>
 <string name="capture_video">Record Video</string>
 <string name="change_language">Change Language</string>
-<string name="change_password">ODK Password</string>
+<string name="change_password">Server Password</string>
 <string name="change_protocol_settings_default">Platform Settings</string>
 <string name="change_sms_gateway">Gateway Phone Number</string>
 <string name="change_own_phone_number">Own Phone Number</string>
-<string name="change_username">ODK Username</string>
+<string name="change_username">Server Username</string>
 <string name="clearanswer_confirm">Remove the response to \"%s\"?</string>
 <string name="clear_answer">Remove response</string>
 <string name="clear_answer_ask">Remove This Response?</string>
@@ -173,7 +173,7 @@
 <string name="show_splash">Show splash screen</string>
 <string name="show_splash_summary">Shows when application starts</string>
 <string name="splash_path">Selected splash image</string>
-<string name="default_splash_path">ODK Default</string>
+<string name="default_splash_path">Default</string>
 <string name="select_another_image">Select another image</string>
 <string name="use_odk_default">Use default image</string>
 <string name="change_splash_path">Change image</string>
