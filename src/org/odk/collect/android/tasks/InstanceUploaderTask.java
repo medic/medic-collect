@@ -876,69 +876,6 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
     // TODO: This method is like 350 lines long, down from 400.
     // still. ridiculous. make it smaller.
 
-	/**
-     * Uploads to urlString the submission identified by id with filepath of instance
-     * @param urlString destination URL
-     * @param id
-     * @param instanceFilePath
-     * @param toUpdate - Instance URL for recording status update.
-     * @param httpclient - client connection
-     * @param localContext - context (e.g., credentials, cookies) for client connection
-     * @param uriRemap - mapping of Uris to avoid redirects on subsequent invocations
-     * @return false if credentials are required and we should terminate immediately.
-     */
-    private boolean uploadOneSMS(String urlString, String id, String instanceFilePath,
-    			Uri toUpdate, HttpContext localContext, Map<Uri, Uri> uriRemap, Outcome outcome) {
-
-    	Collect.getInstance().getActivityLogger().logAction(this, urlString, instanceFilePath);
-
-        File instanceFile = new File(instanceFilePath);
-        // Uri u = Uri.parse(urlString);
-
-        org.apache.http.client.HttpClient httpClient = new DefaultHttpClient();
-        org.apache.http.client.methods.HttpPost httpPost = new org.apache.http.client.methods.HttpPost(urlString);
-
-        Long timestamp = System.currentTimeMillis();
-        String message = "";
-        String from = "+14165558888";
-        try {
-			message = getFileContents(instanceFile);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-      //Post Data
-        List<org.apache.http.NameValuePair> nameValuePair = new ArrayList<org.apache.http.NameValuePair>(2);
-        nameValuePair.add(new org.apache.http.message.BasicNameValuePair("message_id", "999999"));
-        nameValuePair.add(new org.apache.http.message.BasicNameValuePair("sent_timestamp", timestamp.toString()));
-        nameValuePair.add(new org.apache.http.message.BasicNameValuePair("message", message));
-        nameValuePair.add(new org.apache.http.message.BasicNameValuePair("from", from));
-
-      //Encoding POST data
-        try {
-        	httpPost.setEntity(new org.apache.http.client.entity.UrlEncodedFormEntity(nameValuePair));
-        } catch (UnsupportedEncodingException e) {
-            // log exception
-            e.printStackTrace();
-        }
-
-        //making POST request.
-        try {
-        	org.apache.http.HttpResponse response = httpClient.execute(httpPost);
-            // write response to log
-            Log.d("Http Post Response:", response.toString());
-        } catch (ClientProtocolException e) {
-            // Log exception
-            e.printStackTrace();
-        } catch (IOException e) {
-            // Log exception
-            e.printStackTrace();
-        }
-
-        return true;
-    }
-
     protected Outcome doInBackground(Object... params) {
     	String uploadMethod = null;
     	if (params[0] != null) {	// protect against converting null
