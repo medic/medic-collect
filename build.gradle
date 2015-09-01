@@ -121,7 +121,7 @@ android {
 android.applicationVariants.all { variant ->
 	variant.mergeAssets.doLast {
 		if(System.env.MEDIC_COLLECT_PASSWORD) {
-			def assetsDir =  "$project.buildDir/intermediates/assets/$variant.dirName"
+			def assetsDir = "$project.buildDir/intermediates/assets/$variant.dirName"
 			def collectConfigFile = new File(assetsDir, 'collect.json')
 			def collectConfig = new JsonSlurper().parse(collectConfigFile)
 			collectConfig.general_preferences.password = System.env.MEDIC_COLLECT_PASSWORD
