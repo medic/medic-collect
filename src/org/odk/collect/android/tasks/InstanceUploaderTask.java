@@ -193,11 +193,11 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
             }
             if (extension.equals("sms") || fileName.equals(instanceFile.getName() + ".txt")) {
             	// get contents of file
-				try {
-					smsFileContent = getFileContents(f);
-				} catch (IOException e) {
-					e.printStackTrace();	// Auto-generated catch block
-				}
+              try {
+              	smsFileContent = getFileContents(f);
+              } catch (IOException e) {
+              	e.printStackTrace();	// Auto-generated catch block
+              }
 
             	// prepare contents
         	    SmsManager smsManager = SmsManager.getDefault();
@@ -396,7 +396,7 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 
             //Encoding POST data
         	httppost.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
-        	
+
         	//Set header to match content
         	httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
