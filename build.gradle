@@ -74,6 +74,10 @@ android {
 			versionName = android.defaultConfig.versionName + "-seda"
 			applicationId = 'org.medicmobile.collect.android.intrahealthsenegal'
 		}
+		amrefsenegal {
+			versionName = android.defaultConfig.versionName + "-amrefsenegal"
+			applicationId = 'org.medicmobile.collect.android.amrefsenegal'
+		}
 	}
 	sourceSets {
 		main {
@@ -85,6 +89,7 @@ android {
 		}
 		demo.setRoot('../medic-projects/_medic-collect-flavors/demo')
 		intrahealthsenegal.setRoot('../medic-projects/_medic-collect-flavors/intrahealthsenegal')
+        amrefsenegal.setRoot('../medic-projects/_medic-collect-flavors/amrefsenegal')
 	}
 	compileSdkVersion 22
 	buildToolsVersion '22.0.1'
