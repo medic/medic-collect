@@ -63,10 +63,6 @@ import org.opendatakit.httpclientandroidlib.entity.mime.content.StringBody;
 import org.opendatakit.httpclientandroidlib.message.BasicNameValuePair;
 import org.opendatakit.httpclientandroidlib.protocol.HttpContext;
 
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
-
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -79,6 +75,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -150,23 +147,14 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
         ContentValues cv = new ContentValues();
 
         // Check gateway phone number
-    	PhoneNumber validated_gateway = null;
-
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        try {
-        		validated_gateway = phoneUtil.parse(gateway, getUserCountry(Collect.getInstance().getApplicationContext()));
-        } catch (NumberParseException e) {
-        	System.err.println("NumberParseException was thrown: " + e.toString());
-        }
-
-        if (validated_gateway==null || !phoneUtil.isValidNumber(validated_gateway)) {
+        if (gateway == null || gateway.equals("") || !PhoneNumberUtils.isGlobalPhoneNumber(gateway)) {
         	// invalid phone number
 			System.err.println("Invalid phone number for SMS gateway: " + gateway );
 			outcome.mResults.put(
 				id,
 				fail
 				+ "Invalid SMS gateway phone number: "
-				+ gateway.toString());
+				+ gateway);
 			cv.put(InstanceColumns.STATUS,
 					InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
 				Collect.getInstance().getContentResolver()
