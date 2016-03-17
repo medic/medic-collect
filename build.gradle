@@ -78,14 +78,14 @@ android {
 			versionName = android.defaultConfig.versionName + "-amrefsenegal"
 			applicationId = 'org.medicmobile.collect.android.amrefsenegal'
 		}
-        queens {
-            versionName = android.defaultConfig.versionName + "-queens"
-            applicationId = 'org.medicmobile.collect.android.queens'
-        }
-        strongminds {
-            versionName = android.defaultConfig.versionName + "-strongminds"
-            applicationId = 'org.medicmobile.collect.android.strongminds'
-        }
+		queens {
+			versionName = android.defaultConfig.versionName + "-queens"
+			applicationId = 'org.medicmobile.collect.android.queens'
+		}
+		strongminds {
+			versionName = android.defaultConfig.versionName + "-strongminds"
+			applicationId = 'org.medicmobile.collect.android.strongminds'
+		}
 	}
 	sourceSets {
 		main {
@@ -97,9 +97,9 @@ android {
 		}
 		demo.setRoot('../medic-projects/_medic-collect-flavors/demo')
 		intrahealthsenegal.setRoot('../medic-projects/_medic-collect-flavors/intrahealthsenegal')
-        amrefsenegal.setRoot('../medic-projects/_medic-collect-flavors/amrefsenegal')
-        queens.setRoot('../medic-projects/_medic-collect-flavors/queens')
-        strongminds.setRoot('../medic-projects/_medic-collect-flavors/strongminds')
+		amrefsenegal.setRoot('../medic-projects/_medic-collect-flavors/amrefsenegal')
+		queens.setRoot('../medic-projects/_medic-collect-flavors/queens')
+		strongminds.setRoot('../medic-projects/_medic-collect-flavors/strongminds')
 	}
 	compileSdkVersion 22
 	buildToolsVersion '22.0.1'
