@@ -86,9 +86,9 @@ android {
             versionName = android.defaultConfig.versionName + "-strongminds"
             applicationId = 'org.medicmobile.collect.android.strongminds'
         }
-        ipas-nigeria {
-            versionName = android.defaultConfig.versionName + "-ipas-nigeria"
-            applicationId = 'org.medicmobile.collect.android.ipas-nigeria'
+        ipasnigeria {
+            versionName = android.defaultConfig.versionName + "-ipasnigeria"
+            applicationId = 'org.medicmobile.collect.android.ipasnigeria'
         }
 	}
 	sourceSets {
@@ -104,7 +104,7 @@ android {
         amrefsenegal.setRoot('../medic-projects/_medic-collect-flavors/amrefsenegal')
         queens.setRoot('../medic-projects/_medic-collect-flavors/queens')
         strongminds.setRoot('../medic-projects/_medic-collect-flavors/strongminds')
-        christianaidsr.setRoot('../medic-projects/_medic-collect-flavors/ipas-nigeria')
+        ipasnigeria.setRoot('../medic-projects/_medic-collect-flavors/ipas-nigeria')
 	}
 	compileSdkVersion 22
 	buildToolsVersion '22.0.1'
