@@ -17,9 +17,14 @@ android-emulator:
 android-logs:
 	${ADB} shell logcat
 
-deploy:
-	rm -rf build/outputs/apk/
+deploy: clean
 	${GRADLEW} --daemon --parallel assembleDebug
 	rm -f build/outputs/apk/*-unaligned.apk
 	ls build/outputs/apk/*-debug.apk | \
 					xargs -n1 ${ADB} install -r
+
+clean:
+	rm -rf build/outputs/apk/
+
+base: clean
+	${GRADLEW} --daemon --parallel installBaseDebug
