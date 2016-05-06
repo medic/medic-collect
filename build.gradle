@@ -146,6 +146,13 @@ android {
 
 	dexOptions {
 		if(IS_TRAVIS) {
+			// Default dex heap size seems to be 1GB.  On travis,
+			// this can lead to out-of-memory: preDex<Flavor>Debug
+			// tasks fail with error code 137.
+			// There may also be multiple processes dexing
+			// simultaneously, so RAM usage will likely be 4*maxHeapSize
+
+			// Decrease the max heap size for dexing on travis:
 			javaMaxHeapSize "512M"
 		}
 	}
