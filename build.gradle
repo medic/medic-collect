@@ -141,6 +141,10 @@ android {
 			signingConfig signingConfigs.release
 		}
 	}
+
+	dexOptions {
+		javaMaxHeapSize "256M"
+	}
 }
 
 android.applicationVariants.all { variant ->
