@@ -146,8 +146,7 @@ android {
 
 	dexOptions {
 		if(IS_TRAVIS) {
-			javaMaxHeapSize "256M"
-			maxProcessCount 1
+			javaMaxHeapSize "512M"
 		}
 	}
 }
