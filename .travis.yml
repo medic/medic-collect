@@ -10,7 +10,7 @@ before_script:
   - export MEDIC_VERSION_NAME="1.4.5.$(expr 1097 + $TRAVIS_BUILD_NUMBER)"
   - echo "Building medic-collect-${MEDIC_VERSION_NAME}"
 script:
-  - ./gradlew test assembleDebug
+  - ./gradlew --stacktrace test assembleDebug
 after_success:
   - git config --global user.email "dev@medicmobile.org"
   - git config --global user.name "Travis CI"
