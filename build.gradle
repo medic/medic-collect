@@ -12,6 +12,8 @@ buildscript {
 
 apply plugin: 'android'
 
+final boolean IS_TRAVIS = System.env.TRAVIS == 'true'
+
 gradle.projectsEvaluated {
 	tasks.withType(JavaCompile) {
 		// Disable compiler warnings - most of them come from ODK and
@@ -30,12 +32,12 @@ dependencies {
 }
 
 def isReleaseBuild = {
-	return System.env.JENKINS == 'true' || (System.env.TRAVIS == 'true' &&
-			System.env.TRAVIS_BRANCH == 'master')
+	return System.env.JENKINS == 'true' ||
+			(IS_TRAVIS && System.env.TRAVIS_BRANCH == 'master')
 }
 def getVersionCode = {
 	if(isReleaseBuild()) {
-		def code = System.env.TRAVIS == 'true' ?
+		def code = IS_TRAVIS ?
 				System.env.TRAVIS_BUILD_NUMBER :
 				System.env.VERSION_TO_BUILD.split(/\./)[-1]
 		return Integer.parseInt(code)
@@ -44,7 +46,7 @@ def getVersionCode = {
 }
 def getVersionName = {
 	if(isReleaseBuild()) {
-		if(System.env.TRAVIS == 'true') {
+		if(IS_TRAVIS) {
 			def v = System.env.MEDIC_VERSION_NAME
 			if(!v) throw new RuntimeException(
 					'Missing required env var: MEDIC_VERSION_NAME')
@@ -143,7 +145,10 @@ android {
 	}
 
 	dexOptions {
-		javaMaxHeapSize "256M"
+		if(IS_TRAVIS) {
+			javaMaxHeapSize "256M"
+			maxProcessCount 1
+		}
 	}
 }
 
