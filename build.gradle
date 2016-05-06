@@ -2,157 +2,157 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
-    }
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:1.2.3'
+	}
 }
 
 apply plugin: 'android'
 
 gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
-        // Disable compiler warnings - most of them come from ODK and
-        // are quite noisy
-        options.compilerArgs << '-nowarn'
-    }
+	tasks.withType(JavaCompile) {
+		// Disable compiler warnings - most of them come from ODK and
+		// are quite noisy
+		options.compilerArgs << '-nowarn'
+	}
 }
 
 repositories {
-    mavenLocal()
-    mavenCentral()
+	mavenLocal()
+	mavenCentral()
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 def isReleaseBuild = {
-    return System.env.JENKINS == 'true' || (System.env.TRAVIS == 'true' &&
-            System.env.TRAVIS_BRANCH == 'master')
+	return System.env.JENKINS == 'true' || (System.env.TRAVIS == 'true' &&
+			System.env.TRAVIS_BRANCH == 'master')
 }
 def getVersionCode = {
-    if (isReleaseBuild()) {
-        def code = System.env.TRAVIS == 'true' ?
-                System.env.TRAVIS_BUILD_NUMBER :
-                System.env.VERSION_TO_BUILD.split(/\./)[-1]
-        return Integer.parseInt(code)
-    }
-    return 1
+	if(isReleaseBuild()) {
+		def code = System.env.TRAVIS == 'true' ?
+				System.env.TRAVIS_BUILD_NUMBER :
+				System.env.VERSION_TO_BUILD.split(/\./)[-1]
+		return Integer.parseInt(code)
+	}
+	return 1
 }
 def getVersionName = {
-    if (isReleaseBuild()) {
-        if (System.env.TRAVIS == 'true') {
-            def v = System.env.MEDIC_VERSION_NAME
-            if (!v) throw new RuntimeException(
-                    'Missing required env var: MEDIC_VERSION_NAME')
-            return v
-        } else return System.env.VERSION_TO_BUILD
-    }
-    return 'SNAPSHOT'
+	if(isReleaseBuild()) {
+		if(System.env.TRAVIS == 'true') {
+			def v = System.env.MEDIC_VERSION_NAME
+			if(!v) throw new RuntimeException(
+					'Missing required env var: MEDIC_VERSION_NAME')
+			return v
+		} else return System.env.VERSION_TO_BUILD
+	}
+	return 'SNAPSHOT'
 }
 
 android {
-    defaultConfig {
-        versionCode getVersionCode()
-        versionName getVersionName()
-        archivesBaseName = "medic-collect-" + versionName
-    }
-    productFlavors {
-        base {
-            // we will not create project-specific src directories
-            // for `base` - it will use the defaults in
-            // src/main
-        }
-        demo {
-            versionName = android.defaultConfig.versionName + "-demo"
-            applicationId = 'org.medicmobile.collect.android.demo'
-        }
-        intrahealthsenegal {
-            versionName = android.defaultConfig.versionName + "-seda"
-            applicationId = 'org.medicmobile.collect.android.intrahealthsenegal'
-        }
-        amrefsenegal {
-            versionName = android.defaultConfig.versionName + "-amrefsenegal"
-            applicationId = 'org.medicmobile.collect.android.amrefsenegal'
-        }
-        queens {
-            versionName = android.defaultConfig.versionName + "-queens"
-            applicationId = 'org.medicmobile.collect.android.queens'
-        }
-        strongminds {
-            versionName = android.defaultConfig.versionName + "-strongminds"
-            applicationId = 'org.medicmobile.collect.android.strongminds'
-        }
-        ipasnigeria {
-            versionName = android.defaultConfig.versionName + "-ipasnigeria"
-            applicationId = 'org.medicmobile.collect.android.ipasnigeria'
-        }
-        christianaidsr {
-            versionName = android.defaultConfig.versionName + "-christianaidsr"
-            applicationId = 'org.medicmobile.collect.android.christianaidsr'
-        }
-    }
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }
-        demo.setRoot('../medic-projects/_medic-collect-flavors/demo')
-        intrahealthsenegal.setRoot('../medic-projects/_medic-collect-flavors/intrahealthsenegal')
-        amrefsenegal.setRoot('../medic-projects/_medic-collect-flavors/amrefsenegal')
-        queens.setRoot('../medic-projects/_medic-collect-flavors/queens')
-        strongminds.setRoot('../medic-projects/_medic-collect-flavors/strongminds')
-        ipasnigeria.setRoot('../medic-projects/_medic-collect-flavors/ipas-nigeria')
-        christianaidsr.setRoot('../medic-projects/_medic-collect-flavors/christian-aid-sr')
-    }
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/DEPENDENCIES'
-    }
+	defaultConfig {
+		versionCode getVersionCode()
+		versionName getVersionName()
+		archivesBaseName = "medic-collect-" + versionName
+	}
+	productFlavors {
+		base {
+			// we will not create project-specific src directories
+			// for `base` - it will use the defaults in
+			// src/main
+		}
+		demo {
+			versionName = android.defaultConfig.versionName + "-demo"
+			applicationId = 'org.medicmobile.collect.android.demo'
+		}
+		intrahealthsenegal {
+			versionName = android.defaultConfig.versionName + "-seda"
+			applicationId = 'org.medicmobile.collect.android.intrahealthsenegal'
+		}
+		amrefsenegal {
+			versionName = android.defaultConfig.versionName + "-amrefsenegal"
+			applicationId = 'org.medicmobile.collect.android.amrefsenegal'
+		}
+		queens {
+			versionName = android.defaultConfig.versionName + "-queens"
+			applicationId = 'org.medicmobile.collect.android.queens'
+		}
+		strongminds {
+			versionName = android.defaultConfig.versionName + "-strongminds"
+			applicationId = 'org.medicmobile.collect.android.strongminds'
+		}
+		ipasnigeria {
+			versionName = android.defaultConfig.versionName + "-ipasnigeria"
+			applicationId = 'org.medicmobile.collect.android.ipasnigeria'
+		}
+		christianaidsr {
+			versionName = android.defaultConfig.versionName + "-christianaidsr"
+			applicationId = 'org.medicmobile.collect.android.christianaidsr'
+		}
+	}
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = ['src']
+			resources.srcDirs = ['src']
+			res.srcDirs = ['res']
+			assets.srcDirs = ['assets']
+		}
+		demo.setRoot('../medic-projects/_medic-collect-flavors/demo')
+		intrahealthsenegal.setRoot('../medic-projects/_medic-collect-flavors/intrahealthsenegal')
+		amrefsenegal.setRoot('../medic-projects/_medic-collect-flavors/amrefsenegal')
+		queens.setRoot('../medic-projects/_medic-collect-flavors/queens')
+		strongminds.setRoot('../medic-projects/_medic-collect-flavors/strongminds')
+		ipasnigeria.setRoot('../medic-projects/_medic-collect-flavors/ipas-nigeria')
+		christianaidsr.setRoot('../medic-projects/_medic-collect-flavors/christian-aid-sr')
+	}
+	compileSdkVersion 22
+	buildToolsVersion '22.0.1'
+	packagingOptions {
+		exclude 'META-INF/LICENSE'
+		exclude 'META-INF/LICENSE.txt'
+		exclude 'META-INF/NOTICE'
+		exclude 'META-INF/NOTICE.txt'
+		exclude 'META-INF/DEPENDENCIES'
+	}
 
-    lintOptions {
-        abortOnError false
-    }
+	lintOptions {
+		abortOnError false
+	}
 
-    signingConfigs {
-        release {
-            storeFile file(System.env.ANDROID_KEYSTORE_PATH ?: signingConfigs.debug.storeFile)
-            storePassword System.env.ANDROID_KEYSTORE_PASSWORD
-            keyAlias System.env.ANDROID_KEY_ALIAS
-            keyPassword System.env.ANDROID_KEY_PASSWORD
-        }
-    }
+	signingConfigs {
+		release {
+			storeFile file(System.env.ANDROID_KEYSTORE_PATH ?: signingConfigs.debug.storeFile)
+			storePassword System.env.ANDROID_KEYSTORE_PASSWORD
+			keyAlias System.env.ANDROID_KEY_ALIAS
+			keyPassword System.env.ANDROID_KEY_PASSWORD
+		}
+	}
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFile getDefaultProguardFile('proguard-android.txt')
-            signingConfig signingConfigs.release
-        }
-    }
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFile getDefaultProguardFile('proguard-android.txt')
+			signingConfig signingConfigs.release
+		}
+	}
 }
 
 android.applicationVariants.all { variant ->
-    variant.mergeAssets.doLast {
-        if (System.env.MEDIC_COLLECT_PASSWORD) {
-            def assetsDir = "$project.buildDir/intermediates/assets/$variant.dirName"
-            def collectConfigFile = new File(assetsDir, 'collect.json')
-            if (collectConfigFile.exists()) {
-                def collectConfig = new JsonSlurper().parse(collectConfigFile)
-                collectConfig.general_preferences.password = System.env.MEDIC_COLLECT_PASSWORD
-                collectConfigFile.text = new JsonBuilder(collectConfig).toPrettyString()
-            }
-        }
-    }
+	variant.mergeAssets.doLast {
+		if(System.env.MEDIC_COLLECT_PASSWORD) {
+			def assetsDir = "$project.buildDir/intermediates/assets/$variant.dirName"
+			def collectConfigFile = new File(assetsDir, 'collect.json')
+			if(collectConfigFile.exists()) {
+				def collectConfig = new JsonSlurper().parse(collectConfigFile)
+				collectConfig.general_preferences.password = System.env.MEDIC_COLLECT_PASSWORD
+				collectConfigFile.text = new JsonBuilder(collectConfig).toPrettyString()
+			}
+		}
+	}
 }
