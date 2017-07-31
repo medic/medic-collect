@@ -52,7 +52,8 @@ public class WidgetFactory {
                         questionWidget = new DateTimeWidget(context, fep);
                         break;
                     case Constants.DATATYPE_DATE:
-                        questionWidget = new DateWidget(context, fep);
+                        //questionWidget = new DateWidget(context, fep);
+                        questionWidget = new BikramSambatDateWidget(context, fep);
                         break;
                     case Constants.DATATYPE_TIME:
                         questionWidget = new TimeWidget(context, fep);

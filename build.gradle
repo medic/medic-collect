@@ -25,10 +25,12 @@ gradle.projectsEvaluated {
 repositories {
 	mavenLocal()
 	mavenCentral()
+	flatDir { dirs 'libs' }
 }
 
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile name:'bikram-sambat-android', version:'SNAPSHOT', ext:'aar'
 }
 
 def isReleaseBuild = {
