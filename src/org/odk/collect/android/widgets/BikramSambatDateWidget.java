@@ -14,7 +14,7 @@ import bikramsambat.BsGregorianDate;
 
 import java.util.Date;
 
-import org.javarosa.core.model.data.BsDateData;
+import org.javarosa.core.model.data.DateData;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.joda.time.DateTime;
@@ -52,7 +52,7 @@ public class BikramSambatDateWidget extends QuestionWidget {
         DateTime dateTime = getAnswer_DateTime();
         if(dateTime == null) return null;
 
-        return new BsDateData(dateTime.toDate());
+        return new DateData(dateTime.toDate());
     }
 
     @Override public void setFocus(Context ctx) {
@@ -71,7 +71,7 @@ public class BikramSambatDateWidget extends QuestionWidget {
 
     private void setAnswer() {
         if (mPrompt.getAnswerValue() != null) {
-            DateTime ldt = new DateTime(((Date) ((BsDateData) mPrompt.getAnswerValue()).getValue()).getTime());
+            DateTime ldt = new DateTime(((Date) ((DateData) mPrompt.getAnswerValue()).getValue()).getTime());
             setAnswer(ldt);
         } else {
             clearAnswer();

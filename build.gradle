@@ -64,6 +64,12 @@ android {
 		versionName getVersionName()
 		archivesBaseName = "medic-collect-" + versionName
 	}
+
+	applicationVariants.all {
+		// TODO make this default to false, except for nepali flavours
+		buildConfigField "boolean", "BIKRAM_SAMBAT_DATES", "!Boolean.parseBoolean(\"${System.env.DISABLE_BS_DATES}\")";
+	}
+
 	productFlavors {
 		base {
 			// we will not create project-specific src directories
