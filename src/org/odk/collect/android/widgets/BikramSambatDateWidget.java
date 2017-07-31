@@ -1,12 +1,5 @@
 package org.odk.collect.android.widgets;
 
-import java.util.Date;
-
-import org.javarosa.core.model.data.DateData;
-import org.javarosa.core.model.data.IAnswerData;
-import org.javarosa.form.api.FormEntryPrompt;
-import org.joda.time.DateTime;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
@@ -19,6 +12,12 @@ import bikramsambat.BsCalendar;
 import bikramsambat.BsException;
 import bikramsambat.BsGregorianDate;
 
+import java.util.Date;
+
+import org.javarosa.core.model.data.BsDateData;
+import org.javarosa.core.model.data.IAnswerData;
+import org.javarosa.form.api.FormEntryPrompt;
+import org.joda.time.DateTime;
 import org.odk.collect.android.R;
 
 import static bikramsambat.android.BsDatePickerUtils.asDevanagariNumberInput;
@@ -53,7 +52,7 @@ public class BikramSambatDateWidget extends QuestionWidget {
         DateTime dateTime = getAnswer_DateTime();
         if(dateTime == null) return null;
 
-        return new DateData(dateTime.toDate());
+        return new BsDateData(dateTime.toDate());
     }
 
     @Override public void setFocus(Context ctx) {
@@ -72,7 +71,7 @@ public class BikramSambatDateWidget extends QuestionWidget {
 
     private void setAnswer() {
         if (mPrompt.getAnswerValue() != null) {
-            DateTime ldt = new DateTime(((Date) ((DateData) mPrompt.getAnswerValue()).getValue()).getTime());
+            DateTime ldt = new DateTime(((Date) ((BsDateData) mPrompt.getAnswerValue()).getValue()).getTime());
             setAnswer(ldt);
         } else {
             clearAnswer();

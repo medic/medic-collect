@@ -103,7 +103,8 @@ public class FormController {
 			"org.javarosa.core.model.GroupDef", // CoreModelModule
 			"org.javarosa.core.model.instance.FormInstance", // CoreModelModule
 			"org.javarosa.core.model.data.BooleanData", // CoreModelModule
-			"org.javarosa.core.model.data.DateData", // CoreModelModule
+			//"org.javarosa.core.model.data.DateData", // CoreModelModule
+			"org.javarosa.core.model.data.BsDateData",
 			"org.javarosa.core.model.data.DateTimeData", // CoreModelModule
 			"org.javarosa.core.model.data.DecimalData", // CoreModelModule
 			"org.javarosa.core.model.data.GeoPointData", // CoreModelModule
