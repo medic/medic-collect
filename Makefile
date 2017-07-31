@@ -9,13 +9,18 @@ ifdef ComSpec	 # Windows
   GRADLEW := $(subst /,\,${GRADLEW})
 endif
 
-default: deploy android-logs
+.PHONY: android-emulator android-logs base clean default deploy deploy-unbranded update-bikram
+
+default: deploy-unbranded android-logs
 
 android-emulator:
 	nohup ${EMULATOR} -avd test -wipe-data > emulator.log 2>&1 &
 	${ADB} wait-for-device
 android-logs:
 	${ADB} shell logcat
+
+deploy-unbranded:
+	${GRADLEW} installDemoDebug
 
 deploy: clean
 	${GRADLEW} --daemon --parallel assembleDebug
