@@ -41,6 +41,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import static org.medicmobile.collect.android.BuildConfig.BIKRAM_SAMBAT_DATES;
+
 public class FormHierarchyActivity extends ListActivity {
 
     private static final String t = "FormHierarchyActivity";
@@ -278,7 +280,15 @@ public class FormHierarchyActivity extends ListActivity {
                         if ( !fp.isReadOnly() || (label != null && label.length() > 0) ) {
                             // show the question if it is an editable field.
                             // or if it is read-only and the label is not blank.
-                            formList.add(new HierarchyElement(fp.getLongText(), fp.getAnswerText(), null,
+                            final String answerText;
+                            if(BIKRAM_SAMBAT_DATES && fp.getAnswerValue() instanceof org.javarosa.core.model.data.DateData) {
+                                answerText = bikramsambat.BsCalendar.getInstance().toBik_dev(
+                                        new java.text.SimpleDateFormat("yyyy-MM-dd").format(
+                                                (java.util.Date) fp.getAnswerValue().getValue()));
+                            } else {
+                                answerText = fp.getAnswerText();
+                            }
+                            formList.add(new HierarchyElement(fp.getLongText(), answerText, null,
                                     Color.WHITE, QUESTION, fp.getIndex()));
                         }
                         break;

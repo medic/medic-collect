@@ -23,12 +23,14 @@ gradle.projectsEvaluated {
 }
 
 repositories {
-	mavenLocal()
-	mavenCentral()
+	maven { url 'https://staging.dev.medicmobile.org/_couch/maven-repo' }
+	flatDir { dirs 'libs' }
 }
 
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile 'bikramsambat:bikram-sambat:1.0.0'
+	compile 'bikramsambat:bikram-sambat-android:1.0.0@aar'
 }
 
 def isReleaseBuild = {
@@ -62,6 +64,12 @@ android {
 		versionName getVersionName()
 		archivesBaseName = "medic-collect-" + versionName
 	}
+
+	applicationVariants.all {
+		// TODO make this default to false, except for nepali flavours
+		buildConfigField "boolean", "BIKRAM_SAMBAT_DATES", "Boolean.parseBoolean(\"${System.env.BIKRAM_SAMBAT}\")";
+	}
+
 	productFlavors {
 		base {
 			// we will not create project-specific src directories

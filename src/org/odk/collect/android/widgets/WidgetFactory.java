@@ -22,6 +22,8 @@ import org.javarosa.form.api.FormEntryPrompt;
 import android.content.Context;
 import android.util.Log;
 
+import static org.medicmobile.collect.android.BuildConfig.BIKRAM_SAMBAT_DATES;
+
 /**
  * Convenience class that handles creation of widgets.
  *
@@ -52,7 +54,11 @@ public class WidgetFactory {
                         questionWidget = new DateTimeWidget(context, fep);
                         break;
                     case Constants.DATATYPE_DATE:
-                        questionWidget = new DateWidget(context, fep);
+                        if(BIKRAM_SAMBAT_DATES) {
+                            questionWidget = new BikramSambatDateWidget(context, fep);
+                        } else {
+                            questionWidget = new DateWidget(context, fep);
+                        }
                         break;
                     case Constants.DATATYPE_TIME:
                         questionWidget = new TimeWidget(context, fep);
