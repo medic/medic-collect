@@ -283,7 +283,7 @@ public class FormHierarchyActivity extends ListActivity {
                             String answerText = fp.getAnswerText();
                             if(BIKRAM_SAMBAT_DATES && fp.getAnswerValue() instanceof org.javarosa.core.model.data.DateData) {
                                 answerText = bikramsambat.BsCalendar.getInstance().toBik_dev(
-                                        bikramsambat.BsCalendar.getInstance().gregDateFormat().format(
+                                        new java.text.SimpleDateFormat("yyyy-MM-dd").format(
                                                 (java.util.Date) fp.getAnswerValue().getValue()));
                             }
                             formList.add(new HierarchyElement(fp.getLongText(), answerText, null,
