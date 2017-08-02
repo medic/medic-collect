@@ -29,7 +29,7 @@ public class BikramSambatDateWidget extends QuestionWidget {
 	// TODO add state change listener(?)
 
         LayoutInflater i = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        addView(i.inflate(R.layout.bikram_sambat, null));
+        addView(i.inflate(R.layout.bikram_sambat_date_picker, null));
 
         asDevanagariNumberInput(this, R.id.txtYear);
         asDevanagariNumberInput(this, R.id.txtDay);
