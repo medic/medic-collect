@@ -11,6 +11,7 @@ import bikramsambat.BikramSambatDate;
 import bikramsambat.BsCalendar;
 import bikramsambat.BsException;
 import bikramsambat.BsGregorianDate;
+import bikramsambat.android.BsDatePicker;
 
 import java.util.Date;
 
@@ -23,6 +24,8 @@ import org.odk.collect.android.R;
 import static bikramsambat.android.BsDatePickerUtils.asDevanagariNumberInput;
 
 public class BikramSambatDateWidget extends QuestionWidget {
+    private BsDatePicker picker;
+
     public BikramSambatDateWidget(Context ctx, FormEntryPrompt prompt) {
         super(ctx, prompt);
 
@@ -31,8 +34,8 @@ public class BikramSambatDateWidget extends QuestionWidget {
         LayoutInflater i = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         addView(i.inflate(R.layout.bikram_sambat_date_picker, null));
 
-        asDevanagariNumberInput(this, R.id.txtYear);
-        asDevanagariNumberInput(this, R.id.txtDay);
+        picker = new BsDatePicker(this);
+        picker.init();
 
         clearAnswer();
     }
@@ -64,9 +67,15 @@ public class BikramSambatDateWidget extends QuestionWidget {
 
 //> PRIVATE HELPERS
     private DateTime getAnswer_DateTime() {
-        BsGregorianDate greg = getDate_greg();
-        if(greg == null) return null;
-        return new DateTime(greg.year, greg.month, greg.day, 0, 0);
+        try {
+            BsGregorianDate greg = picker.getDate_greg();
+            if(greg == null) return null;
+            return new DateTime(greg.year, greg.month, greg.day, 0, 0);
+        } catch(BsException ex) {
+            // TODO log the exception properly?
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     private void setAnswer() {
@@ -81,62 +90,10 @@ public class BikramSambatDateWidget extends QuestionWidget {
     private void setAnswer(DateTime ldt) {
         try {
             BsGregorianDate greg = new BsGregorianDate(ldt.getYear(), ldt.getMonthOfYear(), ldt.getDayOfMonth());
-            BikramSambatDate bik = BsCalendar.getInstance().toBik(greg);
-
-android.util.Log.w("HELLO ALEX", String.format("ldt=%s, greg=%s, bik=%s", ldt, greg, bik));
-
-            setYear(bik.year);
-            setMonth(bik.month);
-            setDay(bik.day);
+            picker.setDate(greg);
         } catch(BsException ex) {
-            // TODO log the exception properly
+            // TODO log the exception properly?
             ex.printStackTrace();
         }
-    }
-
-//> COPY/PASTED FROM BsDatePickerDialog - TODO share these from the android lib
-    private BikramSambatDate getDate_bs() {
-        return new BikramSambatDate(getYear(), getMonth(), getDay());
-    }
-
-    private BsGregorianDate getDate_greg() {
-        return BsCalendar.getInstance().toGreg(getDate_bs());
-    }
-
-    private int getDay() {
-        try {
-            return Integer.parseInt(text(R.id.txtDay));
-        } catch(NumberFormatException ex) {
-            return 0;
-        }
-    }
-
-    private int getMonth() {
-        return 1 + ((Spinner) findViewById(R.id.spnMonth)).getSelectedItemPosition();
-    }
-
-    private int getYear() {
-        try {
-            return Integer.parseInt(text(R.id.txtYear));
-        } catch(NumberFormatException ex) {
-            return 0;
-        }
-    }
-
-    private void setDay(int day) { text(R.id.txtDay, Integer.toString(day)); }
-    private void setMonth(int month) {
-        Spinner s = (Spinner) findViewById(R.id.spnMonth);
-        s.setSelection(month - 1);
-    }
-    private void setYear(int year) { text(R.id.txtYear, Integer.toString(year)); }
-
-    private String text(int componentId) {
-        EditText field = (EditText) findViewById(componentId);
-        return field.getText().toString();
-    }
-
-    private void text(int componentId, String value) {
-        TextView field = (TextView) findViewById(componentId);
-        field.setText(value);
     }
 }
