@@ -23,7 +23,7 @@ deploy-unbranded:
 	${GRADLEW} installDemoDebug
 
 deploy: clean
-	${GRADLEW} --daemon --parallel assembleDebug
+	${GRADLEW} assembleDebug
 	rm -f build/outputs/apk/*-unaligned.apk
 	ls build/outputs/apk/*-debug.apk | \
 					xargs -n1 ${ADB} install -r
