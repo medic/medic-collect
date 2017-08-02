@@ -17,7 +17,7 @@ android-emulator:
 	nohup ${EMULATOR} -avd test -wipe-data > emulator.log 2>&1 &
 	${ADB} wait-for-device
 android-logs:
-	${ADB} shell logcat
+	${ADB} shell logcat | tee android.log
 
 deploy-unbranded:
 	${GRADLEW} installDemoDebug
