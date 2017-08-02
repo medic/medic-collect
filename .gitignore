@@ -29,6 +29,6 @@ local.properties
 .buildpath
 
 /.gradle/
-/build/
 /.javarosa-dependencies/
+/build/
 /*.log
