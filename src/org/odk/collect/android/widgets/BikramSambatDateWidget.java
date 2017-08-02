@@ -38,8 +38,6 @@ public class BikramSambatDateWidget extends QuestionWidget {
     /** reset date to right now */
     @Override public void clearAnswer() { setAnswer(new DateTime()); }
 
-    @Override public void setOnLongClickListener(OnLongClickListener l) {}
-
     @Override public IAnswerData getAnswer() {
         DateTime dateTime = getAnswer_DateTime();
         if(dateTime == null) return null;
@@ -48,6 +46,8 @@ public class BikramSambatDateWidget extends QuestionWidget {
     }
 
     @Override public void setFocus(Context ctx) {}
+
+    @Override public void setOnLongClickListener(OnLongClickListener l) {}
 
 //> PRIVATE HELPERS
     private DateTime getAnswer_DateTime() {
