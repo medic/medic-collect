@@ -1,6 +1,7 @@
 package org.odk.collect.android.widgets;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
 
@@ -17,12 +18,12 @@ import org.joda.time.DateTime;
 import org.odk.collect.android.R;
 
 public class BikramSambatDateWidget extends QuestionWidget {
+    private static final String t = "BikramSambatDateWidget";
+
     private BsDatePicker picker;
 
     public BikramSambatDateWidget(Context ctx, FormEntryPrompt prompt) {
         super(ctx, prompt);
-
-        // TODO add state change listener(?)
 
         LayoutInflater i = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         addView(i.inflate(R.layout.bikram_sambat_date_picker, null));
@@ -39,24 +40,17 @@ public class BikramSambatDateWidget extends QuestionWidget {
     /** reset date to right now */
     @Override public void clearAnswer() { setAnswer(new DateTime()); }
 
-    @Override public void setOnLongClickListener(OnLongClickListener l) { /* TODO I have no idea what this is for */ }
+    @Override public void setOnLongClickListener(OnLongClickListener l) {}
 
     @Override
     public IAnswerData getAnswer() {
-        clearFocus(); // TODO why is this part of "getting the answer"?  can we remove it?
-
         DateTime dateTime = getAnswer_DateTime();
         if(dateTime == null) return null;
 
         return new DateData(dateTime.toDate());
     }
 
-    @Override public void setFocus(Context ctx) {
-        // TODO work out why/if this is desirable, and document or remove as appropriate
-        // Hide the soft keyboard if it's showing.
-        InputMethodManager im = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(this.getWindowToken(), 0);
-    }
+    @Override public void setFocus(Context ctx) {}
 
 //> PRIVATE HELPERS
     private DateTime getAnswer_DateTime() {
@@ -65,8 +59,7 @@ public class BikramSambatDateWidget extends QuestionWidget {
             if(greg == null) return null;
             return new DateTime(greg.year, greg.month, greg.day, 0, 0);
         } catch(BsException ex) {
-            // TODO log the exception properly?
-            ex.printStackTrace();
+            trace("getAnswer_DateTime() :: ecxception caught: %s", ex);
             return null;
         }
     }
@@ -81,12 +74,15 @@ public class BikramSambatDateWidget extends QuestionWidget {
     }
 
     private void setAnswer(DateTime ldt) {
+        BsGregorianDate greg = new BsGregorianDate(ldt.getYear(), ldt.getMonthOfYear(), ldt.getDayOfMonth());
         try {
-            BsGregorianDate greg = new BsGregorianDate(ldt.getYear(), ldt.getMonthOfYear(), ldt.getDayOfMonth());
             picker.setDate(greg);
         } catch(BsException ex) {
-            // TODO log the exception properly?
-            ex.printStackTrace();
+            trace("setAnswer() :: exception caught for date %s: %s", greg, ex);
         }
+    }
+
+    private static void trace(String message, Object... args) {
+        Log.d(t, String.format(message, args));
     }
 }
