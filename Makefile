@@ -1,6 +1,6 @@
 ADB = ${ANDROID_HOME}/platform-tools/adb
 EMULATOR = ${ANDROID_HOME}/tools/emulator
-GRADLEW = ./gradlew
+GRADLEW = ./gradlew --daemon --parallel
 
 ifdef ComSpec	 # Windows
   # Use `/` for all paths, except `.\`
