@@ -22,7 +22,7 @@ public class BikramSambatDateWidget extends QuestionWidget {
     public BikramSambatDateWidget(Context ctx, FormEntryPrompt prompt) {
         super(ctx, prompt);
 
-	// TODO add state change listener(?)
+        // TODO add state change listener(?)
 
         LayoutInflater i = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         addView(i.inflate(R.layout.bikram_sambat_date_picker, null));
