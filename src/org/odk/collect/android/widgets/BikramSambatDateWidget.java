@@ -3,12 +3,7 @@ package org.odk.collect.android.widgets;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import bikramsambat.BikramSambatDate;
-import bikramsambat.BsCalendar;
 import bikramsambat.BsException;
 import bikramsambat.BsGregorianDate;
 import bikramsambat.android.BsDatePicker;
@@ -20,8 +15,6 @@ import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.joda.time.DateTime;
 import org.odk.collect.android.R;
-
-import static bikramsambat.android.BsDatePickerUtils.asDevanagariNumberInput;
 
 public class BikramSambatDateWidget extends QuestionWidget {
     private BsDatePicker picker;
