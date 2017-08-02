@@ -35,15 +35,12 @@ public class BikramSambatDateWidget extends QuestionWidget {
     }
 
 //> QuestionWidget IMPLEMENTATION
-    @Override public void cancelLongPress() { super.cancelLongPress(); }
-
     /** reset date to right now */
     @Override public void clearAnswer() { setAnswer(new DateTime()); }
 
     @Override public void setOnLongClickListener(OnLongClickListener l) {}
 
-    @Override
-    public IAnswerData getAnswer() {
+    @Override public IAnswerData getAnswer() {
         DateTime dateTime = getAnswer_DateTime();
         if(dateTime == null) return null;
 
