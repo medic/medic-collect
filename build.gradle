@@ -104,6 +104,10 @@ android {
 			versionName = android.defaultConfig.versionName + "-christianaidsr"
 			applicationId = 'org.medicmobile.collect.android.christianaidsr'
 		}
+		standard {
+			versionName = android.defaultConfig.versionName + "-standard"
+			applicationId = 'org.medicmobile.collect.android.standard'
+		}
 	}
 	sourceSets {
 		main {
