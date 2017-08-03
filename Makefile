@@ -33,10 +33,3 @@ clean:
 
 base: clean
 	${GRADLEW} --daemon --parallel installBaseDebug
-
-update-bikram:
-	echo "TODO these dependencies should be released to a public Maven repo and downloaded from there."
-	(cd ../bikram-sambat && make assemble-java)
-	cp ../bikram-sambat/java/android-lib/build/outputs/aar/android-lib-release.aar libs/bikram-sambat-android-SNAPSHOT.aar
-	cp ../bikram-sambat/java/lib/build/libs/bikram-sambat.jar libs/bikram-sambat-SNAPSHOT.jar
-	echo "Bikram updated with local SNAPSHOTs."
