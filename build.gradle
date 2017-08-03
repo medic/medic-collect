@@ -29,8 +29,8 @@ repositories {
 
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
-	compile 'bikramsambat:bikram-sambat:a.b.h'
-	compile 'bikramsambat:bikram-sambat-android:a.b.h@aar'
+	compile 'bikramsambat:bikram-sambat:1.0.0'
+	compile 'bikramsambat:bikram-sambat-android:1.0.0@aar'
 }
 
 def isReleaseBuild = {
