@@ -23,14 +23,14 @@ gradle.projectsEvaluated {
 }
 
 repositories {
-	mavenLocal()
-	mavenCentral()
+	maven { url 'https://staging.dev.medicmobile.org/_couch/maven-repo' }
 	flatDir { dirs 'libs' }
 }
 
 dependencies {
 	compile fileTree(dir: 'libs', include: ['*.jar'])
-	compile name:'bikram-sambat-android', version:'SNAPSHOT', ext:'aar'
+	compile 'bikramsambat:bikram-sambat:a.b.h'
+	compile 'bikramsambat:bikram-sambat-android:a.b.h@aar'
 }
 
 def isReleaseBuild = {
