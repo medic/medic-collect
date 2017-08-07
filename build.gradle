@@ -124,6 +124,7 @@ android {
 		strongminds.setRoot('../medic-projects/_medic-collect-flavors/strongminds')
 		ipasnigeria.setRoot('../medic-projects/_medic-collect-flavors/ipas-nigeria')
 		christianaidsr.setRoot('../medic-projects/_medic-collect-flavors/christian-aid-sr')
+		standard.setRoot('../medic-projects/_medic-collect-flavors/standard')
 	}
 	compileSdkVersion 22
 	buildToolsVersion '22.0.1'
