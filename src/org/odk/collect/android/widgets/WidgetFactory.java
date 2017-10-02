@@ -54,7 +54,7 @@ public class WidgetFactory {
                         questionWidget = new DateTimeWidget(context, fep);
                         break;
                     case Constants.DATATYPE_DATE:
-                        if(BIKRAM_SAMBAT_DATES) {
+                        if(BIKRAM_SAMBAT_DATES || appearance.equals("bikram-sambat")) {
                             questionWidget = new BikramSambatDateWidget(context, fep);
                         } else {
                             questionWidget = new DateWidget(context, fep);
