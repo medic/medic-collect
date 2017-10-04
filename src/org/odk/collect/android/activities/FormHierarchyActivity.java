@@ -281,7 +281,8 @@ public class FormHierarchyActivity extends ListActivity {
                             // show the question if it is an editable field.
                             // or if it is read-only and the label is not blank.
                             final String answerText;
-                            if(BIKRAM_SAMBAT_DATES && fp.getAnswerValue() instanceof org.javarosa.core.model.data.DateData) {
+                            if(fp.getAnswerValue() instanceof org.javarosa.core.model.data.DateData &&
+				    (BIKRAM_SAMBAT_DATES || "bikram-sambat".equals(fp.getAppearanceHint()))) {
                                 answerText = bikramsambat.BsCalendar.getInstance().toBik_dev(
                                         new java.text.SimpleDateFormat("yyyy-MM-dd").format(
                                                 (java.util.Date) fp.getAnswerValue().getValue()));
