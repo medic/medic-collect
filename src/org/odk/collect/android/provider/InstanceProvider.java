@@ -137,14 +137,14 @@ public class InstanceProvider extends ContentProvider {
             String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(INSTANCES_TABLE_NAME);
+        qb.setProjectionMap(sInstancesProjectionMap);
+        qb.setStrict(true);
 
         switch (sUriMatcher.match(uri)) {
             case INSTANCES:
-                qb.setProjectionMap(sInstancesProjectionMap);
                 break;
 
             case INSTANCE_ID:
-                qb.setProjectionMap(sInstancesProjectionMap);
                 qb.appendWhere(InstanceColumns._ID + "=" + uri.getPathSegments().get(1));
                 break;
 
@@ -318,11 +318,21 @@ public class InstanceProvider extends ContentProvider {
                 	}
                 }
 
+                String[] newWhereArgs;
+                if (whereArgs == null || whereArgs.length == 0) {
+                    newWhereArgs = new String[] {instanceId};
+                } else {
+                    newWhereArgs = new String[(whereArgs.length + 1)];
+                    newWhereArgs[0] = instanceId;
+                    System.arraycopy(whereArgs, 0, newWhereArgs, 1, whereArgs.length);
+                }
+
                 count =
                     db.delete(INSTANCES_TABLE_NAME,
-                        InstanceColumns._ID + "=" + instanceId
-                                + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""),
-                        whereArgs);
+                        InstanceColumns._ID
+                                + "=?"
+                                + (!TextUtils.isEmpty(where) ? " AND ("
+                                + where + ')' : ""), newWhereArgs);
                 break;
 
             default:
@@ -375,9 +385,22 @@ public class InstanceProvider extends ContentProvider {
                     }
                 }
 
+                String[] newWhereArgs;
+                if (whereArgs == null || whereArgs.length == 0) {
+                    newWhereArgs = new String[] {instanceId};
+                } else {
+                    newWhereArgs = new String[(whereArgs.length + 1)];
+                    newWhereArgs[0] = instanceId;
+                    System.arraycopy(whereArgs, 0, newWhereArgs, 1, whereArgs.length);
+                }
+
                 count =
-                    db.update(INSTANCES_TABLE_NAME, values, InstanceColumns._ID + "=" + instanceId
-                            + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""), whereArgs);
+                    db.update(INSTANCES_TABLE_NAME,
+                            values,
+                            InstanceColumns._ID
+                                    + "=?"
+                                    + (!TextUtils.isEmpty(where) ? " AND ("
+                                    + where + ')' : ""), newWhereArgs);
                 break;
 
             default:
