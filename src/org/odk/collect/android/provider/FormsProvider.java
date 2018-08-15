@@ -693,7 +693,6 @@ public class FormsProvider extends ContentProvider {
 		return count;
 	}
 
-    @NonNull
     private String[] prepareWhereArgs(String[] whereArgs, String formId) {
         String[] newWhereArgs;
         if (whereArgs == null || whereArgs.length == 0) {
