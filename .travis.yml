@@ -5,7 +5,6 @@ branches:
 android:
   components:
     # some travis/android magic from https://docs.travis-ci.com/user/languages/android/
-    - tools
     - platform-tools
     - tools
 
