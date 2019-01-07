@@ -9,7 +9,6 @@ package org.odk.collect.android;
 public class R {
     public static org.medicmobile.collect.android.R.anim anim = new org.medicmobile.collect.android.R.anim();
     public static org.medicmobile.collect.android.R.array array = new org.medicmobile.collect.android.R.array();
-    public static org.medicmobile.collect.android.R.attr attr = new org.medicmobile.collect.android.R.attr();
     public static org.medicmobile.collect.android.R.bool bool = new org.medicmobile.collect.android.R.bool();
     public static org.medicmobile.collect.android.R.drawable drawable = new org.medicmobile.collect.android.R.drawable();
     public static org.medicmobile.collect.android.R.id id = new org.medicmobile.collect.android.R.id();

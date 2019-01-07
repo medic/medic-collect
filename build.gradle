@@ -4,13 +4,14 @@ import groovy.json.JsonSlurper
 buildscript {
 	repositories {
 		mavenCentral()
+		google()
 	}
 	dependencies {
-		classpath 'com.android.tools.build:gradle:1.2.3'
+		classpath 'com.android.tools.build:gradle:3.2.0'
 	}
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 final boolean IS_TRAVIS = System.env.TRAVIS == 'true'
 
@@ -23,6 +24,7 @@ gradle.projectsEvaluated {
 }
 
 repositories {
+	google()
 	maven { url 'https://staging.dev.medicmobile.org/_couch/maven-repo' }
 	flatDir { dirs 'libs' }
 }
@@ -70,6 +72,7 @@ android {
 		buildConfigField "boolean", "BIKRAM_SAMBAT_DATES", "Boolean.parseBoolean(\"${System.env.BIKRAM_SAMBAT}\")";
 	}
 
+	flavorDimensions 'brand'
 	productFlavors {
 		base {
 			// we will not create project-specific src directories
@@ -127,7 +130,6 @@ android {
 		standard.setRoot('../medic-projects/_medic-collect-flavors/standard')
 	}
 	compileSdkVersion 22
-	buildToolsVersion '22.0.1'
 	packagingOptions {
 		exclude 'META-INF/LICENSE'
 		exclude 'META-INF/LICENSE.txt'
