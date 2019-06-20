@@ -33,3 +33,14 @@ clean:
 
 base: clean
 	${GRADLEW} --daemon --parallel installBaseDebug
+
+travis:
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_base}" ${GRADLEW} assembleBaseDebug
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_demo}" ${GRADLEW} assembleDemoDebug
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_intrahealthsenegal}" ${GRADLEW} assembleIntrahealthsenegalDebug
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_amrefsenegal}" ${GRADLEW} assembleAmrefsenegalDebug
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_queens}" ${GRADLEW} assembleQueensDebug
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_strongminds}" ${GRADLEW} assembleStrongmindsDebug
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_ipasnigeria}" ${GRADLEW} assembleIpasnigeriaDebug
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_christianaidsr}" ${GRADLEW} assembleChristianaidsrDebug
+	MEDIC_COLLECT_PASSWORD="${PASSWORD_standard}" ${GRADLEW} assembleStandardDebug

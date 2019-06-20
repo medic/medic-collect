@@ -32,3 +32,6 @@ local.properties
 /.javarosa-dependencies/
 /build/
 /*.log
+
+/.idea/
+medic-official.keystore
