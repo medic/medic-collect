@@ -886,6 +886,8 @@ public class InstanceUploaderTask extends AsyncTask<Object, Integer, InstanceUpl
 
         String deviceId = new PropertyManager(Collect.getInstance().getApplicationContext())
         						.getSingularProperty(PropertyManager.OR_DEVICE_ID_PROPERTY);
+        
+        Collect.setCredentials();
 
         // get shared HttpContext so that authentication and cookies are retained.
         HttpContext localContext = Collect.getInstance().getHttpContext();

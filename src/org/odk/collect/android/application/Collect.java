@@ -24,6 +24,7 @@ import org.odk.collect.android.logic.PropertyManager;
 import org.odk.collect.android.preferences.PreferencesActivity;
 import org.odk.collect.android.utilities.AgingCredentialsProvider;
 import org.odk.collect.android.utilities.ScheduledNotifications;
+import org.odk.collect.android.utilities.WebUtils;
 import org.opendatakit.httpclientandroidlib.client.CookieStore;
 import org.opendatakit.httpclientandroidlib.client.CredentialsProvider;
 import org.opendatakit.httpclientandroidlib.client.protocol.ClientContext;
@@ -36,6 +37,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -244,6 +246,23 @@ public class Collect extends Application {
         localContext.setAttribute(ClientContext.CREDS_PROVIDER, credsProvider);
 
         return localContext;
+    }
+
+    public static void setCredentials() {
+        // get the username, password, and server from preferences
+        Collect context = Collect.getInstance();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String storedUsername = settings.getString(PreferencesActivity.KEY_USERNAME, null);
+        String storedPassword = settings.getString(PreferencesActivity.KEY_PASSWORD, null);
+        String server = settings.getString(PreferencesActivity.KEY_SERVER_URL,
+                context.getString(R.string.default_server_url));
+        String url = server
+                + settings.getString(PreferencesActivity.KEY_FORMLIST_URL,
+                context.getString(R.string.default_odk_formlist));
+
+        Uri u = Uri.parse(url);
+        WebUtils.addCredentials(storedUsername, storedPassword, u.getHost());
     }
 
     public CredentialsProvider getCredentialsProvider() {

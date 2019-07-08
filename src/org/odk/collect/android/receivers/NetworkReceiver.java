@@ -149,18 +149,7 @@ public class NetworkReceiver extends BroadcastReceiver implements InstanceUpload
                 mGoogleMapsEngineUploadTask.execute(toSendArray);
 
             } else {
-                // get the username, password, and server from preferences
-
-                String storedUsername = settings.getString(PreferencesActivity.KEY_USERNAME, null);
-                String storedPassword = settings.getString(PreferencesActivity.KEY_PASSWORD, null);
-                String server = settings.getString(PreferencesActivity.KEY_SERVER_URL,
-                        context.getString(R.string.default_server_url));
-                String url = server
-                        + settings.getString(PreferencesActivity.KEY_FORMLIST_URL,
-                                context.getString(R.string.default_odk_formlist));
-
-                Uri u = Uri.parse(url);
-                WebUtils.addCredentials(storedUsername, storedPassword, u.getHost());
+                Collect.setCredentials();
 
                 mInstanceUploaderTask = new InstanceUploaderTask();
                 mInstanceUploaderTask.setUploaderListener(this);
