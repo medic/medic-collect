@@ -44,3 +44,9 @@ travis:
 	MEDIC_COLLECT_PASSWORD="${PASSWORD_ipasnigeria}" ${GRADLEW} assembleIpasnigeriaDebug
 	MEDIC_COLLECT_PASSWORD="${PASSWORD_christianaidsr}" ${GRADLEW} assembleChristianaidsrDebug
 	MEDIC_COLLECT_PASSWORD="${PASSWORD_standard}" ${GRADLEW} assembleStandardDebug
+	${GRADLEW} assembleMdharuradevDebug
+	${GRADLEW} assembleMdharurachadevDebug
+	${GRADLEW} assembleMdharurascdscdevDebug
+	${GRADLEW} assembleMdharurahebsdevDebug
+	${GRADLEW} assembleMdharurahebsfpDebug
+	${GRADLEW} assembleMdharurahebsscdscDebug
