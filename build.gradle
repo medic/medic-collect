@@ -111,6 +111,14 @@ android {
       versionName = android.defaultConfig.versionName + "-standard"
       applicationId = 'org.medicmobile.collect.android.standard'
     }
+    cdcmohkedsrucha {
+      versionName = android.defaultConfig.versionName + "-cdcmohkedsrucha"
+      applicationId = 'org.medicmobile.collect.android.cdcmohkedsrucha'
+    }
+    cdcmohkedsruscdsc {
+      versionName = android.defaultConfig.versionName + "-cdcmohkedsruscdsc"
+      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruscdsc'
+    }
   }
   sourceSets {
     main {
@@ -128,6 +136,8 @@ android {
     ipasnigeria.setRoot('../medic-projects/_medic-collect-flavors/ipas-nigeria')
     christianaidsr.setRoot('../medic-projects/_medic-collect-flavors/christian-aid-sr')
     standard.setRoot('../medic-projects/_medic-collect-flavors/standard')
+    cdcmohkedsrucha.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha')
+    cdcmohkedsruscdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc')
   }
   compileSdkVersion 22
   packagingOptions {
