@@ -119,6 +119,30 @@ android {
       versionName = android.defaultConfig.versionName + "-cdcmohkedsruscdsc"
       applicationId = 'org.medicmobile.collect.android.cdcmohkedsruscdsc'
     }
+    cdcmohkedsrudev {
+      versionName = android.defaultConfig.versionName + "-cdcmohkedsrudev"
+      applicationId = 'org.medicmobile.collect.android.cdcmohkedsrudev'
+    }
+    cdcmohkedsruchadev {
+      versionName = android.defaultConfig.versionName + "-cdcmohkedsruchadev"
+      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruchadev'
+    }
+    cdcmohkedsruscdscdev {
+      versionName = android.defaultConfig.versionName + "-cdcmohkedsruscdscdev"
+      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruscdscdev'
+    }
+    cdcmohkedsruhebsdev {
+      versionName = android.defaultConfig.versionName + "-cdcmohkedsruhebsdev"
+      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruhebsdev'
+    }
+    cdcmohkedsruhebsfp {
+      versionName = android.defaultConfig.versionName + "-cdcmohkedsruhebsfp"
+      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruhebsfp'
+    }
+    cdcmohkedsruhebsscdsc {
+      versionName = android.defaultConfig.versionName + "-cdcmohkedsruhebsscdsc"
+      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruhebsscdsc'
+    }
   }
   sourceSets {
     main {
@@ -138,6 +162,12 @@ android {
     standard.setRoot('../medic-projects/_medic-collect-flavors/standard')
     cdcmohkedsrucha.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha')
     cdcmohkedsruscdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc')
+    cdcmohkedsrudev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-dev')
+    cdcmohkedsruchadev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha-dev')
+    cdcmohkedsruscdscdev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc-dev')
+    cdcmohkedsruhebsdev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-dev')
+    cdcmohkedsruhebsfp.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-fp')
+    cdcmohkedsruhebsscdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-scdsc')
   }
   compileSdkVersion 22
   packagingOptions {
