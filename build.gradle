@@ -111,37 +111,37 @@ android {
       versionName = android.defaultConfig.versionName + "-standard"
       applicationId = 'org.medicmobile.collect.android.standard'
     }
-    cdcmohkedsrucha {
-      versionName = android.defaultConfig.versionName + "-cdcmohkedsrucha"
-      applicationId = 'org.medicmobile.collect.android.cdcmohkedsrucha'
+    mdharuracha {
+      versionName = android.defaultConfig.versionName + "-mdharuracha"
+      applicationId = 'org.medicmobile.collect.android.mdharuracha'
     }
-    cdcmohkedsruscdsc {
-      versionName = android.defaultConfig.versionName + "-cdcmohkedsruscdsc"
-      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruscdsc'
+    mdharurascdsc {
+      versionName = android.defaultConfig.versionName + "-mdharurascdsc"
+      applicationId = 'org.medicmobile.collect.android.mdharurascdsc'
     }
-    cdcmohkedsrudev {
-      versionName = android.defaultConfig.versionName + "-cdcmohkedsrudev"
-      applicationId = 'org.medicmobile.collect.android.cdcmohkedsrudev'
+    mdharuradev {
+      versionName = android.defaultConfig.versionName + "-mdharuradev"
+      applicationId = 'org.medicmobile.collect.android.mdharuradev'
     }
-    cdcmohkedsruchadev {
-      versionName = android.defaultConfig.versionName + "-cdcmohkedsruchadev"
-      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruchadev'
+    mdharurachadev {
+      versionName = android.defaultConfig.versionName + "-mdharurachadev"
+      applicationId = 'org.medicmobile.collect.android.mdharurachadev'
     }
-    cdcmohkedsruscdscdev {
-      versionName = android.defaultConfig.versionName + "-cdcmohkedsruscdscdev"
-      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruscdscdev'
+    mdharurascdscdev {
+      versionName = android.defaultConfig.versionName + "-mdharurascdscdev"
+      applicationId = 'org.medicmobile.collect.android.mdharurascdscdev'
     }
-    cdcmohkedsruhebsdev {
-      versionName = android.defaultConfig.versionName + "-cdcmohkedsruhebsdev"
-      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruhebsdev'
+    mdharurahebsdev {
+      versionName = android.defaultConfig.versionName + "-mdharurahebsdev"
+      applicationId = 'org.medicmobile.collect.android.mdharurahebsdev'
     }
-    cdcmohkedsruhebsfp {
-      versionName = android.defaultConfig.versionName + "-cdcmohkedsruhebsfp"
-      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruhebsfp'
+    mdharurahebsfp {
+      versionName = android.defaultConfig.versionName + "-mdharurahebsfp"
+      applicationId = 'org.medicmobile.collect.android.mdharurahebsfp'
     }
-    cdcmohkedsruhebsscdsc {
-      versionName = android.defaultConfig.versionName + "-cdcmohkedsruhebsscdsc"
-      applicationId = 'org.medicmobile.collect.android.cdcmohkedsruhebsscdsc'
+    mdharurahebsscdsc {
+      versionName = android.defaultConfig.versionName + "-mdharurahebsscdsc"
+      applicationId = 'org.medicmobile.collect.android.mdharurahebsscdsc'
     }
   }
   sourceSets {
@@ -160,14 +160,14 @@ android {
     ipasnigeria.setRoot('../medic-projects/_medic-collect-flavors/ipas-nigeria')
     christianaidsr.setRoot('../medic-projects/_medic-collect-flavors/christian-aid-sr')
     standard.setRoot('../medic-projects/_medic-collect-flavors/standard')
-    cdcmohkedsrucha.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha')
-    cdcmohkedsruscdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc')
-    cdcmohkedsrudev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-dev')
-    cdcmohkedsruchadev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha-dev')
-    cdcmohkedsruscdscdev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc-dev')
-    cdcmohkedsruhebsdev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-dev')
-    cdcmohkedsruhebsfp.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-fp')
-    cdcmohkedsruhebsscdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-scdsc')
+    mdharuracha.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha')
+    mdharurascdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc')
+    mdharuradev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-dev')
+    mdharurachadev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha-dev')
+    mdharurascdscdev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc-dev')
+    mdharurahebsdev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-dev')
+    mdharurahebsfp.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-fp')
+    mdharurahebsscdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-scdsc')
   }
   compileSdkVersion 22
   packagingOptions {
