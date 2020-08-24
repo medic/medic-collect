@@ -31,3 +31,15 @@ jobs:
       script: make travis
 before_script:
 - yes | sdkmanager 'platforms;android-28'
+deploy:
+  provider: releases
+  skip_cleanup: true
+  overwrite: true
+  api_key:
+    secure: VK8Gnuze7zmX1bU5XCRCBr0rJQv2EZ9oJgA3KfqybuqNd9h8ibX+yybI55D9w2Z8czYHa0OW7JmW+Ih0IOKDO73+a750xagXxslsppni9ct/qVmMajuq74EIgwxy0jPdYtHmps0uA3Hd6vu8X8048LOsFxin1mh1khSrWpazZ7U6mBvfXKHgJPe1EEKfR6mw7tITm8sz0dj0UkSNMBaz2T7E7OpxIaM/NtaMCNSB0G/WUoPYLYFjbRhffJyl2Ww42KcnXVGFWalWH7iy59xnPsnnS+q57UXh7S4LcRqktdevK7fcA38R4zVC7/26oq88/ev83eZA7bgI2D6zZVRyorAYgOVRrQtR9UdtmkYfGtNCKDgg4oRF2gk34PhiwQE9OwnIVJ5KI6PxCMdEiSqbX/7Myc6reB54pwLZ5FV6wdRBvCQzfs8adG2MYD051a+tAhAqnmq4mj3Wv2g8JEhH0cBp0LcO+biC0CP6SWJUiMCJChkQae3NgE9a8pS6ZRIpCOYdlJSA2AxT1wARaXuQPkX4QB1NZRLgk/YcgCW3IJrndzMTMRjmLr/k1R/SbFW1VTEdIJbaLq9Iva9XU1LusL0p5d/uNYASBOFLO8hjXI5sayjrzdbd67Y4nMiuRX/HbbRgtdCZNvzcS6mmAIcgympOay3FGbexPUfCo5KmkQc=
+  file_glob: true
+  file: ./build/outputs/apk/**/*.apk
+  on:
+    tags: true
+    repo: medic/medic-collect
+    branch: cdc-mohke-packaging
