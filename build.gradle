@@ -111,6 +111,38 @@ android {
       versionName = android.defaultConfig.versionName + "-standard"
       applicationId = 'org.medicmobile.collect.android.standard'
     }
+    mdharuracha {
+      versionName = android.defaultConfig.versionName + "-mdharuracha"
+      applicationId = 'org.medicmobile.collect.android.mdharuracha'
+    }
+    mdharurascdsc {
+      versionName = android.defaultConfig.versionName + "-mdharurascdsc"
+      applicationId = 'org.medicmobile.collect.android.mdharurascdsc'
+    }
+    mdharuradev {
+      versionName = android.defaultConfig.versionName + "-mdharuradev"
+      applicationId = 'org.medicmobile.collect.android.mdharuradev'
+    }
+    mdharurachadev {
+      versionName = android.defaultConfig.versionName + "-mdharurachadev"
+      applicationId = 'org.medicmobile.collect.android.mdharurachadev'
+    }
+    mdharurascdscdev {
+      versionName = android.defaultConfig.versionName + "-mdharurascdscdev"
+      applicationId = 'org.medicmobile.collect.android.mdharurascdscdev'
+    }
+    mdharurahebsdev {
+      versionName = android.defaultConfig.versionName + "-mdharurahebsdev"
+      applicationId = 'org.medicmobile.collect.android.mdharurahebsdev'
+    }
+    mdharurahebsfp {
+      versionName = android.defaultConfig.versionName + "-mdharurahebsfp"
+      applicationId = 'org.medicmobile.collect.android.mdharurahebsfp'
+    }
+    mdharurahebsscdsc {
+      versionName = android.defaultConfig.versionName + "-mdharurahebsscdsc"
+      applicationId = 'org.medicmobile.collect.android.mdharurahebsscdsc'
+    }
   }
   sourceSets {
     main {
@@ -128,6 +160,14 @@ android {
     ipasnigeria.setRoot('../medic-projects/_medic-collect-flavors/ipas-nigeria')
     christianaidsr.setRoot('../medic-projects/_medic-collect-flavors/christian-aid-sr')
     standard.setRoot('../medic-projects/_medic-collect-flavors/standard')
+    mdharuracha.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha')
+    mdharurascdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc')
+    mdharuradev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-dev')
+    mdharurachadev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-cha-dev')
+    mdharurascdscdev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-scdsc-dev')
+    mdharurahebsdev.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-dev')
+    mdharurahebsfp.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-fp')
+    mdharurahebsscdsc.setRoot('../medic-projects/_medic-collect-flavors/cdc-mohke-dsru-hebs-scdsc')
   }
   compileSdkVersion 22
   packagingOptions {
