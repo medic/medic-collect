@@ -65,7 +65,7 @@ Remove `javarosa-libraries-2015-01-10.jar` from opendatakit.collect/libs
 
 ## Project-Specific Builds for Deployments
 
-In order to deploy projects using Medic Collect you need to install and configure Medic Collect on every user's phone, as well as have a running [Medic Mobile instance](https://github.com/medic/medic-webapp/) to receive the data. Some features were added to Medic Collect specifically to make it simpler to deploy on a large number of phones in a minimum amount of time. Follow the steps below to avoid manually having to configure the forms and settings on each phone.
+In order to deploy projects using Medic Collect you need to install and configure Medic Collect on every user's phone, as well as have a running [Community Health Toolkit instance](https://github.com/medic/cht-core) to receive the data. Some features were added to Medic Collect specifically to make it simpler to deploy on a large number of phones in a minimum amount of time. Follow the steps below to avoid manually having to configure the forms and settings on each phone.
 
 ### Forms
 Forms can be added manually to any Medic Collect by adding the XForm XML files in /medicmobile/forms on the SD card. If the forms are unlikely to change and you need to deploy Medic Collect on many devices, the forms can be included directly into the Medic Collect build. By doing so the forms are automatically loaded onto the phone when the app is first started, or whenever the forms are removed.
