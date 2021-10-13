@@ -1,10 +1,25 @@
 # medic-collect
 
+## Maintenance mode
+
+`medic-collect` is in maintenance mode. It will not receive new features or improvements, except for fixing critical bugs.
+
 ## Overview
 
 These instructions should help you get setup using Eclipse to develop on Medic Collect, building JavaRosa from source.
 
 Please update these notes as needed. You will also find instructions on preparing builds for deployments.
+
+### Why use `medic-collect`
+
+- Lightweight data collection, useful for quick or short deployments
+- Small deployments, where devices are managed manually
+
+### Why not use `medic-collect`
+
+- want patient centered data
+- want to see previously submitted data
+- maintenance mode, so slow fixes, no new features
 
 ## Instructions
 
